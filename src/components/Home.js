@@ -28,7 +28,7 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center p-4">
+    <div className="min-h-screen bg-black flex flex-col items-center p-4 font-fira">
       <h1 className="text-3xl font-bold mb-8 text-white">
         Welcome to the WannaCry Walkthrough
       </h1>
@@ -37,7 +37,7 @@ const Home = () => {
         {pages.map((page, index) => (
           <React.Fragment key={page.id}>
             {index > 0 && <div className="w-1 h-12 bg-gray-600"></div>}
-            <div className="flex flex-col items-center mb-6">
+            <div className="flex flex-col items-center mb-6 ">
               <button
                 onClick={() => navigate(`/walkthrough/${page.id}`)}
                 disabled={index > 0 && !progress.includes(pages[index - 1].id)}

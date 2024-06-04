@@ -75,10 +75,10 @@ const WalkthroughPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center p-6 text-white">
+    <div className="min-h-screen bg-black flex flex-col items-center p-6 text-white font-fira">
       <button
         onClick={() => navigate("/")}
-        className="mb-4 px-4 py-2 bg-gray-700 text-white rounded"
+        className="mb-4 px-4 py-2 bg-gray-700 text-white rounded absolute right-10"
       >
         Home
       </button>
@@ -102,31 +102,35 @@ const WalkthroughPage = () => {
             );
           } else if (item.type === "question") {
             return (
-              <div key={index} className="space-y-2">
-                <p className="font-medium">{item.question}</p>
-                <input
-                  type="text"
-                  value={
-                    correctAnswers[item.field] || answers[item.field] || ""
-                  }
-                  onChange={(e) =>
-                    handleInputChange(item.field, e.target.value)
-                  }
-                  disabled={!!correctAnswers[item.field]}
-                  placeholder="Answer"
-                  className="border border-gray-300 p-2 rounded w-full text-black"
-                />
-                {errors[item.field] && (
-                  <p className="text-red-500">{errors[item.field]}</p>
-                )}
-                {!correctAnswers[item.field] && (
-                  <button
-                    onClick={() => checkAnswer(item.field, item.correctAnswer)}
-                    className="px-4 py-2 bg-blue-500 text-white rounded"
-                  >
-                    Submit Answer
-                  </button>
-                )}
+              <div className="border border-gray-400 rounded-lg p-4">
+                <div key={index} className="space-y-2">
+                  <p className="font-medium text-red-600">{item.question}</p>
+                  <input
+                    type="text"
+                    value={
+                      correctAnswers[item.field] || answers[item.field] || ""
+                    }
+                    onChange={(e) =>
+                      handleInputChange(item.field, e.target.value)
+                    }
+                    disabled={!!correctAnswers[item.field]}
+                    placeholder="Answer"
+                    className="border border-gray-300 p-2 rounded w-full text-black"
+                  />
+                  {errors[item.field] && (
+                    <p className="text-red-500">{errors[item.field]}</p>
+                  )}
+                  {!correctAnswers[item.field] && (
+                    <button
+                      onClick={() =>
+                        checkAnswer(item.field, item.correctAnswer)
+                      }
+                      className="px-4 py-2 bg-blue-500 text-white rounded"
+                    >
+                      Submit Answer
+                    </button>
+                  )}
+                </div>
               </div>
             );
           }
