@@ -1,12 +1,14 @@
+const USER_PROGRESS_KEY = "userProgress";
+
 export const getUserProgress = () => {
-  const userProgress = localStorage.getItem("userProgress");
-  return userProgress ? JSON.parse(userProgress) : [];
+  const progress = localStorage.getItem(USER_PROGRESS_KEY);
+  return progress ? JSON.parse(progress) : [];
 };
 
 export const updateUserProgress = (pageId) => {
-  const userProgress = getUserProgress();
-  if (!userProgress.includes(pageId)) {
-    userProgress.push(pageId);
-    localStorage.setItem("userProgress", JSON.stringify(userProgress));
+  const progress = getUserProgress();
+  if (!progress.includes(pageId)) {
+    progress.push(pageId);
+    localStorage.setItem(USER_PROGRESS_KEY, JSON.stringify(progress));
   }
 };

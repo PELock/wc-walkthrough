@@ -1,21 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { updateUserProgress } from "../utils/localStorageUtils";
-import pagesContent from "./pages";
+import {
+  updateUserProgress,
+  getUserProgress,
+} from "../utils/localStorageUtils";
+import pagesContent from "../data/pagesContent";
 
 const WalkthroughPage = () => {
   const { pageId } = useParams();
   const [answers, setAnswers] = useState({});
+  const [correctAnswers, setCorrectAnswers] = useState({});
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  // Convert pageId to an integer for easier manipulation
   const currentPageId = parseInt(pageId, 10);
-
-  // Get content for the current page
   const pageContent = pagesContent[`page${currentPageId}`];
 
-  // Handle input changes and update the state
+  useEffect(() => {
+    const userProgress = getUserProgress();
+    if (userProgress.includes(currentPageId)) {
+      const savedCorrectAnswers = pageContent.content
+        .filter((item) => item.type === "question")
+        .reduce((acc, item) => {
+          acc[item.field] = item.correctAnswer;
+          return acc;
+        }, {});
+      setCorrectAnswers(savedCorrectAnswers);
+    }
+  }, [currentPageId, pageContent.content]);
+
   const handleInputChange = (field, value) => {
     setAnswers((prevAnswers) => ({
       ...prevAnswers,
@@ -27,39 +40,42 @@ const WalkthroughPage = () => {
     }));
   };
 
-  // Validate the answers and provide feedback
-  const checkAnswers = () => {
-    if (!pageContent.content.some((item) => item.type === "question")) {
-      return;
-    }
-
-    let allCorrect = true;
-    const newErrors = {};
-    pageContent.content.forEach((item) => {
-      if (item.type === "question") {
-        const { field, correctAnswer } = item;
-        if (!answers[field] || answers[field].trim() !== correctAnswer) {
-          newErrors[field] = "Incorrect answer, please try again.";
-          allCorrect = false;
-        }
-      }
-    });
-
-    if (allCorrect) {
-      updateUserProgress(currentPageId);
-      const nextPageId = currentPageId + 1;
-      if (pagesContent[`page${nextPageId}`]) {
-        navigate(`/walkthrough/${nextPageId}`);
-      } else {
-        navigate("/"); // Redirect to home if no more pages
-      }
+  const checkAnswer = (field, correctAnswer) => {
+    if (answers[field] && answers[field].trim() === correctAnswer) {
+      setCorrectAnswers((prevCorrectAnswers) => ({
+        ...prevCorrectAnswers,
+        [field]: correctAnswer,
+      }));
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [field]: "",
+      }));
     } else {
-      setErrors(newErrors);
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [field]: "Incorrect answer, please try again.",
+      }));
     }
   };
 
+  const allQuestionsCorrect = pageContent.content
+    .filter((item) => item.type === "question")
+    .every((item) => correctAnswers[item.field]);
+
+  const nextPageId = currentPageId + 1;
+  const nextPageContent = pagesContent[`page${nextPageId}`];
+
+  if (allQuestionsCorrect) {
+    updateUserProgress(currentPageId);
+  }
+
+  const gotoPreviousPage = () => {
+    if (currentPageId <= 1) navigate("/");
+    else navigate(`/walkthrough/${currentPageId - 1}`);
+  };
   return (
     <div>
+      <button onClick={() => navigate("/")}>Home</button>
       <h2>{pageContent.title}</h2>
       {pageContent.content.map((item, index) => {
         if (item.type === "text") {
@@ -79,19 +95,35 @@ const WalkthroughPage = () => {
               <p>{item.question}</p>
               <input
                 type="text"
-                placeholder="Answer"
+                value={correctAnswers[item.field] || answers[item.field] || ""}
                 onChange={(e) => handleInputChange(item.field, e.target.value)}
+                disabled={!!correctAnswers[item.field]}
+                placeholder="Answer"
               />
               {errors[item.field] && (
                 <p style={{ color: "red" }}>{errors[item.field]}</p>
+              )}
+              {!correctAnswers[item.field] && (
+                <button
+                  onClick={() => checkAnswer(item.field, item.correctAnswer)}
+                >
+                  Submit Answer
+                </button>
               )}
             </div>
           );
         }
         return null;
       })}
-      {pageContent.content.some((item) => item.type === "question") && (
-        <button onClick={checkAnswers}>Submit</button>
+      <button onClick={gotoPreviousPage}>Back</button>
+      <br></br>
+      {allQuestionsCorrect && nextPageContent && (
+        <button onClick={() => navigate(`/walkthrough/${nextPageId}`)}>
+          Continue to {nextPageContent.title}
+        </button>
+      )}
+      {allQuestionsCorrect && !nextPageContent && (
+        <p>You have completed all the pages!</p>
       )}
     </div>
   );

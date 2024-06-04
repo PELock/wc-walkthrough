@@ -25,15 +25,24 @@ const Home = () => {
   return (
     <div>
       <h1>Welcome to the WannaCry Walkthrough!</h1>
-      {pages.map((page, index) => (
-        <button
-          key={page.id}
-          onClick={() => navigate(`/walkthrough/${page.id}`)}
-          disabled={index > 0 && !progress.includes(pages[index - 1].id)}
-        >
-          {page.name}
-        </button>
-      ))}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+        }}
+      >
+        {pages.map((page, index) => (
+          <button
+            key={page.id}
+            onClick={() => navigate(`/walkthrough/${page.id}`)}
+            disabled={index > 0 && !progress.includes(pages[index - 1].id)}
+            style={{ marginBottom: "10px" }}
+          >
+            {page.name}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
