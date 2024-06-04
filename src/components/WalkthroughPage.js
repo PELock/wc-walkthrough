@@ -73,58 +73,85 @@ const WalkthroughPage = () => {
     if (currentPageId <= 1) navigate("/");
     else navigate(`/walkthrough/${currentPageId - 1}`);
   };
+
   return (
-    <div>
-      <button onClick={() => navigate("/")}>Home</button>
-      <h2>{pageContent.title}</h2>
-      {pageContent.content.map((item, index) => {
-        if (item.type === "text") {
-          return <p key={index}>{item.value}</p>;
-        } else if (item.type === "image" || item.type === "gif") {
-          return (
-            <img
-              key={index}
-              src={item.value}
-              alt={item.alt}
-              style={{ maxWidth: "100%" }}
-            />
-          );
-        } else if (item.type === "question") {
-          return (
-            <div key={index}>
-              <p>{item.question}</p>
-              <input
-                type="text"
-                value={correctAnswers[item.field] || answers[item.field] || ""}
-                onChange={(e) => handleInputChange(item.field, e.target.value)}
-                disabled={!!correctAnswers[item.field]}
-                placeholder="Answer"
+    <div className="min-h-screen bg-black flex flex-col items-center p-6 text-white">
+      <button
+        onClick={() => navigate("/")}
+        className="mb-4 px-4 py-2 bg-gray-700 text-white rounded"
+      >
+        Home
+      </button>
+      <h2 className="text-2xl font-bold mb-6">{pageContent.title}</h2>
+      <div className="space-y-6 w-full max-w-2xl">
+        {pageContent.content.map((item, index) => {
+          if (item.type === "text") {
+            return (
+              <p key={index} className="text-base">
+                {item.value}
+              </p>
+            );
+          } else if (item.type === "image" || item.type === "gif") {
+            return (
+              <img
+                key={index}
+                src={item.value}
+                alt={item.alt}
+                className="max-w-full h-auto"
               />
-              {errors[item.field] && (
-                <p style={{ color: "red" }}>{errors[item.field]}</p>
-              )}
-              {!correctAnswers[item.field] && (
-                <button
-                  onClick={() => checkAnswer(item.field, item.correctAnswer)}
-                >
-                  Submit Answer
-                </button>
-              )}
-            </div>
-          );
-        }
-        return null;
-      })}
-      <button onClick={gotoPreviousPage}>Back</button>
-      <br></br>
-      {allQuestionsCorrect && nextPageContent && (
-        <button onClick={() => navigate(`/walkthrough/${nextPageId}`)}>
-          Continue to {nextPageContent.title}
+            );
+          } else if (item.type === "question") {
+            return (
+              <div key={index} className="space-y-2">
+                <p className="font-medium">{item.question}</p>
+                <input
+                  type="text"
+                  value={
+                    correctAnswers[item.field] || answers[item.field] || ""
+                  }
+                  onChange={(e) =>
+                    handleInputChange(item.field, e.target.value)
+                  }
+                  disabled={!!correctAnswers[item.field]}
+                  placeholder="Answer"
+                  className="border border-gray-300 p-2 rounded w-full text-black"
+                />
+                {errors[item.field] && (
+                  <p className="text-red-500">{errors[item.field]}</p>
+                )}
+                {!correctAnswers[item.field] && (
+                  <button
+                    onClick={() => checkAnswer(item.field, item.correctAnswer)}
+                    className="px-4 py-2 bg-blue-500 text-white rounded"
+                  >
+                    Submit Answer
+                  </button>
+                )}
+              </div>
+            );
+          }
+          return null;
+        })}
+      </div>
+      <div className="mt-6 flex space-x-4">
+        <button
+          onClick={gotoPreviousPage}
+          className="px-4 py-2 bg-gray-700 text-white rounded"
+        >
+          Back
         </button>
-      )}
-      {allQuestionsCorrect && !nextPageContent && (
-        <p>You have completed all the pages!</p>
-      )}
+        {allQuestionsCorrect && nextPageContent && (
+          <button
+            onClick={() => navigate(`/walkthrough/${nextPageId}`)}
+            className="px-4 py-2 bg-green-500 text-white rounded"
+          >
+            Continue to {nextPageContent.title}
+          </button>
+        )}
+        {allQuestionsCorrect && !nextPageContent && (
+          <p className="text-green-500">You have completed all the pages!</p>
+        )}
+      </div>
     </div>
   );
 };
