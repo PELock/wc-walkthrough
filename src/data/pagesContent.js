@@ -1,6 +1,6 @@
 const pagesContent = {
   page1: {
-    title: "Instructional Content for Page 1",
+    title: "Introduction: The WannaCry Ransomware",
     content: [
       {
         type: "text",
@@ -32,7 +32,7 @@ const pagesContent = {
     ],
   },
   page2: {
-    title: "Instructional Content for Page 2",
+    title: "Beginning Your Investigation: Autopsy",
     content: [
       {
         type: "text",
@@ -52,7 +52,7 @@ const pagesContent = {
     ],
   },
   page3: {
-    title: "Instructional Content for Page 3",
+    title: "Reverse Engineering with Ghidra",
     content: [
       {
         type: "text",
