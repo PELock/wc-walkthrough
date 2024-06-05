@@ -8,7 +8,7 @@ const Sidebar = ({ isOpen }) => {
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
-      <div className = "absolute top-20">
+      <div className="absolute top-20">
         <a href="#" className="block text-white mb-4 " download="file1">
           Download File 1
         </a>
