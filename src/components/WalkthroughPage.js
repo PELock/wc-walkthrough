@@ -75,7 +75,7 @@ const WalkthroughPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center p-6 text-white font-fira">
+    <div className="min-h-screen bg-gray-950 flex flex-col items-center p-6 text-white font-fira">
       <button
         onClick={() => navigate("/")}
         className="mb-4 px-4 py-2 bg-gray-700 text-white rounded absolute right-10"

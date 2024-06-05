@@ -9,14 +9,13 @@ const Sidebar = ({ isOpen }) => {
       }`}
     >
       <div className="absolute top-20">
-        <a href="#" className="block text-white mb-4 " download="file1">
-          Download File 1
-        </a>
+        <h1 className = "text-white font-bold text-xl">Machines</h1>
+        <br></br>
         <a href="#" className="block text-white  mb-4" download="file2">
-          Download File 2
+          Analysis
         </a>
         <a href="#" className="block text-white mb-4" download="file3">
-          Download File 3
+          WannaCry Infected
         </a>
       </div>
     </div>

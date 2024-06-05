@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getUserProgress } from "../utils/localStorageUtils";
 import Sidebar from "../components/Sidebar";
 import Hamburger from "../components/Hamburger";
+import Navbar from "../components/Navbar"
 
 // Define pages with custom images
 const pages = [
@@ -32,15 +33,16 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center p-4 font-fira relative">
+    <div className="min-h-screen bg-gray-950 flex flex-col items-center p-4 font-fira relative">
       <Hamburger toggleSidebar={toggleSidebar} isOpen={sidebarOpen} />
       <Sidebar isOpen={sidebarOpen} />
+      <Navbar />
 
-      <h1 className="text-3xl font-bold mb-8 text-white">
-        Welcome to the WannaCry Walkthrough
-      </h1>
-
-      <div className="relative flex flex-col items-center">
+        <h1 className="text-3xl  font-bold mb-8 text-white ">
+              WannaCry?: The Analytical Walkthrough
+        </h1>
+      
+      <div className=" relative flex flex-col items-center">
         {pages.map((page, index) => (
           <React.Fragment key={page.id}>
             {index > 0 && <div className="w-1 h-12 bg-gray-600"></div>}
@@ -48,7 +50,7 @@ const Home = () => {
               <button
                 onClick={() => navigate(`/walkthrough/${page.id}`)}
                 disabled={index > 0 && !progress.includes(pages[index - 1].id)}
-                className={`w-32 h-32 rounded-full flex items-center justify-center 
+                className={`w-32 h-32 rounded-full border flex items-center justify-center 
                             ${
                               index > 0 &&
                               !progress.includes(pages[index - 1].id)
