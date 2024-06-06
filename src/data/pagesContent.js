@@ -4,11 +4,11 @@ const pagesContent = {
     content: [
       {
         type: "text",
-        value: "Welcome to Page 1. This is some introductory text.",
+        value: "The WannaCry Ransomware Attack was a worldwide cyber attack in early 2017 by the WannaCry Ransomware Cryptoworm. It propagated Microsoft OS machines by using EternalBlue, an exploit of a flaw in Microsoft's Server Message Block protocol. Developed by the United States National Security Agency, EternalBlue was subsequently leaked and stolen by a cyber-terrorist organization known as The Shadow Brokers. The ransomware operated in a characteristic way, encrypting a user's files, informing them, and demanding payment for a decryption key which the message claimed would completely restore their data files.",
       },
       {
         type: "image",
-        value: "https://example.com/image1.jpg",
+        value: "/Logos/wc_msg.png",
         alt: "An example image",
       },
       {
@@ -20,14 +20,14 @@ const pagesContent = {
       { type: "text", value: "Here is some more text after the question." },
       {
         type: "gif",
-        value: "https://example.com/animation1.gif",
+        value: "/Logos/wc_prop_gif.gif",
         alt: "An example GIF",
       },
       {
         type: "question",
         field: "q2",
-        question: "What is the capital of France?",
-        correctAnswer: "Paris",
+        question: "What is the capital of Portugal?",
+        correctAnswer: "Lisbon",
       },
     ],
   },
@@ -40,7 +40,7 @@ const pagesContent = {
       },
       {
         type: "question",
-        field: "q1",
+        field: "q3",
         question: "What is the capital of France?",
         correctAnswer: "Paris",
       },
@@ -55,9 +55,10 @@ const pagesContent = {
     title: "Reverse Engineering with Ghidra",
     content: [
       {
-        type: "text",
-        value:
-          "Welcome to Page 3. This page has no questions, just information.",
+        type: "question",
+        field: "q4",
+        question: "What color is the sky?",
+        correctAnswer: "Blue",
       },
       {
         type: "image",

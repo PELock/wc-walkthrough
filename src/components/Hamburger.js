@@ -4,7 +4,7 @@ import React from "react";
 const Hamburger = ({ toggleSidebar, isOpen }) => {
   return (
     <div
-    className="fixed top-5 left-5 z-50 cursor-pointer" onClick={toggleSidebar}
+    className="fixed top-10 left-10 z-50 cursor-pointer" onClick={toggleSidebar}
       
     >
       <div

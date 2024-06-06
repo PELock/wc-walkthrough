@@ -33,24 +33,20 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 flex flex-col items-center p-4 font-fira relative">
+    <div className="min-h-screen bg-slate-900 flex flex-col items-center p-4 font-fira relative">
       <Hamburger toggleSidebar={toggleSidebar} isOpen={sidebarOpen} />
       <Sidebar isOpen={sidebarOpen} />
-      <Navbar />
+      <Navbar title = {"WannaCry?: The Analytical Walkthrough "}/>
 
-        <h1 className="text-3xl  font-bold mb-8 text-white ">
-              WannaCry?: The Analytical Walkthrough
-        </h1>
-      
-      <div className=" relative flex flex-col items-center">
+      <div className=" flex flex-col items-center mt-28" >
         {pages.map((page, index) => (
           <React.Fragment key={page.id}>
             {index > 0 && <div className="w-1 h-12 bg-gray-600"></div>}
-            <div className="flex flex-col items-center mb-6 hover:scale-110">
+            <div className="flex flex-col items-center mb-6 hover:scale-110 hover:transition-transform ">
               <button
                 onClick={() => navigate(`/walkthrough/${page.id}`)}
                 disabled={index > 0 && !progress.includes(pages[index - 1].id)}
-                className={`w-32 h-32 rounded-full border flex items-center justify-center 
+                className={`w-32 h-32 rounded-full border flex items-center justify-center hover:border-sky-500
                             ${
                               index > 0 &&
                               !progress.includes(pages[index - 1].id)
