@@ -5,6 +5,7 @@ import {
   getUserProgress,
 } from "../utils/localStorageUtils";
 import pagesContent from "../data/pagesContent";
+import ResourceSidebar from "../components/ResourceSidebar"; // Import the ResourceSidebar component
 
 const WalkthroughPage = () => {
   const { pageId } = useParams();
@@ -75,44 +76,60 @@ const WalkthroughPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 flex flex-col items-center p-6 text-white font-fira">
-      <button
-        onClick={() => navigate("/")}
-        className="mb-4 px-4 py-2  text-white rounded absolute right-10 hover:text-sky-500"
-      >
-        Home
-      </button>
+    <div className="min-h-screen bg-slate-900 flex">
+      <ResourceSidebar /> 
+      <div className="flex-1 flex flex-col items-center p-4 text-white font-fira  relative ">
+        <button
+          onClick={() => navigate("/")}
+          className="mb-4 px-4 py-2 text-white rounded absolute right-10 hover:text-sky-500 z-10"
+        >
+          Home
+        </button>
 
-      <h2 className="text-4xl font-bold mb-6 rounded-lg shadow-md  bg-slate-800 bg-clip-padding p-20 pb-10 pr-36 pl-36 mt-[-80px]">
-        {pageContent.title}
-      </h2>
-      <div className="space-y-6 w-full max-w-2xl ">
-        {pageContent.content.map((item, index) => {
-          if (item.type === "text") {
-            return (
-              <p
-                key={index}
-                className="text-base max-w-3xl mx-auto text-center text-gray-300"
-              >
-                {item.value}
-              </p>
-            );
-          } else if (item.type === "image" || item.type === "gif") {
-            return (
-              <div className="">
-                <img
+        <h2 className="text-4xl font-bold mb-6 rounded-lg shadow-md bg-slate-800 bg-clip-padding p-4 absolute top-0 pr-48 pl-48 z-0 flex justify-center items-center">
+          {pageContent.title}
+        </h2>
+
+        <div className="space-y-6 w-full max-w-4xl mt-24">
+          {pageContent.content.map((item, index) => {
+            if (item.type === "text") {
+              return (
+                <p
                   key={index}
-                  src={item.value}
-                  alt={item.alt}
-                  className="p-px max-w-full bg-gray-700 h-auto rounded hover:scale-125 hover:transition-transform"
-                />
-              </div>
-            );
-          } else if (item.type === "question") {
-            return (
-              <div className=" flex justify-center">
-                <div className=" flex justify-center bg-slate-800 rounded-lg p-4 max-w-80">
-                  <div key={index} className="space-y-2">
+                  className="text-base max-w-3xl mx-auto text-center text-gray-300"
+                >
+                 {item.value}
+                </p>
+              );
+            } 
+            
+            else if (item.type === "subheading"){
+                return (
+                  <div>
+                    <h2
+                      key={index}
+                      className="text-5xl font-bold max-w-3xl mx-auto text-center p-10"
+                    >
+                      {item.value}
+                    </h2>
+                    <hr className="p-10 max-w-screen-2xl"></hr>
+                  </div>
+                );
+            }
+            else if (item.type === "image" || item.type === "gif") {
+              return (
+                <div key={index} className="flex justify-center">
+                  <img
+                    src={item.value}
+                    alt={item.alt}
+                    className="p-1 max-w-full bg-gray-700 h-auto rounded"
+                  />
+                </div>
+              );
+            } else if (item.type === "question") {
+              return (
+                <div key={index} className="flex justify-center">
+                  <div className="flex flex-col bg-slate-800 rounded-lg p-4 w-full max-w-2xl hover:scale-125 hover:transition-transform">
                     <p className="font-bold text-center">{item.question}</p>
                     <input
                       type="text"
@@ -124,7 +141,7 @@ const WalkthroughPage = () => {
                       }
                       disabled={!!correctAnswers[item.field]}
                       placeholder="Answer"
-                      className=" p-2 rounded w-full text-black text-center"
+                      className="p-2 rounded w-full text-black text-center hover:border hover:border-sky-500"
                     />
                     {errors[item.field] && (
                       <p className="text-red-500">{errors[item.field]}</p>
@@ -134,37 +151,37 @@ const WalkthroughPage = () => {
                         onClick={() =>
                           checkAnswer(item.field, item.correctAnswer)
                         }
-                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-gray-500"
+                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-gray-500 mt-2"
                       >
                         Submit Answer
                       </button>
                     )}
                   </div>
                 </div>
-              </div>
-            );
-          }
-          return null;
-        })}
-      </div>
-      <div className="mt-6 flex space-x-4">
-        <button
-          onClick={gotoPreviousPage}
-          className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-sky-500"
-        >
-          Back
-        </button>
-        {allQuestionsCorrect && nextPageContent && (
+              );
+            }
+            return null;
+          })}
+        </div>
+        <div className="mt-6 flex space-x-4">
           <button
-            onClick={() => navigate(`/walkthrough/${nextPageId}`)}
+            onClick={gotoPreviousPage}
             className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-sky-500"
           >
-            Continue to {nextPageContent.title}
+            Back
           </button>
-        )}
-        {allQuestionsCorrect && !nextPageContent && (
-          <p className="text-green-500">You have completed all the pages!</p>
-        )}
+          {allQuestionsCorrect && nextPageContent && (
+            <button
+              onClick={() => navigate(`/walkthrough/${nextPageId}`)}
+              className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-sky-500"
+            >
+              Continue to {nextPageContent.title}
+            </button>
+          )}
+          {allQuestionsCorrect && !nextPageContent && (
+            <p className="text-green-500">You have completed all the pages!</p>
+          )}
+        </div>
       </div>
     </div>
   );
