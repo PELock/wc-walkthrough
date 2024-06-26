@@ -59,19 +59,25 @@ const pagesContent = {
     title: "Beginning Your Investigation: Autopsy",
     content: [
       {
+        type: "subheading",
+        value: "The Case",
+      },
+      {
         type: "text",
-        value: "Welcome to Page 2. This page has a question and a GIF.",
+        value:
+          "You are a forensic analyst contracted at Morgan & Morgan, a criminal law firm operating out of Morgantown, West Virginia. Your manager has come to you with an interesting task: A paralegal has  discreetly reported one of his coworkers to a firm partner for suspicious activity. The paralegal believes he saw unauthorized documents and other suspicious files on the reported firm computer, but he wasn't sure how to proceed and didn't want to risk conflict. You've been provided with an image of the employee's computer. Your task is to investigate the employee's activity and files and discover what risks, if any, are present.",
       },
       {
         type: "question",
-        field: "q3",
-        question: "What is the capital of France?",
-        correctAnswer: "Paris",
+        field: "q7",
+        question:
+          "What is the type of image provided to you? Provide the file extension.",
+        correctAnswer: "ISO",
       },
       {
-        type: "gif",
-        value: "https://example.com/animation2.gif",
-        alt: "Another example GIF",
+        type: "text",
+        value:
+          "One of the premier open-source tools for hard drive investigation is Autopsy. Autopsy has many capabilties, and supports many extra modules which exend its capabilities. This is the first tool you will be leveraging in your investigation. ",
       },
     ],
   },
@@ -157,10 +163,87 @@ const pagesContent = {
   page4: {
     title: "Diving Into the Code",
     content: [
-      {},
+      {
+        type: "subheading",
+        value: "The Windows entry Function",
+      },
+      {
+        type: "text",
+        value:
+          "This entry point function is the default entry code generated for all Windows executables. ",
+      },
+      {
+        type: "question",
+        field: "q6",
+        question: "Skim through the function. Where should it lead?",
+        correctAnswer: "FUN_00408140",
+      },
+      {
+        type: "text",
+        valeu:
+          "Once recognized, never forgotten. It's time to put one of, if not the main, skills of a reverse engineer to work: renaming. As we work to discover the intent of the author of code, it is integral that we rework the code so that it becomes more understandable to us. Moving forward, we are going to look for recognizable snippets and functions to rename in a manner that pieces the puzzle together.",
+      },
+      {
+        type: "text",
+        value:
+          "Our first rename will be this newfound function. As we know the entry point leads to the actual Windows entry, we can rename it fittingly. Look up the 'WinMain application entry point' and copy the function signature.",
+      },
+      {
+        type: "gif",
+        value: "/Logos/WinMain.gif",
+      },
+      {
+        type: "text",
+        value:
+          "This function is the real entry point to this code. Now it's time that we put our investigative skills to work. What do we notice first? ",
+      },
+      {
+        type: "image",
+        value: "/Logos/KillSwitchString.png",
+      },
+      {
+        type: "text",
+        value:
+          "As a reverse engineer, you'll come to recognize many red flags. One of the most important are hardcoded strings. When investigated decompiled code, not much is given to us at face value. When it is, we need to make the most of it.",
+      },
+      {
+        type: "text",
+        value:
+          "Some great examples are IP addresses, names, bitcoin addresses, and of course what we've just discovered: internet domains.",
+      },
+      {
+        type: "text",
+        value:
+          "Let's rename the variable this domain is stored in. Let's call it 'suspicious domain.' Also, change the type to char*. The next chunk of code should be widely recognizable to us, though in a slightly muddled manner. This is a simple for loop, copying the url into another variable. Rename this to your liking and switch to a char*.",
+      },
+      {
+        type: "image",
+        value: "/Logos/dataChooser.png",
+      },
+      {
+        type: "text",
+        value:
+          "Moving on, the next lines of import will be those containing functions 'InternetOpenUrlA'. Ghidra has no function description, but let's take a minute to think about this. Without attempting to further demystify the decompilation, we can intuit what is attempted here. The function attempts to make a connection to the URL; the return value is then stored in a new i variable. ",
+      },
+      {
+        type: "question",
+        field: "q8",
+        question:
+          "In C code, what integer return value signifies successful execution?",
+        correctAnswer: "0",
+      },
+      {
+        type: "text",
+        value:
+          "This particular function return, however, cannot be trusted. In Ghidra's failure to recognize the microsoft function, it has misconstructed the return. In fact, this particular function return an hInternet structure, and the condition checks if it is void. This means that it checks if the connection was Unsuccessful.",
+      },
+      {
+        type: "text",
+        value:
+          "The implentation of some URL or other changeable resource is a common strategy in malware design. This is knows as the Kill Switch. This way, the malware author or attacker can register the URL as a means to stop the malware from executing to its fullest extent. This is almost undeniable evidence that the binary we're dealing with is a piece of dangerous, malicious code.",
+      },
     ],
   },
-  
 };
 
 export default pagesContent;

@@ -3,10 +3,16 @@ import { Link } from "react-router-dom";
 
 const ResourceSidebar = () => {
   const resources = [
-    { name: "Resource 1", link: "/resource1" },
-    { name: "Resource 2", link: "/resource2" },
-    { name: "Resource 3", link: "/resource3" },
-    // Add more resources as needed
+    {
+      name: "Autopsy",
+      link: "https://sleuthkit.org/autopsy/docs/user-docs/4.21.0/",
+    },
+    {
+      name: "Ghidra",
+      link: "https://github.com/NationalSecurityAgency/ghidra",
+    },
+    { name: "Cuckoo", link: "https://cuckoo.cert.ee/" },
+    
   ];
 
   return (
