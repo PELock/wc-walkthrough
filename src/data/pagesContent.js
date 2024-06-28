@@ -77,7 +77,7 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "One of the premier open-source tools for hard drive investigation is Autopsy. Autopsy has many capabilties, and supports many extra modules which exend its capabilities. This is the first tool you will be leveraging in your investigation. ",
+          "One of the premier open-source tools for hard drive investigation is Autopsy. Autopsy has many capabilties and supports many extra modules which exend its capabilities. This is the first tool you will be leveraging in your investigation. ",
       },
     ],
   },
@@ -109,7 +109,7 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "There are many tools at our disposal to make sense of this mysterious binary file. Perhaps the most obvious solution is what is known as reverse engineering. Reverse engineering involves the use of a decompiler, which attempts to reconstruct thebinary's source code. There are many popular and efficient decompilers out there, but we will be using the open-source National Security Agency developed Ghidra. ",
+          "There are many tools at our disposal to make sense of this mysterious binary file. Perhaps the most obvious solution is what is known as reverse engineering. Reverse engineering involves the use of a decompiler, which attempts to reconstruct the binary's source code. There are many popular and efficient decompilers out there, but we will be using the open-source National Security Agency developed Ghidra. ",
       },
       {
         type: "image",
@@ -149,7 +149,7 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "Ghidra works by decompiling binaries function-by-function. This allows us to go through the functions and analyze the corresponding assembly and source code. However, it would be extremely inefficient and often impossible, to try and reconstruct every single line of code from the decompilation. Instead, we have to use our intuition to discover keys which reveal the code's intent.  ",
+          "Ghidra works by decompiling binaries function-by-function. This allows us to go through the functions and analyze the corresponding assembly and source code. However, it would be extremely inefficient and often impossible to try and reconstruct every single line of code from the decompilation. Instead, we have to use our intuition to discover keys which reveal the code's intent.  ",
       },
       {
         type: "question",
@@ -195,7 +195,7 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "This function is the real entry point to this code. Now it's time that we put our investigative skills to work. What do we notice first? ",
+          "Now it's time that we put our investigative skills to work. What do we notice first? ",
       },
       {
         type: "image",
@@ -204,7 +204,7 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "As a reverse engineer, you'll come to recognize many red flags. One of the most important are hardcoded strings. When investigated decompiled code, not much is given to us at face value. When it is, we need to make the most of it.",
+          "As a reverse engineer, you'll come to recognize many red flags. One of the most important are hardcoded strings. When investigating decompiled code, not much is given to us at face value. When it is, we need to make the most of it.",
       },
       {
         type: "text",
@@ -235,13 +235,32 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "This particular function return, however, cannot be trusted. In Ghidra's failure to recognize the microsoft function, it has misconstructed the return. In fact, this particular function return an hInternet structure, and the condition checks if it is void. This means that it checks if the connection was Unsuccessful.",
+          "This particular function return, however, cannot be trusted. In Ghidra's failure to recognize the microsoft function, it has misconstructed the return. In fact, this particular function return an hInternet void pointer, and the condition checks if it is void. This means that it checks if the connection was Unsuccessful.",
       },
       {
         type: "text",
         value:
           "The implentation of some URL or other changeable resource is a common strategy in malware design. This is knows as the Kill Switch. This way, the malware author or attacker can register the URL as a means to stop the malware from executing to its fullest extent. This is almost undeniable evidence that the binary we're dealing with is a piece of dangerous, malicious code.",
       },
+      {
+        type: "subheading",
+        value: "The Real Entry Function"
+      },
+      {
+        type: "text",
+        value: "At the failure of the kill switch, we can assume this is where the malicious activity will begin to take place. As such, name the function called upon failure to request the url 'real_entry'. Double click to jump into the function. "
+      },
+      {
+        type: "text",
+        value: "Past the stack variables, the first line retrieves the executable path. Rename the variable the path is stored in to something like 'exe_path'. The next line retrieves the number of passed arguments. Let's name this variable 'num_args'. The next conditional check is quite clear. If the executable is supplied with less than two arguments, enter the specified function. Let's fittinly name this function as 'no_args_handler'. "
+      },
+      {
+        type: "image",
+        value: "/Logos/no_args.png"
+      },
+      {
+        type: "text",
+        value: "Open the renamed handler. "},
     ],
   },
 };

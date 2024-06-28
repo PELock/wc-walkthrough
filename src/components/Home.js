@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getUserProgress } from "../utils/localStorageUtils";
 import Sidebar from "../components/Sidebar";
 import Hamburger from "../components/Hamburger";
-import Navbar from "../components/Navbar";
+
 
 // Define pages with custom images
 const pages = [
@@ -33,47 +33,47 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center p-4 font-fira relative">
+    <div className="min-h-screen bg-slate-950 flex flex-col items-start pt-20 p-4 font-fira relative">
       <Hamburger toggleSidebar={toggleSidebar} isOpen={sidebarOpen} />
       <Sidebar isOpen={sidebarOpen} />
-      <Navbar title="WannaCry?: The Analytical Walkthrough" />
 
-      <div className="flex justify-center items-center flex-wrap w-full">
-        {pages.map((page, index) => (
-          <React.Fragment key={page.id}>
-            <div className="flex flex-col items-center mx-4 mb-8 hover:scale-110 transition-transform">
-              <button
-                onClick={() => navigate(`/walkthrough/${page.id}`)}
-                disabled={index > 0 && !progress.includes(pages[index - 1].id)}
-                className={`w-64 h-64 rounded-full border flex items-center justify-center hover:border-sky-500 hover:border
-                            ${
-                              index > 0 &&
-                              !progress.includes(pages[index - 1].id)
-                                ? "bg-gray-800 cursor-not-allowed"
-                                : "bg-gray-800 hover:bg-gray-700 cursor-pointer"
-                            }`}
-              >
-                <img
-                  src={page.img}
-                  alt={page.name}
-                  className="w-full h-full object-cover rounded-full"
-                />
-              </button>
-              <span className="mt-2 text-white text-3xl font-bold">
+      <div className="w-full max-w-screen-xl mt-8">
+        <div className="text-white p-4">
+          <h1 class=" text-9xl font-bold pb-5 bg-gradient-to-r from-red-900 via-gray-900 to-red-600 inline-block text-transparent bg-clip-text">
+            Welcome to WannaCry
+          </h1>
+          <p className="text-lg text-left">
+            Dive deep into the analysis of WannaCry, one of the most notorious
+            ransomware attacks. This walkthrough will guide you through each
+            stage of the analysis, providing insights and tools used by
+            cybersecurity professionals.
+          </p>
+        </div>
+
+        <div className="w-full flex flex-col ">
+          {pages.map((page, index) => (
+            <button
+              key={page.id}
+              onClick={() => navigate(`/walkthrough/${page.id}`)}
+              disabled={index > 0 && !progress.includes(pages[index - 1].id)}
+              className={`relative mb-0 w-full h-24 flex items-center justify-start transition-all duration-300 group
+                ${
+                  index > 0 && !progress.includes(pages[index - 1].id)
+                    ? "cursor-not-allowed"
+                    : "hover:w-screen hover:bg-gray-700 cursor-pointer"
+                }`}
+            >
+              <img
+                src={page.img}
+                alt={page.name}
+                className="h-full w-24 object-cover"
+              />
+              <span className="text-white text-2xl font-bold ml-4 group-hover:translate-x-full group-hover:scale-125 duration-300 group-hover:bg-gradient-to-r from-red-900 via-gray-900 to-red-600 group-hover:inline-block group-hover:text-transparent group-hover:bg-clip-text">
                 {page.name}
               </span>
-            </div>
-            {index < pages.length - 1 && (
-              <div className="flex flex-col items-center mb-8">
-                <div
-                  className={`w-24 h-1 bg-sky-500 mx-auto ${
-                    !progress.includes(page.id) ? "bg-gray-500" : "bg-sky-500"
-                  }`}
-                ></div>
-              </div>
-            )}
-          </React.Fragment>
-        ))}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

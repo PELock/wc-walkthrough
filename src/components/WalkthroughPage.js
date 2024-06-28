@@ -76,17 +76,17 @@ const WalkthroughPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 flex">
-      <ResourceSidebar /> 
+    <div className="min-h-screen bg-slate-950 flex">
+      <ResourceSidebar />
       <div className="flex-1 flex flex-col items-center p-4 text-white font-fira  relative ">
         <button
           onClick={() => navigate("/")}
-          className="mb-4 px-4 py-2 text-white rounded absolute right-10 hover:text-sky-500 z-10"
+          className="mb-4 px-4 py-2 text-white rounded absolute right-10 hover:text-red-950 z-10"
         >
           Home
         </button>
 
-        <h2 className="text-4xl font-bold mb-6 rounded-lg shadow-md bg-slate-800 bg-clip-padding p-4 absolute top-0 pr-48 pl-48 z-0 flex justify-center items-center">
+        <h2 className=" text-6xl bg-gradient-to-r from-red-800  to-black text-transparent  bg-clip-text p-4 absolute top-0 pr-48 pl-48 z-0 flex justify-center items-center">
           {pageContent.title}
         </h2>
 
@@ -98,25 +98,22 @@ const WalkthroughPage = () => {
                   key={index}
                   className="text-base max-w-3xl mx-auto text-center text-gray-300"
                 >
-                 {item.value}
+                  {item.value}
                 </p>
               );
-            } 
-            
-            else if (item.type === "subheading"){
-                return (
-                  <div>
-                    <h2
-                      key={index}
-                      className="text-5xl font-bold max-w-3xl mx-auto text-center p-10"
-                    >
-                      {item.value}
-                    </h2>
-                    <hr className="p-10 max-w-screen-2xl"></hr>
-                  </div>
-                );
-            }
-            else if (item.type === "image" || item.type === "gif") {
+            } else if (item.type === "subheading") {
+              return (
+                <div>
+                  <h2
+                    key={index}
+                    className="text-5xl font-bold max-w-3xl mx-auto text-center p-10"
+                  >
+                    {item.value}
+                  </h2>
+                  <hr className="p-10 max-w-screen-2xl"></hr>
+                </div>
+              );
+            } else if (item.type === "image" || item.type === "gif") {
               return (
                 <div key={index} className="flex justify-center">
                   <img
@@ -141,7 +138,7 @@ const WalkthroughPage = () => {
                       }
                       disabled={!!correctAnswers[item.field]}
                       placeholder="Answer"
-                      className="p-2 rounded w-full text-black text-center hover:border hover:border-sky-500"
+                      className="p-2 rounded w-full text-black text-center hover:border hover:border-red-800"
                     />
                     {errors[item.field] && (
                       <p className="text-red-500">{errors[item.field]}</p>
@@ -166,14 +163,14 @@ const WalkthroughPage = () => {
         <div className="mt-6 flex space-x-4">
           <button
             onClick={gotoPreviousPage}
-            className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-sky-500"
+            className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-red-950"
           >
             Back
           </button>
           {allQuestionsCorrect && nextPageContent && (
             <button
               onClick={() => navigate(`/walkthrough/${nextPageId}`)}
-              className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-sky-500"
+              className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-red-950"
             >
               Continue to {nextPageContent.title}
             </button>

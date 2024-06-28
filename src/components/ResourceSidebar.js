@@ -23,7 +23,7 @@ const ResourceSidebar = () => {
           <li key={index} className="mb-2">
             <Link
               to={resource.link}
-              className="text-gray-500 hover:text-sky-500 relative "
+              className="text-gray-500 hover:text-red-950 relative "
             >
               {resource.name}
             </Link>
