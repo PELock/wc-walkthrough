@@ -42,7 +42,7 @@ const WalkthroughPage = () => {
   };
 
   const checkAnswer = (field, correctAnswer) => {
-    if (answers[field] && answers[field].trim() === correctAnswer) {
+    if (answers[field] && answers[field].trim().toLowerCase() === correctAnswer.toLowerCase()) {
       setCorrectAnswers((prevCorrectAnswers) => ({
         ...prevCorrectAnswers,
         [field]: correctAnswer,
@@ -76,9 +76,9 @@ const WalkthroughPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex">
+    <div className="min-h-screen bg-slate-950 flex ">
       <ResourceSidebar />
-      <div className="flex-1 flex flex-col items-center p-4 text-white font-fira  relative ">
+      <div className="flex-1 flex flex-col   items-center p-4 text-white font-fira  relative ">
         <button
           onClick={() => navigate("/")}
           className="mb-4 px-4 py-2 text-white rounded absolute right-10 hover:text-red-950 z-10"
@@ -86,7 +86,7 @@ const WalkthroughPage = () => {
           Home
         </button>
 
-        <h2 className=" text-6xl bg-gradient-to-r from-red-800  to-black text-transparent  bg-clip-text p-4 absolute top-0 pr-48 pl-48 z-0 flex justify-center items-center">
+        <h2 className=" text-6xl text-center font-bold  bg-gradient-to-r from-red-800  to-black text-transparent  bg-clip-text pt-4  top-0 pr-48 pl-48 z-0 flex justify-center items-center">
           {pageContent.title}
         </h2>
 
@@ -96,7 +96,7 @@ const WalkthroughPage = () => {
               return (
                 <p
                   key={index}
-                  className="text-base max-w-3xl mx-auto text-center text-gray-300"
+                  className="text-base font-medium  text-gray-300"
                 >
                   {item.value}
                 </p>
@@ -119,14 +119,14 @@ const WalkthroughPage = () => {
                   <img
                     src={item.value}
                     alt={item.alt}
-                    className="p-1 max-w-full bg-gray-700 h-auto rounded"
+                    className="p-1 max-w-full bg-stone-900 h-auto rounded-s"
                   />
                 </div>
               );
             } else if (item.type === "question") {
               return (
                 <div key={index} className="flex justify-center">
-                  <div className="flex flex-col bg-slate-800 rounded-lg p-4 w-full max-w-2xl hover:scale-125 hover:transition-transform">
+                  <div className="flex flex-col border border-stone-900 bg-stone-950 rounded-s p-4 w-full max-w-2xl hover:scale-125 hover:transition-transform">
                     <p className="font-bold text-center">{item.question}</p>
                     <input
                       type="text"
@@ -138,7 +138,7 @@ const WalkthroughPage = () => {
                       }
                       disabled={!!correctAnswers[item.field]}
                       placeholder="Answer"
-                      className="p-2 rounded w-full text-black text-center hover:border hover:border-red-800"
+                      className="p-2 rounded-s border border-stone-900 w-full text-gray-300 text-center bg-gray-950 hover:border hover:border-red-800"
                     />
                     {errors[item.field] && (
                       <p className="text-red-500">{errors[item.field]}</p>
@@ -148,7 +148,7 @@ const WalkthroughPage = () => {
                         onClick={() =>
                           checkAnswer(item.field, item.correctAnswer)
                         }
-                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-gray-500 mt-2"
+                        className="px-4 py-2 bg-red-900 text-white rounded hover:bg-gray-500 mt-2"
                       >
                         Submit Answer
                       </button>

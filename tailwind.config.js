@@ -12,6 +12,7 @@ module.exports = {
     extend: {
       fontFamily: {
         fira: ["Fira Code", "monospace"],
+        roboto: ["Roboto"]
       },
     },
   },

@@ -51,7 +51,7 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "You will be taking the role of digital forensic analyst and are tasked with dissecting a personal machine of unknown origin. You will be leveraging modern open source tools professionally used in the fields of digital investigation, research, and cyber security. The goal of this investigation is to discover the origins of this machine, the owner or user, and what risks it contains. Additionally, we will be further diving into anything we find that poses a greater security threat. ",
+          "You will be taking the role of digital forensic analyst and are tasked with dissecting a personal machine of a potential insider threat. You will be leveraging modern open source tools professionally used in the fields of digital investigation, research, and cyber security. The goal of this investigation is to discover what risks, if any, it contains. Additionally, we will be further diving into anything we find that poses a greater security threat. ",
       },
     ],
   },
@@ -119,7 +119,7 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "Once you've launched Ghidra, created a new unshared project and name it appropriately. For our uses, let's call this 'WC'. ",
+          "Once you've launched Ghidra, create a new unshared project and name it appropriately. For our uses, let's call this 'WC'. ",
       },
       {
         type: "text",
@@ -155,7 +155,7 @@ const pagesContent = {
         type: "question",
         field: "q5",
         question:
-          "Look at the functions Ghidra has provided us. Using your intuiton, where should we begin our dive into the code? Enter the name of a function.",
+          "Look at the functions Ghidra has provided us. Using your intuition, where should we begin our dive into the code? Enter the name of a function.",
         correctAnswer: "entry",
       },
     ],
@@ -244,24 +244,103 @@ const pagesContent = {
       },
       {
         type: "subheading",
-        value: "The Real Entry Function"
+        value: "The Real Entry Function",
       },
       {
         type: "text",
-        value: "At the failure of the kill switch, we can assume this is where the malicious activity will begin to take place. As such, name the function called upon failure to request the url 'real_entry'. Double click to jump into the function. "
+        value:
+          "At the failure of the kill switch, we can assume this is where the malicious activity will begin to take place. As such, name the function called upon failure to request the url 'real_entry'. Double click to jump into the function. ",
       },
       {
         type: "text",
-        value: "Past the stack variables, the first line retrieves the executable path. Rename the variable the path is stored in to something like 'exe_path'. The next line retrieves the number of passed arguments. Let's name this variable 'num_args'. The next conditional check is quite clear. If the executable is supplied with less than two arguments, enter the specified function. Let's fittinly name this function as 'no_args_handler'. "
+        value:
+          "Past the stack variables, the first line retrieves the executable path. Rename the variable the path is stored in to something like 'exe_path'. The next line retrieves the number of passed arguments. Let's name this variable 'num_args'. The next conditional check is quite clear. If the executable is supplied with less than two arguments, enter the specified function. Let's fittingly name this function as 'no_args_handler'. ",
       },
       {
         type: "image",
-        value: "/Logos/no_args.png"
+        value: "/Logos/no_args.png",
       },
       {
         type: "text",
-        value: "Open the renamed handler. "},
+        value: "Open the renamed handler.  ",
+      },
+      {
+        type: "text",
+        value:
+          "At the top of this function, you'll notice a couple SC_HANDLE globals. If you're unfamiliar, these are essentially typedefs for handles to Microsoft services. Specifically, these are used to create and manage services by interacting with the Service Control Manager database. Examine line 9. This prints the exact path int the char[] local104, with additional flags. Do you know what this looks like?  ",
+      },
+      {
+        type: "question",
+        question:
+          "What is the segment of the string entered into local104? Start at the Folder containing the zip. ",
+        field: "q9",
+        correctAnswer:
+          "Desktop\\32f24601153be0885f11d62e0a8a2f0280a2034fc981d8184180c5d3b1b9e8cf.zip\\32f24601153be0885f11d62e0a8a2f0280a2034fc981d8184180c5d3b1b9e8cf.bin -m security ",
+      },
+      {
+        type: "text",
+        value:
+          "Precisely. Therefore, this string is a representation of the binary, followed by the arguments -m security. Let's rename this string to 'execute_with_args'. The next few lines attempt to get a handle to the SCM and set the malicious code to run with all permissions. Additionally, this service is registered under the guise of a different service.",
+      },
+      {
+        type: "question",
+        question:
+          "What is the name of the newly created service? Enter it just as found in the function.",
+        field: "q10",
+        correctAnswer: "s_Microsoft_Security_Center_(2.0)_s_00431308",
+      },
+      {
+        type: "text",
+        value:
+          "Let's rename this function accordingly. How about 'create_malicious_service'?",
+      },
+      {
+        type: "text",
+        value:
+          "Return to the no_args_handler. Go into the second function. This function is much longer and less clear. One of your main responsibilities as a reverse engineer is to be able to examine a daunting segment of code and find clues to build on. Let's find one such clue.",
+      },
+      {
+        type: "text",
+        value:
+          "The first line we're confronted with gets a handle to kernel32.dll. This is a DLL that is essential to managing Windows at a system-level. Rename this 'kernel32_module_handle'. The next lines of code extract four functions from the DLL. The next piece of code to catch our eye is line 40, containing the function findResourceA. This function finds the location of the given resource (the second argument). Right-click on the resource variable, and set it to its Decimal value. Rename the hResInfo variable the resource in decimal format, followed by _info.",
+      },
+      {
+        type: "question",
+        question: "What is the name of the resource? Enter the decimal format.",
+        field: "q11",
+        correctAnswer: "1831",
+      },
+      {
+        type: "subheading",
+        value: "Examining the Resource",
+      },
+      {
+        type: "text",
+        value: "Format the following resource info variables accordingly.",
+      },
+      {
+        type: "image",
+        value: "/Logos/1831_info.png",
+      },
+      {
+        type: "text",
+        value:
+          "Move ahead to the next items of note. Down at lines 65 and 66, we see two calls to sprintf. The format strings are clearly paths, but are missing arguments! When there are clearly missing arguments or variables, it is often a good idea to check the disassembly. Open the Listing window and click on the first sprintf. We can see here that two more arguments were pushed on the stack, but not recognized by Ghidra. This confirms our suspicions.",
+      },
+      {
+        type: "image",
+        value: "/Logos/missing_paths.png",
+      },
+      {
+        type: "text",
+        value:
+          "Override the function signatures of the calls to sprintf. Append the missing char* formal arguments. The strings in their respective char[] are now much more appropriate. Change the variable names to represent their paths. Let's go with 'tasksche_path' and 'strange_path'.",
+      },
     ],
+  },
+  page5: {
+    title: "Automated Dynamic Analysis with Cuckoo Sandbox ",
+    content: [{}],
   },
 };
 

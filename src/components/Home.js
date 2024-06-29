@@ -11,6 +11,7 @@ const pages = [
   { name: "Autopsy", id: 2, img: "../Logos/autopsy_black.jpeg" },
   { name: "Ghidra", id: 3, img: "/Logos/Ghidra_logo.svg.png" },
   { name: "Diving Into the Code", id: 4, img: "/Logos/cubes.webp" },
+  { name: "Cuckoo Sandbox", id: 5, img: "/Logos/cuckoo.png"}
   // Add more pages as needed
 ];
 
