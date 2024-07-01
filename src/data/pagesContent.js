@@ -312,7 +312,7 @@ const pagesContent = {
       },
       {
         type: "subheading",
-        value: "Examining the Resource",
+        value: "The Resource",
       },
       {
         type: "text",
@@ -325,7 +325,7 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "Move ahead to the next items of note. Down at lines 65 and 66, we see two calls to sprintf. The format strings are clearly paths, but are missing arguments! When there are clearly missing arguments or variables, it is often a good idea to check the disassembly. Open the Listing window and click on the first sprintf. We can see here that two more arguments were pushed on the stack, but not recognized by Ghidra. This confirms our suspicions.",
+          "Move ahead to the next items of note. Down at lines 65 and 66, we see two calls to sprintf. The format strings are clearly paths but are missing arguments! When there are clearly missing arguments or variables, it is often a good idea to check the disassembly. Open the Listing window and click on the first sprintf. We can see here that two more arguments were pushed on the stack but not recognized by Ghidra. This confirms our suspicions.",
       },
       {
         type: "image",
@@ -334,7 +334,27 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "Override the function signatures of the calls to sprintf. Append the missing char* formal arguments. The strings in their respective char[] are now much more appropriate. Change the variable names to represent their paths. Let's go with 'tasksche_path' and 'strange_path'.",
+          "Override the function signatures of the calls to sprintf. Append the missing char* formal arguments. The strings in their respective char[] are now much more appropriate. Change the variable names to represent their paths. Let's go with 'tasksche_path' and 'strange_path'. The next line down copies the tasksche path (executing the 1831 binary) into the strange path. Skimming through the rest of the file, nothing else stands out except the pointer to the CreateProcessA function with ambiguous parameters. Hovering over, we can see the handle is currently undefned. Let's retype it to CreateProcessA. The resource is now clearly defined as an argument; This will create the process tashsche.exe, therefore running the loaded 1831 resource. Finally, it's time to ask: what is resource 1831?",
+      },
+      {
+        type: "gif",
+        value: "/Logos/ProcAtypeChange.gif",
+      },
+      {
+        type: "subheading",
+        value: "Recap and Summary"
+      },
+      {
+        type: "text",
+        value: "Before we move on, let's recap with an overview of the control flow of the program and where it's at now."
+      },
+      {
+        type: "image"
+        
+      },
+      {
+        type: "subheading",
+        value: "Examining Resource 1831"
       },
     ],
   },
