@@ -96,7 +96,7 @@ const WalkthroughPage = () => {
               return (
                 <p
                   key={index}
-                  className="text-base font-medium  text-gray-300"
+                  className="text-base font-medium  text-gray-300 "
                 >
                   {item.value}
                 </p>

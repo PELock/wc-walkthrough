@@ -55,32 +55,34 @@ const pagesContent = {
       },
     ],
   },
+
   page2: {
-    title: "Beginning Your Investigation: Autopsy",
+    title: "Live Behavioral Analysis",
     content: [
-      {
-        type: "subheading",
-        value: "The Case",
-      },
       {
         type: "text",
         value:
-          "You are a forensic analyst contracted at Morgan & Morgan, a criminal law firm operating out of Morgantown, West Virginia. Your manager has come to you with an interesting task: A paralegal has  discreetly reported one of his coworkers to a firm partner for suspicious activity. The paralegal believes he saw unauthorized documents and other suspicious files on the reported firm computer, but he wasn't sure how to proceed and didn't want to risk conflict. You've been provided with an image of the employee's computer. Your task is to investigate the employee's activity and files and discover what risks, if any, are present.",
+          "As a responsible forensic analyst, it is your responsibility to ensure the security of your system during your investigation. Obviously, you should never execute malware on your host or analysis machines. However, observing malware behavior real-time-- known as behavioral analysis-- is an indispensible form of analysis. To accomplish this safely, we are going to be using a virtual machine to take the role of a victim; specifically designed for executing the malware in a closed system. You have been provided with such a virtual machine. Access it now.",
       },
       {
         type: "question",
-        field: "q7",
-        question:
-          "What is the type of image provided to you? Provide the file extension.",
-        correctAnswer: "ISO",
+        question: "What is the name of the virtual machine provided?",
+        field: "q12",
+        correctAnswer: "Infected Windows 7",
       },
       {
         type: "text",
         value:
-          "One of the premier open-source tools for hard drive investigation is Autopsy. Autopsy has many capabilties and supports many extra modules which exend its capabilities. This is the first tool you will be leveraging in your investigation. ",
+          "Your first objective would typically be connecting your analysis machine to your victim in order to transfer the virus zip file. This process involves creating a closed network, configured specificially for the virus in question, to transfer through tcp or ssh. For convenience, however, the virus has been pre-installed on the victim. ",
+      },
+      {
+        type: "text",
+        value:
+          "Regardless of whatever virtualization software you're using, it is essential to limit the communication and access between the victim VM and both your host system and network. Remove any network adapters and disable any drag-and-drop features. This is a critical step, and if skipped, could corrupt and infect your host.",
       },
     ],
   },
+
   page3: {
     title: "Reverse Engineering with Ghidra",
     content: [
@@ -103,13 +105,13 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "The extraction has revealed a mysterious binary file, also obscurely named. At this point in your investigation, you have two basic starting options:  You can either run the binary, potentially compromising your own system, or you can take extra steps to discover its purpose. As a responsible forensic analyst, it is your responsibility to ensure the security of your system during your investigation. Opt for the latter.",
+          "The extraction has revealed a binary file, also obscurely named. ",
       },
       { type: "subheading", value: "Analyzing the Binary" },
       {
         type: "text",
         value:
-          "There are many tools at our disposal to make sense of this mysterious binary file. Perhaps the most obvious solution is what is known as reverse engineering. Reverse engineering involves the use of a decompiler, which attempts to reconstruct the binary's source code. There are many popular and efficient decompilers out there, but we will be using the open-source National Security Agency developed Ghidra. ",
+          "There are many tools at our disposal to make sense of this binary file. Perhaps the most obvious solution is what is known as reverse engineering. Reverse engineering involves the use of a decompiler, which attempts to reconstruct the binary's source code. There are many popular and efficient decompilers out there, but we will be using the open-source National Security Agency developed Ghidra. ",
       },
       {
         type: "image",
@@ -130,7 +132,7 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "What's this?! This zip file is encrypted and requires a password to extract its contents. Let's think back to our earlier investigation with Autopsy. Recall the mysterious password in 'ENTER LOCATION HERE'? Try it! ",
+          "What's this?! This zip file is encrypted and requires a password to extract its contents. A common trend in the world of malware analysis is protecting malware binaries with encrypted zips. A complementary trend is assigning the password 'infected' to protect these zip files. Try it now.",
       },
 
       {
@@ -311,10 +313,6 @@ const pagesContent = {
         correctAnswer: "1831",
       },
       {
-        type: "subheading",
-        value: "The Resource",
-      },
-      {
         type: "text",
         value: "Format the following resource info variables accordingly.",
       },
@@ -334,27 +332,122 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "Override the function signatures of the calls to sprintf. Append the missing char* formal arguments. The strings in their respective char[] are now much more appropriate. Change the variable names to represent their paths. Let's go with 'tasksche_path' and 'strange_path'. The next line down copies the tasksche path (executing the 1831 binary) into the strange path. Skimming through the rest of the file, nothing else stands out except the pointer to the CreateProcessA function with ambiguous parameters. Hovering over, we can see the handle is currently undefned. Let's retype it to CreateProcessA. The resource is now clearly defined as an argument; This will create the process tashsche.exe, therefore running the loaded 1831 resource. Finally, it's time to ask: what is resource 1831?",
+          "Override the function signatures of the calls to sprintf. Append the missing char* formal arguments. The strings in their respective char[] are now much more appropriate. Change the variable names to represent their paths. Let's go with 'tasksche_path' and 'strange_path'. The next line down copies the tasksche path into the strange path. Below is a series of common functions unrecognized by Ghidra. The most notable of which is a strcat() that appends 'i' to the end of taskche.exe. This is obviously intended to serve as an argument. Skimming through the rest of the file, nothing else stands out except the pointer to the CreateProcessA function with ambiguous parameters. Hovering over, we can see the handle is currently undefned. Let's retype it to CreateProcessA. The resource is now clearly defined as an argument; This will create the process tashsche.exe, therefore running the loaded 1831 resource. Rename the function accordingly to describe its purpose. Finally, it's time to ask: what is resource 1831?",
       },
       {
         type: "gif",
         value: "/Logos/ProcAtypeChange.gif",
       },
+
       {
         type: "subheading",
-        value: "Recap and Summary"
+        value: "Recap and Summary",
       },
       {
         type: "text",
-        value: "Before we move on, let's recap with an overview of the control flow of the program and where it's at now."
+        value:
+          "Before we move on, let's recap with an overview of the control flow of the program and where it's at now.",
       },
       {
-        type: "image"
-        
+        type: "image",
       },
       {
         type: "subheading",
-        value: "Examining Resource 1831"
+        value: "Examining Resource 1831",
+      },
+      {
+        type: "text",
+        value:
+          "It is now time to look inside resource 1831. To this end, we will use the open-source tool Resource Hacker, developed by Angus Johnson. Simply open the app and drag the binary into the left-side panel. If any anti-virus issues persist, once again visit the protection history and both allow and restore the binary on the machine.",
+      },
+      {
+        type: "image",
+        value: "/Logos/resourceHacker.png",
+      },
+      {
+        type: "text",
+        value:
+          "Right-click on the desired resource and extract the .bin. Allow the ransomware on the device. Load this into Ghidra under a new folder in our project.",
+      },
+      {
+        type: "image",
+        value: "/Logos/1831_Ghidra.png",
+      },
+      {
+        type: "text",
+        value:
+          "Open and analyze the resource. Select the same additional analyzers as before.",
+      },
+      {
+        type: "text",
+        value:
+          "Go through the same process; find entry and edit the signature into WinMain. ",
+      },
+      {
+        type: "text",
+        value:
+          "Before we proceed, however, let's skim over the hard-coded strings collected by Ghidra. Open up the 'Defined Strings' window. Scrolling through, we can recognize some benign functions, DLL, and other values that don't particularly catch our eye. Around halfway through, however, something very interesting begins to happen. A list of dozens of file extensions take shape.",
+      },
+      {
+        type: "question",
+        question:
+          "Beginning just a couple entries above the list of extensions, what is the first particularly suspicious file in this list?",
+        field: "q13",
+        correctAnswer: "c.wnry",
+      },
+      {
+        type: "text",
+        value:
+          "This is another crucial lesson of reverse engineering taking shape. By simply looking over the defined strings, we have a significantly clearer picture of what lies before us. We are given a plethora of extensions, cryptograohic libraries and functions, and even a direct reference to the name of the virus. Before we move on from the strings, take note of the strings which stand out the most. 'c.wnry', 't.wnry', 'WANACRY!' and the strange, cryptic 'WNcry@2017'",
+      },
+      {
+        type: "text",
+        value:
+          "Let's jump into WinMain. Below the unrecognized memset() is a function retrieving a file name. Rename the local variable fittingly. The fina largument is the size of the char[]. Change its format to decimal, and retype the char[] to this decimal value.",
+      },
+      {
+        type: "question",
+        question: "What is the decimal format of the char[] size?",
+        field: "q14",
+        correctAnswer: "520",
+      },
+      {
+        type: "gif",
+        value: "/Logos/210_to_filename.gif",
+      },
+      {
+        type: "text",
+        value:
+          "Move on to the function directly below. Now, it's time to put your new skills to the test. Try to rename and track the flow of the function to discover its purpose.",
+      },
+      {
+        type: "question",
+        question:
+          "The first part of this function is used to generate something. What is it? A...",
+        field: "q15",
+        correctAnswer: "random number",
+      },
+      {
+        type: "text",
+        value: "Hint: Two words.",
+      },
+      {
+        type: "question",
+        question: "Very good! Now, what is that then converted to? A...",
+        field: "q16",
+        correctAnswer: "char*",
+      },
+      {
+        type: "text",
+        value: "Hint: C data type.",
+      },
+      {
+        type: "text",
+        value:
+          "Before moving back into WinMain, rename the function. Something like random_string_generator. ",
+      },
+      {
+        type: "",
       },
     ],
   },

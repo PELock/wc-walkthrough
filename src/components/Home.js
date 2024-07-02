@@ -4,14 +4,13 @@ import { getUserProgress } from "../utils/localStorageUtils";
 import Sidebar from "../components/Sidebar";
 import Hamburger from "../components/Hamburger";
 
-
 // Define pages with custom images
 const pages = [
   { name: "Introduction", id: 1, img: "/Logos/WC.jpg" },
-  { name: "Autopsy", id: 2, img: "../Logos/autopsy_black.jpeg" },
+  { name: "Live Analysis", id: 2, img: "/Logos/white_magnify.png" },
   { name: "Ghidra", id: 3, img: "/Logos/Ghidra_logo.svg.png" },
   { name: "Diving Into the Code", id: 4, img: "/Logos/cubes.webp" },
-  { name: "Cuckoo Sandbox", id: 5, img: "/Logos/cuckoo.png"}
+  { name: "Cuckoo Sandbox", id: 5, img: "/Logos/cuckoo.png" },
   // Add more pages as needed
 ];
 
