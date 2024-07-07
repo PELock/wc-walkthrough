@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
   updateUserProgress,
   getUserProgress,
+  getModifiableText,
+  saveModifiableText,
 } from "../utils/localStorageUtils";
 import pagesContent from "../data/pagesContent";
 import ResourceSidebar from "../components/ResourceSidebar"; // Import the ResourceSidebar component
@@ -12,13 +14,17 @@ const WalkthroughPage = () => {
   const [answers, setAnswers] = useState({});
   const [correctAnswers, setCorrectAnswers] = useState({});
   const [errors, setErrors] = useState({});
+  const [modifiableText, setModifiableText] = useState({});
   const navigate = useNavigate();
 
   const currentPageId = parseInt(pageId, 10);
   const pageContent = pagesContent[`page${currentPageId}`];
 
   useEffect(() => {
+    // Retrieve user progress from local storage
     const userProgress = getUserProgress();
+
+    // Load correct answers if user has previously completed this page
     if (userProgress.includes(currentPageId)) {
       const savedCorrectAnswers = pageContent.content
         .filter((item) => item.type === "question")
@@ -28,6 +34,16 @@ const WalkthroughPage = () => {
         }, {});
       setCorrectAnswers(savedCorrectAnswers);
     }
+
+    // Load modifiable text from local storage
+    const savedModifiableText = pageContent.content
+      .filter((item) => item.type === "box")
+      .reduce((acc, item) => {
+        acc[item.field] =
+          getModifiableText(currentPageId, item.field) || item.value;
+        return acc;
+      }, {});
+    setModifiableText(savedModifiableText);
   }, [currentPageId, pageContent.content]);
 
   const handleInputChange = (field, value) => {
@@ -41,8 +57,23 @@ const WalkthroughPage = () => {
     }));
   };
 
+  const handleModifiableTextChange = (field, value) => {
+    setModifiableText((prevText) => ({
+      ...prevText,
+      [field]: value,
+    }));
+  };
+
+  const saveModifiableTextHandler = (field) => {
+    saveModifiableText(currentPageId, field, modifiableText[field]);
+    console.log(`Saved text for ${field}:`, modifiableText[field]);
+  };
+
   const checkAnswer = (field, correctAnswer) => {
-    if (answers[field] && answers[field].trim().toLowerCase() === correctAnswer.toLowerCase()) {
+    if (
+      answers[field] &&
+      answers[field].trim().toLowerCase() === correctAnswer.toLowerCase()
+    ) {
       setCorrectAnswers((prevCorrectAnswers) => ({
         ...prevCorrectAnswers,
         [field]: correctAnswer,
@@ -67,6 +98,7 @@ const WalkthroughPage = () => {
   const nextPageContent = pagesContent[`page${nextPageId}`];
 
   if (allQuestionsCorrect) {
+    // Update user progress in local storage
     updateUserProgress(currentPageId);
   }
 
@@ -76,9 +108,9 @@ const WalkthroughPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex ">
+    <div className="min-h-screen bg-slate-950 flex">
       <ResourceSidebar />
-      <div className="flex-1 flex flex-col   items-center p-4 text-white font-fira  relative ">
+      <div className="flex-1 flex flex-col items-center p-4 text-white font-fira relative">
         <button
           onClick={() => navigate("/")}
           className="mb-4 px-4 py-2 text-white rounded absolute right-10 hover:text-red-950 z-10"
@@ -86,7 +118,7 @@ const WalkthroughPage = () => {
           Home
         </button>
 
-        <h2 className=" text-6xl text-center font-bold  bg-gradient-to-r from-red-800  to-black text-transparent  bg-clip-text pt-4  top-0 pr-48 pl-48 z-0 flex justify-center items-center">
+        <h2 className="text-6xl text-center font-bold bg-gradient-to-r from-red-800 to-black text-transparent bg-clip-text pt-4 top-0 pr-48 pl-48 z-0 flex justify-center items-center">
           {pageContent.title}
         </h2>
 
@@ -94,20 +126,14 @@ const WalkthroughPage = () => {
           {pageContent.content.map((item, index) => {
             if (item.type === "text") {
               return (
-                <p
-                  key={index}
-                  className="text-base font-medium  text-gray-300 "
-                >
+                <p key={index} className="text-base font-medium text-gray-300">
                   {item.value}
                 </p>
               );
             } else if (item.type === "subheading") {
               return (
-                <div>
-                  <h2
-                    key={index}
-                    className="text-5xl font-bold max-w-3xl mx-auto text-center p-10"
-                  >
+                <div key={index}>
+                  <h2 className="text-5xl font-bold max-w-3xl mx-auto text-center p-10">
                     {item.value}
                   </h2>
                   <hr className="p-10 max-w-screen-2xl"></hr>
@@ -156,6 +182,28 @@ const WalkthroughPage = () => {
                   </div>
                 </div>
               );
+            } else if (item.type === "box") {
+              return (
+                <div key={index} className="flex justify-center">
+                  <div className="flex flex-col border border-stone-900 bg-stone-950 rounded-s p-4 w-full max-w-2xl hover:scale-125 hover:transition-transform">
+                    <p className = "font-bold text-center">{item.question}</p>
+                    <textarea
+                      value={modifiableText[item.field] || ""}
+                      onChange={(e) =>
+                        handleModifiableTextChange(item.field, e.target.value)
+                      }
+                      className="p-2 rounded-s border border-stone-900 w-full text-gray-300 text-center bg-gray-950 hover:border hover:border-red-800"
+                      rows="4"
+                    />
+                    <button
+                      onClick={() => saveModifiableTextHandler(item.field)}
+                      className="px-4 py-2 bg-red-900 text-white rounded hover:bg-gray-500 mt-2"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              );
             }
             return null;
           })}
@@ -163,14 +211,14 @@ const WalkthroughPage = () => {
         <div className="mt-6 flex space-x-4">
           <button
             onClick={gotoPreviousPage}
-            className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-red-950"
+            className="px-4 py-2 bg-gray-700 text-white rounded-sm hover:bg-red-950"
           >
             Back
           </button>
           {allQuestionsCorrect && nextPageContent && (
             <button
               onClick={() => navigate(`/walkthrough/${nextPageId}`)}
-              className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-red-950"
+              className="px-4 py-2 bg-gray-700 text-white rounded-sm hover:bg-red-950"
             >
               Continue to {nextPageContent.title}
             </button>

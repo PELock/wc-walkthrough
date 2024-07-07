@@ -17,17 +17,6 @@ const pagesContent = {
       },
 
       {
-        type: "image",
-        value: "/Logos/wc_msg.png",
-        alt: "An example image",
-      },
-      {
-        type: "text",
-        value:
-          "The post-encryption ransom message. Notedly, poor grammar and odd vocabulary are throughout. What does this tell us about the attack? About the attackers?",
-      },
-
-      {
         type: "text",
         value:
           "The attack began May 12 of 2017 at 07:44 UTC and was stopped seven hours later by the registration of a kill switch discovered by Marcus Hutchins, aka MalwareTechno. The kill switch prevented already infected computers from being encrypted or further spreading WannaCry. An estimated 300,000 machines were infected, across 150 countries, resulting in a net loss of an estimated hundreds of millions to billions of USD. Some substantial targets were the UK National Health Service, Nissan Motors, Fedex, and Boeing. Although new infections were rendered impotent, the registration of the kill switch was irrelevant for machines already infected. Machines not connected to the internet, but through local servers were also still vulnerable to infection. As seen below, the propogation of the virus was not ended completely, nor were all its victims saved from the attack.",
@@ -73,12 +62,44 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "Your first objective would typically be connecting your analysis machine to your victim in order to transfer the virus zip file. This process involves creating a closed network, configured specificially for the virus in question, to transfer through tcp or ssh. For convenience, however, the virus has been pre-installed on the victim. ",
+          "Your first objective would typically be connecting your analysis machine to your victim in order to transfer the virus zip file. This process involves creating a closed network, configured specificially for the virus in question. For convenience, however, the virus has been pre-installed on the victim. ",
       },
       {
         type: "text",
         value:
           "Regardless of whatever virtualization software you're using, it is essential to limit the communication and access between the victim VM and both your host system and network. Remove any network adapters and disable any drag-and-drop features. This is a critical step, and if skipped, could corrupt and infect your host.",
+      },
+      {
+        type: "text",
+        value:
+          "Especially when accessing files downloaded from the internet and perhaps archived using different tools, the windows zip extractor is insufficient. To this end, this VM has been prepared with the 7-zip tool installed.",
+      },
+      {
+        type: "subheading",
+        value: "Dynamic Analysis",
+      },
+      {
+        type: "text",
+        value:
+          "We now have the binary executable. At this point, it is imperative that you ensure there is no network adapter or connection on the victim VM. Before executing the virus, use your virtualization platform to take a snapshot. If snapshots are not a built-in utility, you can use your CLI to take one with the underlying hypervisor. Fire off the virus. ",
+      },
+      {
+        type: "question",
+        question:
+          "Notice all the victim machine's files are now encrypted. What extension has been added to the victim's files?",
+        field: "q18",
+        correctAnswer: ".WNRY",
+      },
+      {
+        type: "text",
+        value:
+          "Notice the post-encryption ransom message. Notedly, poor grammar and odd vocabulary are throughout. What does this tell us about the attack? About the attackers?",
+      },
+      {
+        type: "box",
+        field: "1",
+        question:
+          "Mark down this and other significant observations here for later use. What stand out? ",
       },
     ],
   },
@@ -282,7 +303,7 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "Precisely. Therefore, this string is a representation of the binary, followed by the arguments -m security. Let's rename this string to 'execute_with_args'. The next few lines attempt to get a handle to the SCM and set the malicious code to run with all permissions. Additionally, this service is registered under the guise of a different service.",
+          "Precisely. Therefore, this string is a representation of the binary, followed by the arguments -m security. Let's rename this string to 'execute_with_args'. The next few lines attempt to get a handle to the SCM and set the malicious code to run with all permissions and on boot. Recognizing and understanding what this means is essential. If this process is executed on boot, this is the key persistence mechanism of the malware. Additionally, this service is registered under the guise of a different service.",
       },
       {
         type: "question",
@@ -396,6 +417,21 @@ const pagesContent = {
         correctAnswer: "c.wnry",
       },
       {
+        type: "image",
+        value: "/Logos/bitcoin.png",
+      },
+      {
+        type: "question",
+        question:
+          "Think back to our live analysis of the virus. What do these strings look like?",
+        field: "q18",
+        correctAnswer: "bitcoin addresses",
+      },
+      {
+        type: "text",
+        value: "Hint: Two words.",
+      },
+      {
         type: "text",
         value:
           "This is another crucial lesson of reverse engineering taking shape. By simply looking over the defined strings, we have a significantly clearer picture of what lies before us. We are given a plethora of extensions, cryptograohic libraries and functions, and even a direct reference to the name of the virus. Before we move on from the strings, take note of the strings which stand out the most. 'c.wnry', 't.wnry', 'WANACRY!' and the strange, cryptic 'WNcry@2017'",
@@ -444,10 +480,29 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "Before moving back into WinMain, rename the function. Something like random_string_generator. ",
+          "Before moving back into WinMain, rename the function. Something like random_string_generator. Retype and rename the formal parameter. Although unseeming, this function is a key actor in WannaCry's malware detection evasion. This generates a new filename for each newly infected machine's ransom note. ",
       },
       {
-        type: "",
+        type: "text",
+        value:
+          "The next lines until 47 checks if the first argument supplied in the execution of the binary was '/i' ; if so, this creates a hidden directory and launches a copy of itself (taskche.exe) inside, launching a randomly named service with the randomly generated string!",
+      },
+      {
+        type: "question",
+        question: "Look into ___. What is the ___ this ___?",
+        field: "q18",
+        correctAnswer: "",
+      },
+      {
+        type: "text",
+        value: "Throw a comment here on WinMain to remind us what's going on.",
+      },
+      {},
+      {
+        type: "question",
+        question: "",
+        value: "q17",
+        correctAnswer: "",
       },
     ],
   },
