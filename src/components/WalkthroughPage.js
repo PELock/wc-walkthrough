@@ -8,13 +8,14 @@ import {
 } from "../utils/localStorageUtils";
 import pagesContent from "../data/pagesContent";
 import ResourceSidebar from "../components/ResourceSidebar"; // Import the ResourceSidebar component
-
+import ChronologicalOrderQuestion from "../components/ChronologicalOrderQuestion";
 const WalkthroughPage = () => {
   const { pageId } = useParams();
   const [answers, setAnswers] = useState({});
   const [correctAnswers, setCorrectAnswers] = useState({});
   const [errors, setErrors] = useState({});
   const [modifiableText, setModifiableText] = useState({});
+  const [completedQuestions, setCompletedQuestions] = useState([]);
   const navigate = useNavigate();
 
   const currentPageId = parseInt(pageId, 10);
@@ -33,6 +34,15 @@ const WalkthroughPage = () => {
           return acc;
         }, {});
       setCorrectAnswers(savedCorrectAnswers);
+
+      // Load completed questions from local storage
+      const savedCompletedQuestions = pageContent.content
+        .filter((item) => item.type === "question")
+        .filter(
+          (item) => userProgress.includes(currentPageId) && answers[item.field]
+        )
+        .map((item) => item.field);
+      setCompletedQuestions(savedCompletedQuestions);
     }
 
     // Load modifiable text from local storage
@@ -82,10 +92,46 @@ const WalkthroughPage = () => {
         ...prevErrors,
         [field]: "",
       }));
+
+      // Mark the question as completed
+      if (!completedQuestions.includes(field)) {
+        const updatedCompletedQuestions = [...completedQuestions, field];
+        setCompletedQuestions(updatedCompletedQuestions);
+
+        // Update local storage with completed questions
+        updateUserProgress(currentPageId, updatedCompletedQuestions);
+      }
     } else {
       setErrors((prevErrors) => ({
         ...prevErrors,
         [field]: "Incorrect answer, please try again.",
+      }));
+    }
+  };
+
+  const handleChronologicalAnswer = (field, isCorrect) => {
+    if (isCorrect) {
+      setCorrectAnswers((prevCorrectAnswers) => ({
+        ...prevCorrectAnswers,
+        [field]: true,
+      }));
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [field]: "",
+      }));
+
+      // Mark the question as completed
+      if (!completedQuestions.includes(field)) {
+        const updatedCompletedQuestions = [...completedQuestions, field];
+        setCompletedQuestions(updatedCompletedQuestions);
+
+        // Update local storage with completed questions
+        updateUserProgress(currentPageId, updatedCompletedQuestions);
+      }
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [field]: "Incorrect order, please try again.",
       }));
     }
   };
@@ -96,11 +142,6 @@ const WalkthroughPage = () => {
 
   const nextPageId = currentPageId + 1;
   const nextPageContent = pagesContent[`page${nextPageId}`];
-
-  if (allQuestionsCorrect) {
-    // Update user progress in local storage
-    updateUserProgress(currentPageId);
-  }
 
   const gotoPreviousPage = () => {
     if (currentPageId <= 1) navigate("/");
@@ -186,7 +227,7 @@ const WalkthroughPage = () => {
               return (
                 <div key={index} className="flex justify-center">
                   <div className="flex flex-col border border-stone-900 bg-stone-950 rounded-s p-4 w-full max-w-2xl hover:scale-125 hover:transition-transform">
-                    <p className = "font-bold text-center">{item.question}</p>
+                    <p className="font-bold text-center">{item.question}</p>
                     <textarea
                       value={modifiableText[item.field] || ""}
                       onChange={(e) =>
@@ -202,6 +243,20 @@ const WalkthroughPage = () => {
                       Save
                     </button>
                   </div>
+                </div>
+              );
+            } else if (item.type === "chronological") {
+              return (
+                <div>
+                  <ChronologicalOrderQuestion
+                    key={index}
+                    question={item.question}
+                    events={item.events}
+                    correctOrder={item.correctOrder}
+                    onAnswer={(isCorrect) =>
+                      handleChronologicalAnswer(item.field, isCorrect)
+                    }
+                  />
                 </div>
               );
             }
