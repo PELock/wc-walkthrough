@@ -380,38 +380,40 @@ const pagesContent = {
         type: "subheading",
         value: "Recap",
       },
-      {
-        type: "text",
-        value:
-          "Before we move on, look back at the control flow of the program and where it's at now. Write down a linear, clear sequence of events and function calls. ",
-      },
+
       {
         type: "chronological",
         question:
-          "Arrange the following events related to the WannaCry attack in chronological order:",
+          "Arrange the control flow and function calls in chronological order.",
         field: "wannacryChronology",
         events: [
-          { id: "event1", content: "WannaCry ransomware attack starts." },
+          {
+            id: "event1",
+            content: "WannaCry executable checks killswitch URL",
+          },
           {
             id: "event2",
-            content: "Microsoft releases security patch MS17-010.",
+            content: "Tasksche.exe is run with /i argument",
           },
           {
             id: "event3",
-            content: "Marcus Hutchins discovers the kill switch.",
+            content: "Real_entry is entered",
           },
-          { id: "event4", content: "NSA exploit EternalBlue is leaked." },
+          { id: "event4", content: "Microsoft Security Center service runs" },
         ],
         correctOrder: [
           {
-            id: "event2",
-            content: "Microsoft releases security patch MS17-010.",
+            id: "event1",
+            content: "WannaCry executable checks killswitch URL",
           },
-          { id: "event4", content: "NSA exploit EternalBlue is leaked." },
-          { id: "event1", content: "WannaCry ransomware attack starts." },
+          { id: "event4", content: "Microsoft Security Center service runs" },
           {
             id: "event3",
-            content: "Marcus Hutchins discovers the kill switch.",
+            content: "Real_entry is entered",
+          },
+          {
+            id: "event2",
+            content: "Tasksche.exe is run with /i argument",
           },
         ],
       },
@@ -585,12 +587,12 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "We can assume that this function creates and entry relevant to our current working directry in the registry. Set the function name to something relevant and move back into WinMain.",
+          "We can assume that this function creates an entry relevant to our current working directry in the registry. Set the function name to something relevant and move back into WinMain.",
       },
     ],
   },
   page5: {
-    title: "The Final Resource: XIA",
+    title: "The Encryption",
     content: [
       {
         type: "text",
@@ -708,13 +710,264 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "This means we're looking at C++ code. Unfortunately, Ghidra's decompilation for this C++ code is very messy. To aid our analysis, we'll be employing the Cambridge University developed Kaiju framework for Ghidra.",
+          "This means we're looking at C++ code. Unfortunately, Ghidra's decompilation for this C++ code is very messy. To aid our analysis, we'll be employing the Cambridge University developed Kaiju framework for Ghidra. The Kaiju framework includes a myriad of tools, but we will be focusing on the JSON importer. This tool facilitates the integration of Ghidra;s decompilation with C++ Class information derived by another CERT tool called OOanalyzer. OOanalyzer was developed in response to the challenge ofstatically analyzing object-oriented code. Ensure now that Ghidra's 'Kaiju' menu is active. If not, simply go to File > Configure.",
+      },
+      {
+        type: "image",
+        value: "/Logos/configure.png",
+      },
+      {
+        type: "text",
+        value:
+          "OOanalyzer relies on the Pharos Docker image to run and therefore relies on virtualization. As nested virtualization can be difficult to implement depending on your host hardware, you have been supplied with the OOanalyzer output on your analysis machine. In practice, it would be your responsibility to either implement this or run the Docker image on your host machine. Import the R1831.json file now.",
+      },
+      {
+        type: "image",
+        value: "/Logos/oo_1.png"
+      },
+      {
+        type: "box",
+        question: "The syntax may seem intimidating, but take a moment to familiarize yourself with the three-term structure. What do each of them signify?"
+      },
+      {
+        type: "text",
+        value: "Note the first and last OOanalyzer functions. The cls methods denote constructors or destructors, and their parameter are the object invoked upon. Moving into the first method in WinMain--dubbed method 1 for simplicity--we can't make much immediate sense. However, if we investigate the listing for the initial DAT and check its other references, we come across another function which reveals its identity."
+      },
+      {
+        type: "question",
+        question: "What is the name of the process that this DAT is assigned?",
+        correctAnswer: "CryptAcquireContext",
+        field: "q34"
+      },
+      {
+        type: "image",
+        value: "/Logos/crypt_pointers.png"
+      },
+      {
+        type: "question",
+        question: "Find this function which assigns these globals to various crypto process addresses. Upon investigating meth_401861 further, we can determine that it imports a cryptographic key and allocates two class fields. This allocation is notable not just because it is global, but because it allocates how much memory? One ________.",
+        correctAnswer: "megabyte",
+        field: "q35"
+      },
+      {
+        type: "question",
+        question: "Move back into the function which imports the Crypto key. The key is stored in a Global DAT buffer. By investigating it further, what is it? Provide the listing value.",
+        correctAnswer: "RSA2",
+        field: "q36"
+      },
+      {
+        type: "box",
+        question: "This value is also imported into a field of our C++ class. The final function is called as a result of failure to acquire the crypto context. Explain what is being done and why. Further, return to WinMain and rename the first method. Predict what the purpose of this class is and suggest the reason for using C++."
+      },
+      {
+        type: "subheading",
+        value: "The Extracted DLL"
+      },
+      {
+        type: "text",
+        value: "The next method in WinMain is responsible for decrypting t.wnry with the integrated or file-retrieved RSA key. The decryption of t.wnry results in a DLL. "
+      },
+      {
+        type: "text",
+        value: "The extraction and analysis of this DLL is slightly tedious. You are welcome to investigate on your own, though you have been provided with the DLL binary to analyze. "
       },
     ],
   },
   page6: {
+    title: "The Worm",
+    content: [
+      {
+        type: "text",
+        value:
+          "Now that we have uncovered the inner workings of WannaCry's encryption, persistence, and system control, there is one crucial element we have so far left untouched: the worm. ",
+      },
+      {
+        type: "text",
+        value:
+          "Until now, we've only dissected half of the original real_entry function. We know there's a propagation component, but we've seen no evidence in tasksche.exe or anywhere else we've looked. Let's go back to the beginning. We need to explore and see what happens when the WannaCry executable is launched with arguments, meaning this is not part of the initial file encryption. We observe the service configuration being changed with the parameter '2', Upon investigation, this is likely an error handler.",
+      },
+      {
+        type: "question",
+        question:
+          "Moving on, we can see the Microsoft Security Center process being set up in a service table entry structure. What is the structure's name?",
+        correctAnswer: "Sstack_10",
+        field: "q30",
+      },
+      {
+        type: "text",
+        value:
+          "Rename the variable accordingly. Observe the assigned value of the service process. This is a label, another Ghidra-assignment for a section of code that it cannot recognize. It is critical to note that LAB denotes unrecognized functions, while DAT denotes unrecognized data. By locating it in the assembly, you can use Ghidra's 'create function' utility. Rename it fittingly.",
+      },
+      {
+        type: "image",
+        value: "/Logos/init_mssec.png",
+      },
+      {
+        type: "text",
+        value:
+          "The service initialization function registers a handle and then calls another function. Investigate the latter. The first function called to initializes a certain Windows API library. ",
+      },
+      {
+        type: "question",
+        question:
+          "This library is essential for certain network operation. This is our first clue that this may have something to do with WannaCry's propagation component. What is the name of the library being initialized?",
+        correctAnswer: "Winsock",
+        field: "q31",
+      },
+
+      {
+        type: "text",
+        value:
+          "The second function call obtains a handle to a crytographic provider and initializes a critical section, a measure ensuring resource protection. The final function is very special. ",
+      },
+      {
+        type: "box",
+        question:
+          "Take a moment to try and figure out what is going on. What is being manipulated? To what end?",
+      },
+      {
+        type: "text",
+        value:
+          "One of the less obscure parts of this function are the two DAT variables. These are the destinations in memory of the contents of the file being pointed at.",
+      },
+      {
+        type: "question",
+        question:
+          "What is the name of the file which is stored in memory? Rename the Globals and their parent function.",
+        correctAnswer: "WC.exe",
+        field: "q32",
+      },
+      {
+        type: "image",
+        value: "/Logos/wc_copy.png",
+      },
+      {
+        type: "text",
+        value:
+          "We can confirm that this is the method by which the program copies itself in preparation to propagate. Proceed into the second thread initialized in the mssec process. ",
+      },
+      {
+        type: "text",
+        value:
+          "The function gets the current time and its process information. It then seeds a random number generator with these parameters. Rename these variables accordingly. The next functions utilizes cryptographic random number generation. ",
+      },
+      {
+        type: "text",
+        value:
+          "Other than showing us the malware authors were dedicated to their craft, this convoluted random number generation implies that random, secure generation is essential to this function. Keep track of and rename any variables that random numbers are stored into.",
+      },
+      {
+        type: "text",
+        value:
+          "After renaming all the variables up to the call to sprintf that uses the format string, it is clear what is happening. These random values are being used to dynamically generate random IP addresses! ",
+      },
+      {
+        type: "question",
+        question:
+          "Now that we know that Ip addresses are being enumerated, where do we go next?",
+        correctAnswer: "FUN_00407480",
+        field: "q27",
+      },
+      {
+        type: "text",
+        value:
+          "This function appears to be attempting to establish a TCP connection to a specific IP address and port.",
+      },
+      {
+        type: "question",
+        question: "What port is being connected to?",
+        correctAnswer: "445",
+        field: "q28",
+      },
+      {
+        type: "question",
+        question: "What service is this port typically used for?",
+        correctAnswer: "SMB",
+        field: "q29",
+      },
+      {
+        type: "text",
+        value:
+          "The function is determining viable IP addresses and then sending packets to viable connections. Move back into the parent function and explore the final undefined function. ",
+      },
+      {
+        type: "box",
+        question:
+          "This thread is very similar to the previously analyzed thread, with one key difference. Describe that key difference and its implications for the malware's propagation.",
+      },
+      {
+        type: "subheading",
+        value: "Recap",
+      },
+    ],
+  },
+  page7: {
     title: "Automated Dynamic Analysis with Cuckoo Sandbox ",
-    content: [{}],
+    content: [
+      {
+        type: "text",
+        value:
+          "Now that we have explored the source code of the virus, we will move on to a final step which will give us a broader, thorough understanding of the virus.",
+      },
+      {
+        type: "text",
+        value:
+          "An invaluable piece of malware analysis is exploring previous documentation. Especially in extremely infectous malware or phishing scams, other victims and analysts will report malware, often recognized by some moniker like WannaCry or their MD5/SHA hash. A wonderful tool for investigating whether our subject of analysis has been previously identified is Cuckoo Sandbox. Cuckoo is an open-source dynamic analysis platform which offers free automated dynamic analysis built on clean and isolated virtualization. ",
+      },
+      {
+        type: "text",
+        value:
+          "To reach cuckoo, you will have to reconfigure your virtual machine to add a network adapter. Proceed with caution and open Cuckoo in the browser. Submit the file for analysis and ensure the machine option is set to Windows.",
+      },
+      {
+        type: "image",
+        value: "/Logos/cuckoo_submit.png",
+      },
+      {
+        type: "text",
+        value: "Analyze now.",
+      },
+      {
+        type: "text",
+        value:
+          "Post-analysis, go to the recent tab and find your submitted sample. Depending on your browser, you will likely encounter some variant of this warning. This is expected and a persistent side-effect of working with malware samples on the internet. Disregard and proceed.",
+      },
+      {
+        type: "image",
+        value: "/Logos/browser_error.png",
+      },
+      {
+        type: "image",
+        value: "/Logos/cuckoo_summary.png",
+      },
+      {
+        type: "text",
+        value:
+          "The initial summary confirms much of what we already know. The file is extremely suspicious and high-risk. It provides information about the worm and that this sample is the version that was released in the initial attack. It also relays the relationship to EternalBlue and the DoublePulsar back door.",
+      },
+      {
+        type: "text",
+        value:
+          "Our summary also provides us with a list of Yara rules, a python-based tool which is used commonly in the field of malware analysis for pattern-matching to identify and classify malware. In future analyses, you will be certain to make use of Yara. The analysis communicates which packer was used; if this is known, an analyst may use an unpacking tool to automatically perform what we did manually in our static analysis. Packing is a form of obfuscation, used to make static analysis more challenging.",
+      },
+      {
+        type: "question",
+        question:
+          "What is the entropy value of this file? Round to four digits.",
+        correctAnswer: "0.9460",
+        field: "q33",
+      },
+      {
+        type: "text",
+        value:
+          "The entropy value of a file is a measurement of unpredictability or randomness in its code. The primary contribution to this file is packing and encryption, as well as the cryptography in number generation. Finally, WannaCry's determination of virtual network adapters, performed in the MSSEC 2.0 service--the vehicle of WannaCry's propagation, resulted in stalling and malware analysis evasion. ",
+      },
+      {
+        type: "text",
+        value:
+          "The use of such automated tools is a valuable part of analysis, but is not a substitute for the work we have done--rather, it complements and reinforces our discoveries and conclusions.",
+      },
+    ],
   },
 };
 

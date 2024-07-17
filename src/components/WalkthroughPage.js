@@ -278,9 +278,7 @@ const WalkthroughPage = () => {
               Continue to {nextPageContent.title}
             </button>
           )}
-          {allQuestionsCorrect && !nextPageContent && (
-            <p className="text-green-500">You have completed all the pages!</p>
-          )}
+          
         </div>
       </div>
     </div>

@@ -10,7 +10,7 @@ const pages = [
   { name: "Live Analysis", id: 2, img: "/Logos/white_magnify.png" },
   { name: "Ghidra", id: 3, img: "/Logos/Ghidra_logo.svg.png" },
   { name: "Diving Into the Code", id: 4, img: "/Logos/cubes.webp" },
-  { name: "Cuckoo Sandbox", id: 6, img: "/Logos/cuckoo.png" },
+  { name: "Cuckoo Sandbox", id: 7, img: "/Logos/cuckoo.png" },
   // Add more pages as needed
 ];
 
