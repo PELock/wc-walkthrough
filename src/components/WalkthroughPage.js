@@ -193,7 +193,7 @@ const WalkthroughPage = () => {
             } else if (item.type === "question") {
               return (
                 <div key={index} className="flex justify-center">
-                  <div className="flex flex-col border border-stone-900 bg-stone-950 rounded-s p-4 w-full max-w-2xl hover:scale-125 hover:transition-transform">
+                  <div className="flex flex-col border border-stone-900 bg-stone-950 rounded-sm p-4 w-full max-w-2xl hover:scale-125 hover:transition-transform">
                     <p className="font-bold text-center">{item.question}</p>
                     <input
                       type="text"
@@ -205,7 +205,7 @@ const WalkthroughPage = () => {
                       }
                       disabled={!!correctAnswers[item.field]}
                       placeholder="Answer"
-                      className="p-2 rounded-s border border-stone-900 w-full text-gray-300 text-center bg-gray-950 hover:border hover:border-red-800"
+                      className="p-2 rounded-sm border border-stone-900 w-full text-gray-300 text-center bg-gray-950 hover:border hover:border-red-800"
                     />
                     {errors[item.field] && (
                       <p className="text-red-500">{errors[item.field]}</p>
@@ -226,14 +226,14 @@ const WalkthroughPage = () => {
             } else if (item.type === "box") {
               return (
                 <div key={index} className="flex justify-center">
-                  <div className="flex flex-col border border-stone-900 bg-stone-950 rounded-s p-4 w-full max-w-2xl hover:scale-125 hover:transition-transform">
+                  <div className="flex flex-col border border-stone-900 bg-stone-950 rounded-sm p-4 w-full max-w-2xl hover:scale-125 hover:transition-transform">
                     <p className="font-bold text-center">{item.question}</p>
                     <textarea
                       value={modifiableText[item.field] || ""}
                       onChange={(e) =>
                         handleModifiableTextChange(item.field, e.target.value)
                       }
-                      className="p-2 rounded-s border border-stone-900 w-full text-gray-300 text-center bg-gray-950 hover:border hover:border-red-800"
+                      className="p-2 rounded-sm border border-stone-900 w-full text-gray-300 text-center bg-gray-950 hover:border hover:border-red-800"
                       rows="4"
                     />
                     <button

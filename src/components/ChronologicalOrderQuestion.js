@@ -59,7 +59,7 @@ const ChronologicalOrderQuestion = ({
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        className="p-4  border border-stone-900 bg-stone-950 rounded-s text-center"
+                        className="p-4  border border-stone-900 bg-stone-950 rounded-sm text-center"
                       >
                         {item.content}
                       </div>

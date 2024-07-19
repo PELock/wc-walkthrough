@@ -42,7 +42,7 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "You will be taking the role of digital forensic analyst and are tasked with dissecting a personal machine of a potential insider threat. You will be leveraging modern open source tools professionally used in the fields of digital investigation, research, and cyber security. The goal of this investigation is to discover what risks, if any, it contains. Additionally, we will be further diving into anything we find that poses a greater security threat. ",
+          "You will be taking the role of digital forensic analyst and are tasked with dissecting this virus: Uncovering and analyzing its behavior and functionality. You will be leveraging modern open source tools used by cybersecurity professionals.",
       },
     ],
   },
@@ -723,53 +723,60 @@ const pagesContent = {
       },
       {
         type: "image",
-        value: "/Logos/oo_1.png"
+        value: "/Logos/oo_1.png",
       },
       {
         type: "box",
-        question: "The syntax may seem intimidating, but take a moment to familiarize yourself with the three-term structure. What do each of them signify?"
+        question:
+          "The syntax may seem intimidating, but take a moment to familiarize yourself with the three-term structure. What do each of them signify?",
       },
       {
         type: "text",
-        value: "Note the first and last OOanalyzer functions. The cls methods denote constructors or destructors, and their parameter are the object invoked upon. Moving into the first method in WinMain--dubbed method 1 for simplicity--we can't make much immediate sense. However, if we investigate the listing for the initial DAT and check its other references, we come across another function which reveals its identity."
+        value:
+          "Note the first and last OOanalyzer functions. The cls methods denote constructors or destructors, and their parameter are the object invoked upon. Moving into the first method in WinMain--dubbed method 1 for simplicity--we can't make much immediate sense. However, if we investigate the listing for the initial DAT and check its other references, we come across another function which reveals its identity.",
       },
       {
         type: "question",
         question: "What is the name of the process that this DAT is assigned?",
         correctAnswer: "CryptAcquireContext",
-        field: "q34"
+        field: "q34",
       },
       {
         type: "image",
-        value: "/Logos/crypt_pointers.png"
+        value: "/Logos/crypt_pointers.png",
       },
       {
         type: "question",
-        question: "Find this function which assigns these globals to various crypto process addresses. Upon investigating meth_401861 further, we can determine that it imports a cryptographic key and allocates two class fields. This allocation is notable not just because it is global, but because it allocates how much memory? One ________.",
+        question:
+          "Find this function which assigns these globals to various crypto process addresses. Upon investigating meth_401861 further, we can determine that it imports a cryptographic key and allocates two class fields. This allocation is notable not just because it is global, but because it allocates how much memory? One ________.",
         correctAnswer: "megabyte",
-        field: "q35"
+        field: "q35",
       },
       {
         type: "question",
-        question: "Move back into the function which imports the Crypto key. The key is stored in a Global DAT buffer. By investigating it further, what is it? Provide the listing value.",
+        question:
+          "Move back into the function which imports the Crypto key. The key is stored in a Global DAT buffer. By investigating it further, what is it? Provide the listing value.",
         correctAnswer: "RSA2",
-        field: "q36"
+        field: "q36",
       },
       {
         type: "box",
-        question: "This value is also imported into a field of our C++ class. The final function is called as a result of failure to acquire the crypto context. Explain what is being done and why. Further, return to WinMain and rename the first method. Predict what the purpose of this class is and suggest the reason for using C++."
+        question:
+          "This value is also imported into a field of our C++ class. The final function is called as a result of failure to acquire the crypto context. Explain what is being done and why. Further, return to WinMain and rename the first method. Predict what the purpose of this class is and suggest the reason for using C++.",
       },
       {
         type: "subheading",
-        value: "The Extracted DLL"
+        value: "The Extracted DLL",
       },
       {
         type: "text",
-        value: "The next method in WinMain is responsible for decrypting t.wnry with the integrated or file-retrieved RSA key. The decryption of t.wnry results in a DLL. "
+        value:
+          "The next method in WinMain is responsible for decrypting t.wnry with the integrated or file-retrieved RSA key. The decryption of t.wnry results in a DLL. ",
       },
       {
         type: "text",
-        value: "The extraction and analysis of this DLL is slightly tedious. You are welcome to investigate on your own, though you have been provided with the DLL binary to analyze. "
+        value:
+          "The extraction and analysis of this DLL is slightly tedious. You are welcome to investigate on your own, though you have been provided with the DLL binary to analyze. ",
       },
     ],
   },
@@ -898,6 +905,63 @@ const pagesContent = {
       {
         type: "subheading",
         value: "Recap",
+      },
+      {
+        type: "subheading",
+        value: "The exploit",
+      },
+      {
+        type: "text",
+        value:
+          "We have discerned WannaCry's method of copying itself and gathering both local and random global IP addresses. We know that it attempts a connection to the SMB service. What we don't know, however, is where the famous exploit is employed. Return to the first thread which finds and sends packets to machines on your local network. Go through to the next thread and then the next. This function has a series of other functions which send different SMB packets to the IP address given to the parent. These different functions are likely responsible for different stages of the infection process. These stages are typically as follows: Testing Connection > Testing Vulnerability > Delivering Payload.",
+      },
+      {
+        type: "text",
+        value:
+          "Before we proceed, we must discover the red flags to look for to determine where WannaCry is exploiting the victim machine and delivering its payload. To this end, we will research the SMB vulnerability, the DoublePulsar Backdoor, and the EternalBlue exploit, all of which we are aware WannaCry attempts to employ in its exploitation of its victims. We will investigate each of these individually and apply the information to our analysis.",
+      },
+      {
+        type: "image",
+        value: "/Logos/blackberry_1.png",
+      },
+      {
+        type: "gif",
+        value: "/Logos/packets.gif",
+      },
+      {
+        type: "text",
+        value:
+          "Notice the strcpy which initializes the stack variable as the internet address. Observe each function's parameters--at least the internet address and the SMB port--and functionality as they send their packets to the victim machine. Enter the first of these functions. This function--for simplicity, dubbed 'send_packets_2' sends a series of packets, which contain uknown contents currently displayed as buffer variables. Let's look into these buffers to figure out what WannaCry is trying to do.",
+      },
+      {
+        type: "text",
+        value:
+          "Go to the first buffer's location in the listing. Immediately, the header tells us all we need to know; the SMB header, followed by some other letter. SMB headers are structured in such a way that the hex value immediately after the 'S' 'M' 'B' reveals the command. Research the code. ",
+      },
+      {
+        type: "question",
+        question: "What is the command associated with this code?",
+        correctAnswer: "SMB_COM_NEGOTIATE",
+        field: "q37",
+      },
+      {
+        type: "text",
+        value:
+          "Rename the global buffer according to its command. Do this with the next buffer. It is clear that this code is attempting to communicate and conduct a transaction. We can assume this is some kind of test, as there is no evidence of a payload. There is a lengthy test performed at the end of this function, involving several local variables that confusingly have been assigned no value. It is a deceptive idiosyncracy of decompiled C code at work here: often, when local variables are declared together, they are typically laid out sequentially on the stack. When this happens, and they are not assigned a value but contain one, it indicates that they are parts of the same larger buffer that the decompiler interpereted incorrectly or ineffieciently. It should also pique our interest that local_400 is assigned a char value. This indicates that it is actually the beginning of the buffer. Retype it now to a char[1024], as its size is indicated in the send and recv functions.",
+      },
+      {
+        type: "text",
+        value:
+          "Our code is now much more succinct. It turns out the decompiler just gave different names to different offsets in our buffer!",
+      },
+      {
+        type: "image",
+        value: "/Logos/local_400.png",
+      },
+      {
+        type: "text",
+        value:
+          "Let's deconstruct this. After WC sends the SMB transaction packet, it receives a response from the targeted machine. It then parses the response to check for some code. This code involves '5', '2', '0', and a misleading '-40'. The final segment is interesting because -0x40, in hex, is 0xC0. Here is the moment WannaCry shines. If we reverse these values, because of little-endian representation, we are presented with 0xC0000205, also known as STATUS_INSUFF_SERVER_RESOURCES, and finally also known as the the flag of a machine vulnerable to MS17-010. Congratulations. We have found the location of the exploits.",
       },
     ],
   },
