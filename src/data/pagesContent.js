@@ -211,7 +211,7 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "Once recognized, never forgotten. It's time to put one of, if not the main, skills of a reverse engineer to work: renaming. As we work to discover the intent of the author of code, it is integral that we rework the code so that it becomes more understandable to us. Moving forward, we are going to look for recognizable snippets and functions to rename in a manner that pieces the puzzle together.",
+          "It's time to put one of the main skills of a reverse engineer to work: recognition and renaming. As we work to discover the intent of the author of code, it is integral that we rework the code so that it becomes more understandable to us. Moving forward, we are going to look for recognizable snippets and functions to rename in a manner that pieces the puzzle together.",
       },
       {
         type: "text",
