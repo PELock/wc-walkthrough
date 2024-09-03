@@ -931,7 +931,7 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "Notice the strcpy which initializes the stack variable as the internet address. Observe each function's parameters--at least the internet address and the SMB port--and functionality as they send their packets to the victim machine. Enter the first of these functions. This function--for simplicity, dubbed 'send_packets_2' sends a series of packets, which contain uknown contents currently displayed as buffer variables. Let's look into these buffers to figure out what WannaCry is trying to do.",
+          "Notice the strcpy which initializes the stack variable as the internet address. Observe each function's parameters--at least the internet address and the SMB port--and functionality as they send their packets to the victim machine. Enter the first of these functions. This function--for simplicity, dubbed 'send_packets_2' sends a series of packets, which contain unknown contents currently displayed as buffer variables. Let's look into these buffers to figure out what WannaCry is trying to do.",
       },
       {
         type: "text",
@@ -962,6 +962,49 @@ const pagesContent = {
         type: "text",
         value:
           "Let's deconstruct this. After WC sends the SMB transaction packet, it receives a response from the targeted machine. It then parses the response to check for some code. This code involves '5', '2', '0', and a misleading '-40'. The final segment is interesting because -0x40, in hex, is 0xC0. Here is the moment WannaCry shines. If we reverse these values, because of little-endian representation, we are presented with 0xC0000205, also known as STATUS_INSUFF_SERVER_RESOURCES, and finally also known as the the flag of a machine vulnerable to MS17-010. Congratulations. We have found the location of the exploits.",
+      },
+      {
+        type: "text",
+        value:
+          "Jump back into the parent function and rename the exploit-check function. Notice that if the machine is vulnerable to the exploit, a loop is entered, calling two other functions which send another series of SMB packets. Now that we know the MS17-010 exploit was checked by sending a series of packets and examining the final message, trace through the function to find the final SMB flag of the packet sent, rename accordingly and examine the checked result. Research this sent package and the returned hex code. What is the name of the vulnerability indicated? ",
+      },
+      {
+        type: "question",
+        question: " ",
+        correctAnswer: "doublepulsar",
+        field: "q38",
+      },
+      {
+        type: "text",
+        value:
+          "This exploit is an example of a backdoor, a method commonly used by both authorized administrators and unauthorized malicious actors alike to bypass typical security measures and get high level access. Therefore, WannaCry uses this function to check for the double pulsar backdoor. The previous function outside the loop checks if the machine is vulnerable to employment of the backdoor.",
+      },
+      {
+        type: "box",
+        question:
+          "Observe the looping mechanism. Predict why WannaCry checks for the doublepulsar exploit several times and sleeps. Where does this fourth function come in? Can we predict what it will do?",
+      },
+      {
+        type: "text",
+        value:
+          "Explore the final function. For now, we can assume this is the payload delivery mechanism. Rename it accordingly and get ready to dive in. Proceed with your analysis, renaming, and retyping as you've learned so far before we jump into the child functions. ",
+      },
+      {
+        type: "text",
+        value:
+          "Using your intuition, determine which function might contain the payload functionality. Depending on how Ghidra processes this code, the function we're analyzing may have an incorect signature. Look at the call. How can you fix this?",
+      },
+      {
+        type: "image",
+        value: "/Logos/func_sig.png",
+      },
+      {
+        type: "subheading",
+        value: "Delivering the Payload",
+      },
+      {
+        type: "text",
+        value: "",
       },
     ],
   },

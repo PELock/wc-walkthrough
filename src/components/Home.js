@@ -60,7 +60,7 @@ const Home = () => {
                 ${
                   index > 0 && !progress.includes(pages[index - 1].id)
                     ? "cursor-not-allowed"
-                    : "hover:w-screen hover:bg-gray-700 cursor-pointer"
+                    : "hover:w-screen hover:shadow-2xl hover:m-5 hover:shadow-black hover:scale-105 hover:bg-gray-700 cursor-pointer"
                 }`}
             >
               <img
