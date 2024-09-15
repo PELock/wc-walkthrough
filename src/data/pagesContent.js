@@ -759,11 +759,7 @@ const pagesContent = {
         correctAnswer: "RSA2",
         field: "q36",
       },
-      {
-        type: "box",
-        question:
-          "This value is also imported into a field of our C++ class. The final function is called as a result of failure to acquire the crypto context. Explain what is being done and why. Further, return to WinMain and rename the first method. Predict what the purpose of this class is and suggest the reason for using C++.",
-      },
+
       {
         type: "subheading",
         value: "The Extracted DLL",
@@ -776,7 +772,133 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "The extraction and analysis of this DLL is slightly tedious. You are welcome to investigate on your own, though you have been provided with the DLL binary to analyze. ",
+          "The extraction and analysis of this DLL is slightly tedious. You are welcome to investigate on your own, though you have been provided with the DLL binary to analyze. Import dll.dec and analyze it with the same settings as before and jump in when you're ready.",
+      },
+      {
+        type: "image",
+        value: "/Logos/taskstart.png",
+      },
+      {
+        type: "text",
+        value:
+          "Recall this call to the TaskStart function in R1831. This calls one of the two named functions in the extracted DLL, so let's begin there. ",
+      },
+      {
+        type: "text",
+        value:
+          "We first see three operations which are pretty characteristic of an initialization function:",
+      },
+      {
+        type: "text",
+        value:
+          "1. The function acquires a mutex to ensure resource protection and management.",
+      },
+      {
+        type: "text",
+        value: "2. The current path is acquired by GetModuleFileNameW",
+      },
+      {
+        type: "text",
+        value: "3. The current directory is entered.",
+      },
+      {
+        type: "text",
+        value:
+          "Set a foundation for our analysis by commenting and renaming functions to your liking. ",
+      },
+      {
+        type: "text",
+        value: "Below these functions is an interesting segment of code:",
+      },
+      {
+        type: "image",
+        value: "/Logos/taskstart_prints.png",
+      },
+      {
+        type: "question",
+        question:
+          "This function copies what file into memory? Rename the appropriate parameter of this function and move on.",
+        correctAnswer: "c.wnry",
+        field: "37",
+      },
+      {
+        type: "text",
+        value:
+          "As we now know what this unknown (UNK_) data structure's specified field actually is, rename the field to the file name.",
+      },
+      {
+        type: "image",
+        value: "/Logos/unknown_dtype.png",
+      },
+      {
+        type: "text",
+        value:
+          "If you encountered some error like this, it's because Ghidra can't actually access the field to rename it unless it has a more specific understanding of the data structures's fields. Open the DataType Manager window to configure this dtype.",
+      },
+      {
+        type: "image",
+        value: "/Logos/dtype_manager.png",
+      },
+      {
+        type: "text",
+        value:
+          "Once you start to configure your new struct, there are a few key details in almost every case you need tp consider:",
+      },
+      {
+        type: "text",
+        value:
+          "1. The name of your new struct. It must be appropriate for the use case and easy to find later.",
+      },
+      {
+        type: "text",
+        value:
+          "2. The size / number of fields. Take another look at the UNK_ global and its field. What is the minimum number of fields it can have?",
+      },
+      {
+        type: "question",
+        question: "Enter numeral.",
+        correctAnswer: "2",
+        field: "38",
+      },
+      {
+        type: "question",
+        question:
+          "At what byte offset is the field we're interested in located? Enter the hex value.",
+        correctAnswer: "0x4",
+        field: "39",
+      },
+      {
+        type: "text",
+        value:
+          "Creating structure definitions in reverse engineering is often iterative. We know there must be these fields, but the structure may have more and be larger. To address this, we need to supply the struct with an estimated size based on what we already know.",
+      },
+      {
+        type: "image",
+        value: "/Logos/struc_editor_1.png",
+      },
+      {
+        type: "text",
+        value:
+          "Notice the new field put into the function in TaskStart takes on the field name you just created. If you further attempt to change it and you get the same error, making new fields without knowing their size can be challenging.",
+      },
+      {
+        type: "text",
+        value:
+          "It's often better to wait until you come across another field and need to edit the new struct to accomodate it.",
+      },
+      {
+        type: "text",
+        value:
+          "The next function gets the current user, and checks if running as system to ensure the malware has system privileges. Below that, another function acquires handles to some file functions. Rename those so we recognize them later on.",
+      },
+      {
+        type: "text",
+        value:
+          "Check out the next few lines. This creates three strings, formated as eight zeroes followed by .res, .eky, and .pky. Rename the globals they're stores in. (If there are any issues with the Globals not being separate, clear the bytes in the listing) Below, a mutex is acquired-- if successful, another critical part of this initialization function is entered.",
+      },
+      {
+        type: "text",
+        value: "The function within the conditional statemenet...",
       },
     ],
   },
@@ -907,6 +1029,113 @@ const pagesContent = {
         value: "Recap",
       },
       {
+        type: "chronological",
+        question: "Arrange the control flow in chronological order.",
+        field: "wormRecap",
+        events: [
+          {
+            id: "event3",
+            content:
+              "Analysis of the service initialization function shows it registers a handle and calls another function, initializing a Windows API library essential for network operations (Winsock).",
+          },
+          {
+            id: "event1",
+            content:
+              "The investigation begins by revisiting the original real_entry function to explore the worm's propagation mechanism, which has not yet been fully analyzed.",
+          },
+          {
+            id: "event8",
+            content:
+              "Attempts to establish a TCP connection to IP addresses on port 445, which is commonly associated with the SMB (Server Message Block) protocol.",
+          },
+          {
+            id: "event4",
+            content:
+              "The subsequent function obtains a handle to a cryptographic provider and initializes a critical section to protect shared resources, preparing the malware for further action.",
+          },
+          {
+            id: "event10",
+            content: "A second thread is created with a key difference.",
+          },
+          {
+            id: "event2",
+            content:
+              "The WannaCry executable, when launched with specific arguments, alters the service configuration, potentially indicating an error handler involved in propagation.",
+          },
+          {
+            id: "event6",
+            content:
+              "Uses the current time and process information to seed a random number generator, emphasizing the importance of secure, random number generation for its operations.",
+          },
+          {
+            id: "event7",
+            content:
+              "AThese random numbers are used to dynamically generate random IP addresses, which the malware then attempts to connect to, indicating its worm-like spreading behavior.",
+          },
+          {
+            id: "event5",
+            content:
+              "The analysis identifies two memory locations (DAT variables) that store the file contents, revealing how WannaCry copies itself in preparation for propagation",
+          },
+          {
+            id: "event9",
+            content:
+              "Sends packets to these viable IP addresses, further probing network vulnerabilities and attempting to spread to other systems.",
+          },
+        ],
+        correctOrder: [
+          {
+            id: "event1",
+            content:
+              "The investigation begins by revisiting the original real_entry function to explore the worm's propagation mechanism, which has not yet been fully analyzed.",
+          },
+          {
+            id: "event2",
+            content:
+              "The WannaCry executable, when launched with specific arguments, alters the service configuration, potentially indicating an error handler involved in propagation.",
+          },
+          {
+            id: "event3",
+            content:
+              "Analysis of the service initialization function shows it registers a handle and calls another function, initializing a Windows API library essential for network operations (Winsock).",
+          },
+          {
+            id: "event4",
+            content:
+              "The subsequent function obtains a handle to a cryptographic provider and initializes a critical section to protect shared resources, preparing the malware for further action.",
+          },
+          {
+            id: "event5",
+            content:
+              "The analysis identifies two memory locations (DAT variables) that store the file contents, revealing how WannaCry copies itself in preparation for propagation",
+          },
+          {
+            id: "event6",
+            content:
+              "Uses the current time and process information to seed a random number generator, emphasizing the importance of secure, random number generation for its operations.",
+          },
+          {
+            id: "event7",
+            content:
+              "AThese random numbers are used to dynamically generate random IP addresses, which the malware then attempts to connect to, indicating its worm-like spreading behavior.",
+          },
+          {
+            id: "event8",
+            content:
+              "Attempts to establish a TCP connection to IP addresses on port 445, which is commonly associated with the SMB (Server Message Block) protocol.",
+          },
+          {
+            id: "event9",
+            content:
+              "Sends packets to these viable IP addresses, further probing network vulnerabilities and attempting to spread to other systems.",
+          },
+          {
+            id: "event10",
+            content: "A second thread is created with a key difference.",
+          },
+        ],
+      },
+      {
         type: "subheading",
         value: "The exploit",
       },
@@ -1003,8 +1232,14 @@ const pagesContent = {
         value: "Delivering the Payload",
       },
       {
+        type: "box",
+        question:
+          "Explore this function. Collect and define familiar global variables, unique functions, strings, flags, etc. ",
+      },
+      {
         type: "text",
-        value: "",
+        value:
+          "This function is the final stage of payload delivery; it serves as an excellent example of how malicious actors perform their attack. The copies of the worm executable are accessed here. Notice their assigned sizes. The two copies of different sizes are likely used for different architectures, variant attacks, etc. The payload is delivered in what is known in malware analysis as chunking, done to obfuscate and decrease the chances of detection compared to the delivery of a large, single payload. The propagation of this malware classifies it as a worm because of it is highly infectious and self-replicating. Its replication is highly complex, utilizing high level exploitation, modularity, network operations, and resource management. Our analysis has revealed that WannaCry is an extremely dangerous malware, and--if not for the kill switch and Marcus Hutchins--could have permanently damaged government and commercial infrastructure around the world.",
       },
     ],
   },

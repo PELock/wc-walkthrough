@@ -75,9 +75,12 @@ const WalkthroughPage = () => {
   };
 
   const saveModifiableTextHandler = (field) => {
-    saveModifiableText(currentPageId, field, modifiableText[field]);
+    
+      saveModifiableText(currentPageId, field, modifiableText[field]);
     console.log(`Saved text for ${field}:`, modifiableText[field]);
   };
+
+ 
 
   const checkAnswer = (field, correctAnswer) => {
     if (
@@ -174,7 +177,7 @@ const WalkthroughPage = () => {
             } else if (item.type === "subheading") {
               return (
                 <div key={index}>
-                  <h2 className="text-5xl font-bold max-w-3xl mx-auto text-center p-10">
+                  <h2 className="text-5xl font-bold  mx-auto text-center  p-10">
                     {item.value}
                   </h2>
                   <hr className="p-10 max-w-screen-2xl"></hr>
@@ -193,7 +196,7 @@ const WalkthroughPage = () => {
             } else if (item.type === "question") {
               return (
                 <div key={index} className="flex justify-center">
-                  <div className="flex flex-col border border-stone-900 bg-stone-950 rounded-sm p-4 w-full max-w-2xl hover:scale-125 hover:transition-transform">
+                  <div className="flex flex-col border border-stone-900 bg-stone-950 rounded-sm p-4 w-full max-w-2xl ">
                     <p className="font-bold text-center">{item.question}</p>
                     <input
                       type="text"
@@ -226,10 +229,11 @@ const WalkthroughPage = () => {
             } else if (item.type === "box") {
               return (
                 <div key={index} className="flex justify-center">
-                  <div className="flex flex-col border border-stone-900 bg-stone-950 rounded-sm p-4 w-full max-w-2xl hover:scale-125 hover:transition-transform">
+                  <div className="flex flex-col border border-stone-900 bg-stone-950 rounded-sm p-4 w-full max-w-2xl ">
                     <p className="font-bold text-center">{item.question}</p>
                     <textarea
-                      value={modifiableText[item.field] || ""}
+                     
+                      value={ modifiableText[item.field] || ""}
                       onChange={(e) =>
                         handleModifiableTextChange(item.field, e.target.value)
                       }
@@ -263,7 +267,7 @@ const WalkthroughPage = () => {
             return null;
           })}
         </div>
-        <div className="mt-6 flex space-x-4">
+        <div className="mt-6 flex space-x-4  m-3 rounded">
           <button
             onClick={gotoPreviousPage}
             className="px-4 py-2 bg-gray-700 text-white rounded-sm hover:bg-red-950"

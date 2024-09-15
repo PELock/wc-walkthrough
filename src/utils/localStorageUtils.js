@@ -32,5 +32,6 @@ export const getModifiableText = (pageId, field) => {
 
 // Save modifiable text to localStorage
 export const saveModifiableText = (pageId, field, text) => {
-  localStorage.setItem(`page${pageId}_${field}`, JSON.stringify(text));
+  if (text !== undefined)
+    localStorage.setItem(`page${pageId}_${field}`, JSON.stringify(text));
 };
