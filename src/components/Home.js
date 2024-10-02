@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getUserProgress } from "../utils/localStorageUtils";
 import Sidebar from "../components/Sidebar";
 import Hamburger from "../components/Hamburger";
+import TypeWriterEffect from "../components/TypeWriterEffect"
 
 // Define pages with custom images
 const pages = [
@@ -21,6 +22,8 @@ const Home = () => {
 
   useEffect(() => {
     fetchProgress();
+
+    
   }, []);
 
   const fetchProgress = () => {
@@ -43,10 +46,7 @@ const Home = () => {
             Welcome to WannaCry
           </h1>
           <p className="text-lg text-left">
-            Dive deep into the analysis of WannaCry, one of the most notorious
-            ransomware attacks. This walkthrough will guide you through each
-            stage of the analysis, providing insights and tools used by
-            cybersecurity professionals.
+            <TypeWriterEffect text = {"Dive deep into the analysis of WannaCry, one of the most notorious ransomware attacks. This walkthrough will guide you through each stage of the analysis, providing insights and tools used by cybersecurity professionals."} speed = {35}/>
           </p>
         </div>
 

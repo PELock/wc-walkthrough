@@ -1,4 +1,4 @@
-const pagesContent = {
+const pagesContent = { 
   page1: {
     title: "The WannaCry Ransomware",
     content: [
@@ -38,6 +38,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "Your Task",
+        id: "1"
       },
       {
         type: "text",
@@ -80,6 +81,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "Dynamic Analysis",
+        id:  "1"
       },
       {
         type: "text",
@@ -133,7 +135,7 @@ const pagesContent = {
         value:
           "The extraction has revealed a binary file, also obscurely named. ",
       },
-      { type: "subheading", value: "Analyzing the Binary" },
+      { type: "subheading", value: "Analyzing the Binary", id: "1"},
       {
         type: "text",
         value:
@@ -169,6 +171,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "Where the Fun Begins",
+        id: "2"
       },
       {
         type: "image",
@@ -195,6 +198,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "The Windows entry Function",
+        id: "1"
       },
       {
         type: "text",
@@ -276,6 +280,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "The Real Entry Function",
+        id: "2"
       },
       {
         type: "text",
@@ -379,6 +384,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "Recap",
+        id: "3"
       },
 
       {
@@ -420,6 +426,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "Examining Resource 1831",
+        id: "4"
       },
       {
         type: "text",
@@ -699,6 +706,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "Expanding Ghidra: The Kaiju Plugin",
+        id: "1"
       },
       {
         type: "question",
@@ -763,6 +771,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "The Extracted DLL",
+        id: "2"
       },
       {
         type: "text",
@@ -784,22 +793,19 @@ const pagesContent = {
           "Recall this call to the TaskStart function in R1831. This calls one of the two named functions in the extracted DLL, so let's begin there. ",
       },
       {
-        type: "text",
-        value:
-          "We first see three operations which are pretty characteristic of an initialization function:",
-      },
-      {
-        type: "text",
-        value:
-          "1. The function acquires a mutex to ensure resource protection and management.",
-      },
-      {
-        type: "text",
-        value: "2. The current path is acquired by GetModuleFileNameW",
-      },
-      {
-        type: "text",
-        value: "3. The current directory is entered.",
+        type: "list",
+        listElements: [
+          {
+            list: "We first see three operations which are pretty characteristic of an initialization function:",
+            text: "1. The function acquires a mutex to ensure resource protection and management.",
+          },
+          {
+            text: "2. The current path is acquired by GetModuleFileNameW",
+          },
+          {
+            text: "3. The current directory is entered.",
+          },
+        ],
       },
       {
         type: "text",
@@ -819,7 +825,7 @@ const pagesContent = {
         question:
           "This function copies what file into memory? Rename the appropriate parameter of this function and move on.",
         correctAnswer: "c.wnry",
-        field: "37",
+        field: "q37",
       },
       {
         type: "text",
@@ -858,14 +864,14 @@ const pagesContent = {
         type: "question",
         question: "Enter numeral.",
         correctAnswer: "2",
-        field: "38",
+        field: "q38",
       },
       {
         type: "question",
         question:
           "At what byte offset is the field we're interested in located? Enter the hex value.",
         correctAnswer: "0x4",
-        field: "39",
+        field: "q39",
       },
       {
         type: "text",
@@ -897,9 +903,125 @@ const pagesContent = {
           "Check out the next few lines. This creates three strings, formated as eight zeroes followed by .res, .eky, and .pky. Rename the globals they're stores in. (If there are any issues with the Globals not being separate, clear the bytes in the listing) Below, a mutex is acquired-- if successful, another critical part of this initialization function is entered.",
       },
       {
-        type: "text",
-        value: "The function within the conditional statemenet...",
+        type: "question",
+        question:
+          "The function within the conditional statement is immediately interesting because it introduces what new type of file? \nJust state the extension. ",
+        correctAnswer: ".dky",
+        field: "q40",
       },
+      {
+        type: "image",
+        value: "/Logos/conditional_dky_func.png",
+      },
+      {
+        type: "text",
+        value:
+          "This function is quite apparently a wrapper function with error handling to ensure the integrity of the .dky and .pky files before performing some operation, located in a new critical section. Explore that function now.",
+      },
+      {
+        type: "box",
+        question:
+          "Document your observations and theories on what the functionality of this code is. Include any significant globals, files, and functionality.",
+      },
+      {
+        type: "subheading",
+        value: "Encryption and Decryption",
+        id: "3"
+      },
+      {
+        type: "text",
+        value:
+          "From your previous analysis, it should be clear that the function in the conditional statement imports the .dky and and the .pky files as crypto keys and tests them with crypto encryption and decryption calls against some test data stored in some globals. The function in the critical section does this and ensures successful encryption and decryption of its test data. If successful and both files exist, the conditional block is skipped over.",
+      },
+      {
+        type: "box",
+        question:
+          "Using this knowledge and your intuition, what does this conditional block do?",
+      },
+      {
+        type: "text",
+        value:
+          "Finally, we can move onto the threads. The ransomware has ensured it can decrypt and encrypt data and is ready to attack its victims' files.",
+      },
+      {
+        type: "box",
+        question:
+          "The first two threads are quite simple. Analyze them now-- rename variables and functions and state your observations. ",
+      },
+      {
+        type: "list",
+        listElements: [
+          {
+            text: "Hint: In the second thread, why would the malware authors want to concurrently repeat the encryption and decryption process we just saw it successfully executed? Keep this iterative process in mind when we examine what happens on encryption/decryption failure...",
+          },
+        ],
+      },
+      {
+        type: "image",
+        value: "/Logos/getLogicalDrives.png",
+      },
+      {
+        type: "text",
+        value:
+          "The first thing this thread does is call getLogicalDrives(). This function returns all drives connected to the system. ",
+      },
+      {
+        type: "text",
+        value:
+          "This includes your hard drive, any cd's, or anything else. Rename this Dvar2 to 'drives' and continue.",
+      },
+      {
+        type: "text",
+        value:
+          "Lines 18 and 19 reveal the intent behind this very interesting function. getLogicalDrives() is called again and compared to the previous value via xor. So, if any new drives were added during this process, some action would be taken in this new thread. Let's check it out! ",
+      },
+      {
+        type: "text",
+        value:
+          "In our current function, there are several other functions called below. To make sense of what's happening, we can begin by examining our local stack variables. What stands out is a large buffer, passed to almost all of the functions here. ",
+      },
+      {
+        type: "text",
+        value:
+          "Since we've already noticed this pattern, let's try to trace our parent function's functionality by following this buffer and its use, instead of going one by one through each child function. When following this approach, it can often be helpful to rename the formal parameter (which you're tracing) once you've entered its function.",
+      },
+      {
+        type: "gif",
+        value: "/Logos/unknown_buffer.gif",
+      },
+      {
+        type: "text",
+        value:
+          "This function appears to prepare different offsets in the buffer, likely establishing separate sections to represent separate information. Not very helpful. Return back into the parent.",
+      },
+      {
+        type: "text",
+        value:
+          "Naturally, we want to keep following this buffer; however, the next function which calls it is inside a conditional statement and it's important we understand why it is being entered. So... look at the function which has a return value stored in ivar1.",
+      },
+      {
+        type: "text",
+        value:
+          "Work sequentially to find out what these parameters are. (This is especially important because the LABEL parameter actually denotes a function.)",
+      },
+      {
+        type: "list",
+        listElements: [
+          {
+            list: "First Parameter: pky key",
+            text: "There is some functionality with the pky key, which we've already established is a crypto key used for decryption/encryption.",
+          },
+          {
+            list: "Second Parameter: Label (Function address)",
+            text: "Create a function at this location so we can reverse it.",
+          },
+          {
+            list: "Third Parameter: DAT variable",
+            text: "Investigate this global in the listing. Find a reference to a function we've already explored to understand what it contains. ",
+          },
+        ],
+      },
+     
     ],
   },
   page6: {
@@ -1027,6 +1149,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "Recap",
+        id: "1"
       },
       {
         type: "chronological",
@@ -1138,6 +1261,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "The exploit",
+        id: "2"
       },
       {
         type: "text",
@@ -1230,6 +1354,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "Delivering the Payload",
+        id: "3"
       },
       {
         type: "box",
@@ -1244,7 +1369,7 @@ const pagesContent = {
     ],
   },
   page7: {
-    title: "Automated Dynamic Analysis with Cuckoo Sandbox ",
+    title: "Cuckoo Sandbox",
     content: [
       {
         type: "text",
@@ -1311,6 +1436,7 @@ const pagesContent = {
       },
     ],
   },
+
 };
 
 export default pagesContent;

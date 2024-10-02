@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   updateUserProgress,
@@ -9,6 +9,7 @@ import {
 import pagesContent from "../data/pagesContent";
 import ResourceSidebar from "../components/ResourceSidebar"; // Import the ResourceSidebar component
 import ChronologicalOrderQuestion from "../components/ChronologicalOrderQuestion";
+import ProgressTracker from "./ProgressTracker";
 const WalkthroughPage = () => {
   const { pageId } = useParams();
   const [answers, setAnswers] = useState({});
@@ -17,6 +18,7 @@ const WalkthroughPage = () => {
   const [modifiableText, setModifiableText] = useState({});
   const [completedQuestions, setCompletedQuestions] = useState([]);
   const navigate = useNavigate();
+  const scrollableRef = useRef(null);
 
   const currentPageId = parseInt(pageId, 10);
   const pageContent = pagesContent[`page${currentPageId}`];
@@ -24,7 +26,7 @@ const WalkthroughPage = () => {
   useEffect(() => {
     // Retrieve user progress from local storage
     const userProgress = getUserProgress();
-
+    
     // Load correct answers if user has previously completed this page
     if (userProgress.includes(currentPageId)) {
       const savedCorrectAnswers = pageContent.content
@@ -75,12 +77,9 @@ const WalkthroughPage = () => {
   };
 
   const saveModifiableTextHandler = (field) => {
-    
-      saveModifiableText(currentPageId, field, modifiableText[field]);
+    saveModifiableText(currentPageId, field, modifiableText[field]);
     console.log(`Saved text for ${field}:`, modifiableText[field]);
   };
-
- 
 
   const checkAnswer = (field, correctAnswer) => {
     if (
@@ -151,10 +150,18 @@ const WalkthroughPage = () => {
     else navigate(`/walkthrough/${currentPageId - 1}`);
   };
 
+  
+
   return (
-    <div className="min-h-screen bg-slate-950 flex">
+    <div className="min-h-screen flex bg-slate-950">
+      <ProgressTracker scrollableRef={scrollableRef} 
+       />
       <ResourceSidebar />
-      <div className="flex-1 flex flex-col items-center p-4 text-white font-fira relative">
+
+      <div
+        className="flex-1 flex flex-col p-4 pl-10  text-white font-fira relative overflow-y-auto h-screen "
+        ref={scrollableRef}
+      >
         <button
           onClick={() => navigate("/")}
           className="mb-4 px-4 py-2 text-white rounded absolute right-10 hover:text-red-950 z-10"
@@ -162,10 +169,9 @@ const WalkthroughPage = () => {
           Home
         </button>
 
-        <h2 className="text-6xl text-center font-bold bg-gradient-to-r from-red-800 to-black text-transparent bg-clip-text pt-4 top-0 pr-48 pl-48 z-0 flex justify-center items-center">
+        <h2 className="text-6xl  font-bold  pt-4 top-0 pr-48  z-0 flex  ">
           {pageContent.title}
         </h2>
-
         <div className="space-y-6 w-full max-w-4xl mt-24">
           {pageContent.content.map((item, index) => {
             if (item.type === "text") {
@@ -176,11 +182,30 @@ const WalkthroughPage = () => {
               );
             } else if (item.type === "subheading") {
               return (
-                <div key={index}>
-                  <h2 className="text-5xl font-bold  mx-auto text-center  p-10">
+                <div key={index} id={item.id} className=" ">
+                  <h2 className="text-4xl font-bold  pt-10 pb-3">
                     {item.value}
                   </h2>
-                  <hr className="p-10 max-w-screen-2xl"></hr>
+                </div>
+              );
+            } else if (item.type === "list") {
+              return (
+                <div
+                  key={index}
+                  className=" flex flex-col ml-8 pl-4  bg-black rounded-lg p-4 w-full max-w-2xl"
+                >
+                  {item.listElements.map((listElement, index) => {
+                    return (
+                      <div>
+                        <p key={index} className="font-bold pb-2">
+                          {listElement.list}
+                        </p>
+                        <p key={index} className=" pb-5 text-red-700">
+                          {listElement.text}
+                        </p>
+                      </div>
+                    );
+                  })}
                 </div>
               );
             } else if (item.type === "image" || item.type === "gif") {
@@ -196,7 +221,7 @@ const WalkthroughPage = () => {
             } else if (item.type === "question") {
               return (
                 <div key={index} className="flex justify-center">
-                  <div className="flex flex-col border border-stone-900 bg-stone-950 rounded-sm p-4 w-full max-w-2xl ">
+                  <div className="flex flex-col border border-stone-900 bg-stone-950 rounded-lg p-4 w-full max-w-2xl ">
                     <p className="font-bold text-center">{item.question}</p>
                     <input
                       type="text"
@@ -208,7 +233,7 @@ const WalkthroughPage = () => {
                       }
                       disabled={!!correctAnswers[item.field]}
                       placeholder="Answer"
-                      className="p-2 rounded-sm border border-stone-900 w-full text-gray-300 text-center bg-gray-950 hover:border hover:border-red-800"
+                      className="p-2 rounded-lg border border-stone-900 w-full text-gray-300 text-center bg-gray-950 hover:border hover:border-red-800"
                     />
                     {errors[item.field] && (
                       <p className="text-red-500">{errors[item.field]}</p>
@@ -229,15 +254,16 @@ const WalkthroughPage = () => {
             } else if (item.type === "box") {
               return (
                 <div key={index} className="flex justify-center">
-                  <div className="flex flex-col border border-stone-900 bg-stone-950 rounded-sm p-4 w-full max-w-2xl ">
-                    <p className="font-bold text-center">{item.question}</p>
+                  <div className="flex flex-col border border-stone-900 bg-stone-950 rounded-xl p-4 w-full max-w-2xl ">
+                    <p className="font-bold text-center pb-4">
+                      {item.question}
+                    </p>
                     <textarea
-                     
-                      value={ modifiableText[item.field] || ""}
+                      value={modifiableText[item.field] || ""}
                       onChange={(e) =>
                         handleModifiableTextChange(item.field, e.target.value)
                       }
-                      className="p-2 rounded-sm border border-stone-900 w-full text-gray-300 text-center bg-gray-950 hover:border hover:border-red-800"
+                      className="p-2 rounded-xl border border-stone-900 w-full text-gray-300 text-center bg-gray-950 hover:border hover:border-red-800"
                       rows="4"
                     />
                     <button
@@ -267,22 +293,22 @@ const WalkthroughPage = () => {
             return null;
           })}
         </div>
-        <div className="mt-6 flex space-x-4  m-3 rounded">
+
+        <div className="mt-6 items-center w-full flex flex-row  space-x-4 rounded ">
           <button
             onClick={gotoPreviousPage}
-            className="px-4 py-2 bg-gray-700 text-white rounded-sm hover:bg-red-950"
+            className="px-4 py-2 bg-gray-700 flex-grow text-white rounded-sm hover:bg-red-950 "
           >
             Back
           </button>
           {allQuestionsCorrect && nextPageContent && (
             <button
               onClick={() => navigate(`/walkthrough/${nextPageId}`)}
-              className="px-4 py-2 bg-gray-700 text-white rounded-sm hover:bg-red-950"
+              className="px-4 py-2 flex-grow bg-gray-700 text-white rounded-sm hover:bg-red-950"
             >
               Continue to {nextPageContent.title}
             </button>
           )}
-          
         </div>
       </div>
     </div>
