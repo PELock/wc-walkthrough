@@ -1,4 +1,4 @@
-const pagesContent = { 
+const pagesContent = {
   page1: {
     title: "The WannaCry Ransomware",
     content: [
@@ -38,7 +38,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "Your Task",
-        id: "1"
+        id: "1",
       },
       {
         type: "text",
@@ -81,7 +81,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "Dynamic Analysis",
-        id:  "1"
+        id: "1",
       },
       {
         type: "text",
@@ -135,7 +135,7 @@ const pagesContent = {
         value:
           "The extraction has revealed a binary file, also obscurely named. ",
       },
-      { type: "subheading", value: "Analyzing the Binary", id: "1"},
+      { type: "subheading", value: "Analyzing the Binary", id: "1" },
       {
         type: "text",
         value:
@@ -171,7 +171,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "Where the Fun Begins",
-        id: "2"
+        id: "2",
       },
       {
         type: "image",
@@ -198,7 +198,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "The Windows entry Function",
-        id: "1"
+        id: "1",
       },
       {
         type: "text",
@@ -280,7 +280,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "The Real Entry Function",
-        id: "2"
+        id: "2",
       },
       {
         type: "text",
@@ -384,7 +384,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "Recap",
-        id: "3"
+        id: "3",
       },
 
       {
@@ -426,7 +426,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "Examining Resource 1831",
-        id: "4"
+        id: "4",
       },
       {
         type: "text",
@@ -706,7 +706,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "Expanding Ghidra: The Kaiju Plugin",
-        id: "1"
+        id: "1",
       },
       {
         type: "question",
@@ -771,7 +771,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "The Extracted DLL",
-        id: "2"
+        id: "2",
       },
       {
         type: "text",
@@ -926,7 +926,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "Encryption and Decryption",
-        id: "3"
+        id: "3",
       },
       {
         type: "text",
@@ -1021,7 +1021,133 @@ const pagesContent = {
           },
         ],
       },
-     
+      {
+        type: "text",
+        value:
+          "The function in the conditional clause doesn't offer much information; move on to the next. Rename its formal parameters.",
+      },
+      {
+        type: "question",
+        question:
+          "For the second parameter, trace back through the threads and find its value from the lpParam value. What is it? The number of what?",
+        correctAnswer: "drives",
+        field: "41",
+      },
+      {
+        type: "text",
+        value:
+          "This function instantly offers useful information in the form of GetDriveType.  ",
+      },
+      {
+        type: "list",
+        listElements: [
+          {
+            list: "To recap: ",
+          },
+          {
+            list: "I",
+            text: "The parent function retrieves all logical drives, then launches a thread for each drive.",
+          },
+          {
+            list: "II",
+            text: "It then checks the drive for its type.",
+          },
+          {
+            list: "III",
+            text: "CONCAT22 is typically used to combine two 16-bit values into a single 32-bit value. The \"22\" in the name likely refers to combining two 2-byte (16-bit) values. (short)drive_number + 65 creates the ASCII value for a drive letter: If drive_number is 0, 65 ('A') is added to create 'A'; If drive_number is 1, it creates 'B', and so on.",
+          },
+          {
+            list: "IV",
+            text: "It then supposedly performs some other action based on the type of drive. Let's see where this leads.",
+          },
+        ],
+      },
+      {
+        type: "text",
+        value:
+          "The next conditional clause checks if the third parameter is 0; it is. In this path, it ensures that the current drive is valid (using the drive type 'C: etc.' and the stack variables, which likely form the rest of the drive string info.) and has open space, rechecking every second for 30 seconds. ",
+      },
+      {
+        type: "image",
+        value: "/Logos/drive_types.png",
+        size: "small",
+      },
+      {
+        type: "question",
+        question:
+          "This table is taken from the windows documentation for GetDriveTypeW. Based on these entries, what kind of drive does the malware ignore?",
+        correctAnswer: "CD_ROM",
+        field: "42",
+      },
+      {
+        type: "question",
+        question: "Which type does it attack?",
+        correctAnswer: "DRIVE_FIXED",
+        field: "43",
+      },
+      {
+        type: "text",
+        value:
+          "This makes sense because CD_ROM drives refers to external drives that your computer can not write to, but can read (for example... a CD). Fixed drives are those permanently installed, such as a hard drive. The documentation also includes flash-drives. Think back to before, where GetLogicalDrives was called in the parent thread. This means that if any drives were installed while the malware was already running, the malware supposedly spreads! This is a red flag that this thread is a main actor -- for either the ransomware or exploitation. Rename this function according to its purpose and move into the next function.",
+      },
+      {
+        type: "text",
+        value:
+          'The "_format" variable is C for representing the current drive. It is once against assigned the letter with the ASCII concatenation. As our drive number is 3, _Format contains the value \'C\'. We then see the malware establish a temporary directory if Windows is on the supplied drive. Rename the function to something like "Create_Temp_Directory".',
+      },
+      {
+        type: "question",
+        question: "The next function generates a path for what file extension?",
+        correctAnswer: ".wncryt",
+        field: "44",
+      },
+      {
+        type: "subheading",
+        value: "Kaiju Import",
+      },
+      {
+        type: "text",
+        value:
+          "Up until now, you may have seen some C++ code. We've been able to glean enough from the source C not to need to import the C++ json file, but the last function we're faced with is indecipherable without it. You've been provided with the OOanalyzer output for the decrypted DLL. Import it now through Kaiju as before.",
+      },
+      {
+        type: "image",
+        value: "/Logos/dll_meth.png",
+      },
+      {
+        type: "text",
+        value:
+          'Look at the last function here. This is another example of a decompilation mistake by Ghidra. As it is a method, its first parameter, "unaff_returnaddr", should be an instance of a class. The second parameter is the path for the current drive, and the third is the value 1. Once you enter the function, rename the formal parameters before we examine it. ',
+      },
+
+      {
+        type: "list",
+        listElements: [
+          {
+            text: "An essential skill for reverse engineering is understanding ways the decompiled data could possibly be represented, or--in our case--misrepresented. Likewise, an essential part of understanding this method is understanding a subtelty of C programming and a basic structure in C: linked lists. Heads of linked lists may be implemented as int**.",
+          },
+        ],
+      },
+      { type: "text", value: "Notice the following int**, local14:" },
+      {
+        type: "image",
+        value: "/Logos/local14.png",
+      },
+      {
+        type: "list",
+        listElements: [
+          {
+            text: "Tracking the different occurences of local14 in this function is very important to understanding its usage. To better track a variable, go to 'Edit > Tools > Listing Fields > Cursor Text Highlight' and switch to left click.",
+          },
+        ],
+      },
+      {
+        type: "text",
+        value: "We see that local 14 has some strange assignments with itself. Given that we suspect this may be a linked list, we should create a new data type to represent it as such. Using your experience with structure creation, create a new structure for a doubly linked list node. "
+      },
+      {type: "image",
+        value: "/Logos/linked_list.png"
+      }
     ],
   },
   page6: {
@@ -1149,7 +1275,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "Recap",
-        id: "1"
+        id: "1",
       },
       {
         type: "chronological",
@@ -1261,7 +1387,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "The exploit",
-        id: "2"
+        id: "2",
       },
       {
         type: "text",
@@ -1354,7 +1480,7 @@ const pagesContent = {
       {
         type: "subheading",
         value: "Delivering the Payload",
-        id: "3"
+        id: "3",
       },
       {
         type: "box",
@@ -1436,7 +1562,6 @@ const pagesContent = {
       },
     ],
   },
-
 };
 
 export default pagesContent;

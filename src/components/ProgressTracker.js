@@ -67,7 +67,7 @@ const ProgressTracker = ({ scrollableRef }) => {
 
   return (
     <div
-      className=" fixed top-0 left-0 w-full bg-red-500   z-50 text-xs  mt-1"
+      className=" fixed top-0 left-0 w-full bg-red-500   z-50 text-xs"
       style={{
         width: `${debugInfo.progress}%`,
         minHeight: "4px",

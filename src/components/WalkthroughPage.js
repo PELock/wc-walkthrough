@@ -159,31 +159,31 @@ const WalkthroughPage = () => {
       <ResourceSidebar />
 
       <div
-        className="flex-1 flex flex-col p-4 pl-10  text-white font-fira relative overflow-y-auto h-screen "
+        className="flex-1 flex flex-col p-4 pl-10  text-white  relative overflow-y-auto h-screen "
         ref={scrollableRef}
       >
         <button
           onClick={() => navigate("/")}
-          className="mb-4 px-4 py-2 text-white rounded absolute right-10 hover:text-red-950 z-10"
+          className="mb-4 px-4 py-2 text-white font-fira rounded absolute right-10 hover:text-red-950 z-10"
         >
           Home
         </button>
 
-        <h2 className="text-6xl  font-bold  pt-4 top-0 pr-48  z-0 flex  ">
+        <h2 className="text-5xl font-fira  font-bold  pt-4 top-0 pr-48  z-0 flex  ">
           {pageContent.title}
         </h2>
         <div className="space-y-6 w-full max-w-4xl mt-24">
           {pageContent.content.map((item, index) => {
             if (item.type === "text") {
               return (
-                <p key={index} className="text-base font-medium text-gray-300">
+                <p key={index} className="text-lg font-medium text-gray-300">
                   {item.value}
                 </p>
               );
             } else if (item.type === "subheading") {
               return (
                 <div key={index} id={item.id} className=" ">
-                  <h2 className="text-4xl font-bold  pt-10 pb-3">
+                  <h2 className="text-4xl font-fira font-bold  pt-10 pb-3">
                     {item.value}
                   </h2>
                 </div>
@@ -192,7 +192,7 @@ const WalkthroughPage = () => {
               return (
                 <div
                   key={index}
-                  className=" flex flex-col ml-8 pl-4  bg-black rounded-lg p-4 w-full max-w-2xl"
+                  className=" font-fira flex flex-col ml-8 pl-4  bg-black rounded-lg p-4 w-full max-w-2xl"
                 >
                   {item.listElements.map((listElement, index) => {
                     return (
@@ -209,6 +209,16 @@ const WalkthroughPage = () => {
                 </div>
               );
             } else if (item.type === "image" || item.type === "gif") {
+              if (item.size === "small")
+                return (
+                  <div key={index} className="flex justify-center">
+                    <img
+                      src={item.value}
+                      alt={item.alt}
+                      className="p-1 max-w-md bg-stone-900 h-auto rounded-s"
+                    />
+                  </div>
+                );
               return (
                 <div key={index} className="flex justify-center">
                   <img
@@ -221,7 +231,7 @@ const WalkthroughPage = () => {
             } else if (item.type === "question") {
               return (
                 <div key={index} className="flex justify-center">
-                  <div className="flex flex-col border border-stone-900 bg-stone-950 rounded-lg p-4 w-full max-w-2xl ">
+                  <div className="flex font-fira flex-col border border-stone-900 bg-stone-950 rounded-lg p-4 w-full max-w-2xl ">
                     <p className="font-bold text-center">{item.question}</p>
                     <input
                       type="text"
@@ -254,7 +264,7 @@ const WalkthroughPage = () => {
             } else if (item.type === "box") {
               return (
                 <div key={index} className="flex justify-center">
-                  <div className="flex flex-col border border-stone-900 bg-stone-950 rounded-xl p-4 w-full max-w-2xl ">
+                  <div className="flex font-fira flex-col border border-stone-900 bg-stone-950 rounded-xl p-4 w-full max-w-2xl ">
                     <p className="font-bold text-center pb-4">
                       {item.question}
                     </p>
@@ -280,6 +290,7 @@ const WalkthroughPage = () => {
                 <div>
                   <ChronologicalOrderQuestion
                     key={index}
+                    className = "font-fira"
                     question={item.question}
                     events={item.events}
                     correctOrder={item.correctOrder}
@@ -294,7 +305,7 @@ const WalkthroughPage = () => {
           })}
         </div>
 
-        <div className="mt-6 items-center w-full flex flex-row  space-x-4 rounded ">
+        <div className="mt-6 items-center font-fira w-full flex flex-row  space-x-4 rounded ">
           <button
             onClick={gotoPreviousPage}
             className="px-4 py-2 bg-gray-700 flex-grow text-white rounded-sm hover:bg-red-950 "
@@ -304,7 +315,7 @@ const WalkthroughPage = () => {
           {allQuestionsCorrect && nextPageContent && (
             <button
               onClick={() => navigate(`/walkthrough/${nextPageId}`)}
-              className="px-4 py-2 flex-grow bg-gray-700 text-white rounded-sm hover:bg-red-950"
+              className="px-4 py-2 flex-grow  bg-gray-700 text-white rounded-sm hover:bg-red-950"
             >
               Continue to {nextPageContent.title}
             </button>

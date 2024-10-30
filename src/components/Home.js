@@ -36,17 +36,21 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col items-start pt-20 p-4 font-fira relative">
+    <div className="relative min-h-screen  bg-slate-950 items-start p-1 pl-4 font-fira ">
       <Hamburger toggleSidebar={toggleSidebar} isOpen={sidebarOpen} />
       <Sidebar isOpen={sidebarOpen} />
-
-      <div className="w-full max-w-screen-xl mt-8">
+      <div className="w-full max-w-screen-xl ">
         <div className="text-white p-4">
           <h1 class=" text-9xl font-bold pb-5 bg-gradient-to-r from-red-900 via-gray-900 to-red-600 inline-block text-transparent bg-clip-text">
             Welcome to WannaCry
           </h1>
           <p className="text-lg text-left">
-            <TypeWriterEffect text = {"Dive deep into the analysis of WannaCry, one of the most notorious ransomware attacks. This walkthrough will guide you through each stage of the analysis, providing insights and tools used by cybersecurity professionals."} speed = {35}/>
+            <TypeWriterEffect
+              text={
+                "Dive deep into the analysis of WannaCry, one of the most notorious ransomware attacks. This walkthrough will guide you through each stage of the analysis, providing insights and tools used by cybersecurity professionals."
+              }
+              speed={35}
+            />
           </p>
         </div>
 
