@@ -12,6 +12,7 @@ const ResourceSidebar = () => {
     { name: "Cuckoo", link: "https://cuckoo.cert.ee/" },
     { name: "Resource Hacker", link: "https://www.angusj.com/resourcehacker/" },
     { name: "Kaiju", link: "https://github.com/cmu-sei/Kaiju" },
+    { name: "Fakenet", link: "https://github.com/mandiant/flare-fakenet-ng" },
   ];
 
   useEffect(() => {

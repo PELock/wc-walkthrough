@@ -107,6 +107,52 @@ const pagesContent = {
         question:
           "Mark down this and other significant observations here for later use. What stand out? ",
       },
+      {
+        type: "text",
+        value:
+          "When you're ready, revert your virtual machine's state back to the snapshot you took earlier. The next part is incredibly important: Add a host-only or internal network adapter. This is necessary to use our next analysis tool. ",
+      },
+      {
+        type: "image",
+        value: "/Logos/prelaunch_fn.png",
+      },
+      {
+        type: "text",
+        value:
+          "One of the most--if not the most-- important components of any malware is how it propagates. Most commonly, malware will interact with victim networks in some fashion, whether through the Server Message Block, like WannaCry, through email phishing, or through some other internet service. ",
+      },
+      {
+        type: "text",
+        value:
+          "There is a myriad of network analyzers and packet sniffers available, but we will be utilizing FLAREVM's software Fakenet-ng. Fakenet is an open-source network emulator, and is used to 'trick' programs into thinking they're connected to the internet. If you want to learn more, click the link on the resources page. Launch Fakenet.",
+      },
+      {
+        type: "image",
+        value: "/Logos/highlight_fn.png",
+      },
+      {
+        type: "image",
+        value: "/Logos/fakenet_launch.png",
+      },
+      {
+        type: "text",
+        value:
+          "Visit your favorite website. See what happens. Often, requests are made for resources we never know are being accessed and loaded. Try running some programs on your device which might need access to the internet.",
+      },
+      {
+        type: "text",
+        value:
+          "Once you feel comfortable, we're ready to understand how our virus interacts with the internet. It is now essential that you ensure your machine's network adapter is host-only or on an internal network. Once again, execute WannaCry.",
+      },
+      {
+        type: "image",
+        value: "/Logos/infected_fn.png",
+      },
+      {
+        type: "box",
+        question:
+          "See what's different. Research codes. Interact with the ransom page. Take note of anything unusual that you think might help in our analysis of this malware.",
+      },
     ],
   },
 
@@ -1143,11 +1189,66 @@ const pagesContent = {
       },
       {
         type: "text",
-        value: "We see that local 14 has some strange assignments with itself. Given that we suspect this may be a linked list, we should create a new data type to represent it as such. Using your experience with structure creation, create a new structure for a doubly linked list node. "
+        value:
+          "We see that local 14 has some strange assignments with itself. Given that we suspect this may be a linked list, we should create a new data type to represent it as such. Using your experience with structure creation, create a new structure for a doubly linked list node. ",
       },
-      {type: "image",
-        value: "/Logos/linked_list.png"
-      }
+      { type: "image", value: "/Logos/linked_list.png" },
+      {
+        type: "text",
+        value:
+          "Retype plvar5 and 6 and give them new names to help us understand what's going on. Now, move onto the first function. Ghidra incorrectly decompiled this, so we'll need to edit the function signature and remove the unsigned integer parameter. Once this is done, notice the type cast below and retype local_18, which is passed into the previously mentioned function. Enter the function, and ensure you rename all the formal parameters inside. Moving on, some retyping is necessary. Approach your 'local_a40' and retype it so your decompilation goes from this: ",
+      },
+      {
+        type: "image",
+        value: "/Logos/list_retype_1.png",
+        size: "small",
+      },
+      {
+        type: "text",
+        value: "To this:",
+      },
+      {
+        type: "image",
+        value: "/Logos/list_retype_2.png",
+        size: "small",
+      },
+      {
+        type: "text",
+        value:
+          "Now rename it so you know it's a list. A file handle below is created to find each file with the provided path as a directory.",
+      },
+      {
+        type: "question",
+        question: "What is prepended to the path?",
+        correctAnswer: "*",
+        field: "45",
+      },
+      {
+        type: "image",
+        value: "/Logos/dataw.png",
+        size: "small",
+      },
+      {
+        type: "text",
+        value:
+          "Moving on, a file handle is acquired. FirstFileW, of course, finds the first file with the provided path. According to the Windows API documentation, the second parameter stores the found file's associated information. ",
+      },
+      {
+        type: "text",
+        value:
+          "Below, the file is checked to be valid (not -1). Let's assume this is true and move on to the else block. ",
+      },
+      {
+        type: "question",
+        question:
+          "What kind of file does the first function in the else block create? A ---- file.",
+        correctAnswer: "temp",
+        field: "46",
+      },
+      {
+        type: "text",
+        value: "",
+      },
     ],
   },
   page6: {
