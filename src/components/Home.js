@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { getUserProgress } from "../utils/localStorageUtils";
 import Sidebar from "../components/Sidebar";
 import Hamburger from "../components/Hamburger";
-import TypeWriterEffect from "../components/TypeWriterEffect"
+import TypeWriterEffect from "../components/TypeWriterEffect";
+import "../fx.css";
 
 // Define pages with custom images
 const pages = [
@@ -22,8 +23,6 @@ const Home = () => {
 
   useEffect(() => {
     fetchProgress();
-
-    
   }, []);
 
   const fetchProgress = () => {
@@ -41,9 +40,9 @@ const Home = () => {
       <Sidebar isOpen={sidebarOpen} />
       <div className="w-full max-w-screen-xl ">
         <div className="text-white p-4">
-          <h1 class=" text-9xl font-bold pb-5 bg-gradient-to-r from-red-900 via-gray-900 to-red-600 inline-block text-transparent bg-clip-text">
-            Welcome to WannaCry
-          </h1>
+          <h1 class="text-9xl font-bold pb-5 bg-gradient-to-r from-red-900 via-gray-900 to-red-600 inline-block text-transparent bg-clip-text ">
+            <span>Welcome to WannaCry</span>
+          </h1> 
           <p className="text-lg text-left">
             <TypeWriterEffect
               text={
@@ -67,7 +66,7 @@ const Home = () => {
                     : "hover:w-screen hover:shadow-2xl hover:m-5 hover:shadow-black hover:scale-105 hover:bg-gray-700 cursor-pointer"
                 }`}
             >
-              <img
+              <img 
                 src={page.img}
                 alt={page.name}
                 className="h-full w-24 object-cover"

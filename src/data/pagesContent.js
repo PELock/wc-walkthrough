@@ -84,6 +84,10 @@ const pagesContent = {
         id: "1",
       },
       {
+        type: "image",
+        value: "/Logos/prelaunch_fn.png",
+      },
+      {
         type: "text",
         value:
           "We now have the binary executable. At this point, it is imperative that you ensure there is no network adapter or connection on the victim VM. Before executing the virus, use your virtualization platform to take a snapshot. If snapshots are not a built-in utility, you can use your CLI to take one with the underlying hypervisor. Fire off the virus. ",
@@ -112,27 +116,25 @@ const pagesContent = {
         value:
           "When you're ready, revert your virtual machine's state back to the snapshot you took earlier. The next part is incredibly important: Add a host-only or internal network adapter. This is necessary to use our next analysis tool. ",
       },
-      {
-        type: "image",
-        value: "/Logos/prelaunch_fn.png",
-      },
+
       {
         type: "text",
         value:
           "One of the most--if not the most-- important components of any malware is how it propagates. Most commonly, malware will interact with victim networks in some fashion, whether through the Server Message Block, like WannaCry, through email phishing, or through some other internet service. ",
       },
       {
-        type: "text",
-        value:
-          "There is a myriad of network analyzers and packet sniffers available, but we will be utilizing FLAREVM's software Fakenet-ng. Fakenet is an open-source network emulator, and is used to 'trick' programs into thinking they're connected to the internet. If you want to learn more, click the link on the resources page. Launch Fakenet.",
-      },
-      {
         type: "image",
         value: "/Logos/highlight_fn.png",
       },
       {
+        type: "text",
+        value:
+          "There is a myriad of network analyzers and packet sniffers available, but we will be utilizing FLAREVM's software Fakenet-ng. Fakenet is an open-source network emulator, and is used to 'trick' programs into thinking they're connected to the internet. If you want to learn more, click the link on the resources page. Launch Fakenet.",
+      },
+
+      {
         type: "image",
-        value: "/Logos/fakenet_launch.png",
+        value: "/Logos/launch_fn2.png",
       },
       {
         type: "text",
@@ -645,7 +647,7 @@ const pagesContent = {
     ],
   },
   page5: {
-    title: "The Encryption",
+    title: "Preparing the Victim",
     content: [
       {
         type: "text",
@@ -1247,11 +1249,98 @@ const pagesContent = {
       },
       {
         type: "text",
-        value: "",
+        value:
+          "Below, examine the conditional block which tests if the file is created:",
+      },
+      {
+        type: "list",
+        listElements: [
+          {
+            list: "This code block is performing several filtering operations on files during a directory traversal:",
+            text: "",
+          },
+          {
+            list: '1. First, it checks that the current filename is not ".." (parent directory)',
+          },
+          {
+            list: "2. Constructs a full file path using swprintf() with the current path and filename",
+          },
+          {
+            list: "3. Checks if the current item is NOT a directory (found_file_data & 0x10 checks directory flag)",
+          },
+          {
+            list: "4. If a temporary file was created, it further filters out specific files:",
+            text: 'Excludes "@Please Read Me.txt"',
+          },
+          { text: 'Excludes "@WanaDecryptor@.exe.lnk"' },
+          {
+            text: 'Excludes "@WanaDecryptor@.bmp"',
+          },
+          {
+            list: "5. If certain conditions are met (iStack_10 = FUN_10002d60(awStack_9e4)), it:",
+            text: "Copies the filename and full path",
+          },
+          {
+            text: "Calls meth_0x10003760() to add the file to the linked list",
+          },
+        ],
+      },
+      {
+        type: "text",
+        value:
+          "The certain conditions are made clear after a quick look into FUN_10002d60. This is where WC checks too see what kind of file it's processing. For instance, one condition checks if it's a .wncry file... meaning it's already been encrypted.",
+      },
+      {
+        type: "question",
+        question:
+          "Move below to find a pointer to the list of filenames WC checks the given file against. Which is the first on the list? Just provide the extension.",
+        correctAnswer: "docx",
+        field: "47",
+      },
+      {
+        type: "text",
+        value:
+          "Move back out and observe that WC checks to see if the file has one of the extensions on its hardcoded list and then adds it to a linked list with 3760(). This is where WannaCry is preparing its list of files to be encrypted. It skips over its own files--it certainly doesn't want to encrypt those--and any directory paths. It iteratively checks if the directory is a parent directory, moving throughout your file system and encrypting everything it sees. Let's move on to see how it accomplishes this.",
       },
     ],
   },
   page6: {
+    title: "The Encryption",
+    content: [
+      {
+        type: "text",
+        value:
+          "Line 132 on appears to be another systematic traversal, but not on the file system. This code traverses through the collected victim files.",
+      },
+      {
+        type: "image",
+        value: "/Logos/process_file_loop.png",
+      },
+      {
+        type: "text",
+        value:
+          "This loop performs some action on each element of our list and then calls method 3760 again to add to another list. Could the action performed finally be the encryption?",
+      },
+      {
+        type: "subheading",
+        value: "For each file...",
+      },
+      {
+        type: "text",
+        value: "Line 8 classifies the file.",
+      },
+      {
+        type: "image",
+        value: "/Logos/line8.png",
+        size: "small",
+      },
+      {
+        type: "text",
+        value: "The only ",
+      },
+    ],
+  },
+  page7: {
     title: "The Worm",
     content: [
       {
@@ -1595,7 +1684,7 @@ const pagesContent = {
       },
     ],
   },
-  page7: {
+  page8: {
     title: "Cuckoo Sandbox",
     content: [
       {
@@ -1659,7 +1748,7 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "The use of such automated tools is a valuable part of analysis, but is not a substitute for the work we have done--rather, it complements and reinforces our discoveries and conclusions.",
+          "The use of such automated tools is a valuable part of malware analysis, but is not a substitute for the work we have done--rather, it complements and reinforces our discoveries and conclusions.",
       },
     ],
   },

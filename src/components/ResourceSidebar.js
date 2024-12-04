@@ -33,15 +33,16 @@ const ResourceSidebar = () => {
 
   return (
     <div className=" flex w-1/5 max-lg:hidden left-0 z-10 flex-col overflow-y-auto sticky h-screen  text-white p-4  shadow-lg bg-stone-950 shadow-black scroll-smooth ">
-      <div className="mt-10">
+      <div className="ml-2 text-4xl font-bold mt-4 ">Chapters</div>
+      <div className="mt-4">
         {Object.entries(pagesContent).map((page, index) => {
           return (
-            <div className="max-w-screen-sm p-3   ">
+            <div className="max-w-screen-sm p-2   ">
               <Link
                 onClick={() => toggleDropdown(index)}
-                className="text-lg font-bold mt-4 text-red-900"
+                className=" text-lg font-bold mt-4 text-red-900 "
               >
-                | {page[1].title}
+               {page[1].title}
               </Link>
               {openPage === index && (
                 <div>
@@ -71,11 +72,11 @@ const ResourceSidebar = () => {
         })}
       </div>
       <div className="">
-        <hr className="mt-10 "></hr>
-        <h2 className="text-lg font-bold mt-5 mb-4">Resources</h2>
+        <hr className="mt-6 ml-"></hr>
+        <h2 className="text-lg ml-2 font-bold mt-5 mb-2">Resources</h2>
         <ul>
           {resources.map((resource, index) => (
-            <li key={index} className="mb-2">
+            <li key={index} className="mb-2 ml-2">
               <Link
                 to={resource.link}
                 className="text-white hover:text-red-950 relative "

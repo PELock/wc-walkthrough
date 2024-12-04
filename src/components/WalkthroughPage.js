@@ -154,8 +154,7 @@ const WalkthroughPage = () => {
 
   return (
     <div className="min-h-screen flex bg-slate-950">
-      <ProgressTracker scrollableRef={scrollableRef} 
-       />
+      <ProgressTracker scrollableRef={scrollableRef} />
       <ResourceSidebar />
 
       <div
@@ -164,13 +163,15 @@ const WalkthroughPage = () => {
       >
         <button
           onClick={() => navigate("/")}
-          className="mb-4 px-4 py-2 text-white font-fira rounded absolute right-10 hover:text-red-950 z-10"
+          className="ui-btn mb-4 px-4 py-2 text-white font-fira rounded absolute right-10  z-10 "
         >
-          Home
+          <span>Home</span>
         </button>
 
-        <h2 className="text-5xl font-fira  font-bold  pt-4 top-0 pr-48  z-0 flex  ">
+        <h2  className="text-5xl font-fira  font-bold  pt-4 top-0 pr-48  z-0 flex  ">
+          <span>
           {pageContent.title}
+          </span>
         </h2>
         <div className="space-y-6 w-full max-w-4xl mt-24">
           {pageContent.content.map((item, index) => {
@@ -224,7 +225,7 @@ const WalkthroughPage = () => {
                   <img
                     src={item.value}
                     alt={item.alt}
-                    className="p-1 max-w-full bg-stone-900 h-auto rounded-s"
+                    className="p-1 max-w-full bg-stone-900 h-auto rounded-lg"
                   />
                 </div>
               );
@@ -290,7 +291,7 @@ const WalkthroughPage = () => {
                 <div>
                   <ChronologicalOrderQuestion
                     key={index}
-                    className = "font-fira"
+                    className="font-fira"
                     question={item.question}
                     events={item.events}
                     correctOrder={item.correctOrder}
