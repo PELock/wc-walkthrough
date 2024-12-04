@@ -163,7 +163,7 @@ const WalkthroughPage = () => {
       >
         <button
           onClick={() => navigate("/")}
-          className="ui-btn mb-4 px-4 py-2 text-white font-fira rounded absolute right-10  z-10 "
+          className="glitchbutton mb-4 px-4 py-2 text-white font-fira fixed right-0  z-10 "
         >
           <span>Home</span>
         </button>
@@ -216,7 +216,7 @@ const WalkthroughPage = () => {
                     <img
                       src={item.value}
                       alt={item.alt}
-                      className="p-1 max-w-md bg-stone-900 h-auto rounded-s"
+                      className="p-1 max-w-md bg-stone-900 h-auto rounded-lg"
                     />
                   </div>
                 );

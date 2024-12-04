@@ -60,7 +60,7 @@ const pagesContent = {
         type: "question",
         question: "What is the name of the virtual machine provided?",
 
-        correctAnswer: "Infected Windows 7",
+        correctAnswer: "Infected",
         field: "q3",
       },
       {
@@ -1336,7 +1336,16 @@ const pagesContent = {
       },
       {
         type: "text",
-        value: "The only ",
+        value:
+          "There is only one function in and after the switch statement, so we'll look here for answers. Similarly, this function's main functionality is in meth_0x10001960. ",
+      },
+      {
+        type: "image",
+        value: "/Logos/enc_wrapper.png",
+      },
+      {
+        type: "box",
+        question: "We have finally arrived at the core of WannaCry's encryption. It's now up to you to figure out what's goin on. How does WC encrypt the user's files? Where are the extensions changed? Which API functions and crypto keys are used "
       },
     ],
   },
