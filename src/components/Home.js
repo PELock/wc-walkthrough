@@ -40,9 +40,12 @@ const Home = () => {
       <Sidebar isOpen={sidebarOpen} />
       <div className="w-full max-w-screen-xl ">
         <div className="text-white p-4">
-          <h1 class="text-9xl font-bold pb-5 bg-gradient-to-r from-red-900 via-gray-900 to-red-600 inline-block text-transparent bg-clip-text ">
+          <h1 class="glitch-container text-9xl font-bold pb-5">
+            Welcome to WannaCry
             <span>Welcome to WannaCry</span>
-          </h1> 
+            <span>Welcome to WannaCry</span>
+            <span>Welcome to WannaCry</span>
+          </h1>
           <p className="text-lg text-left">
             <TypeWriterEffect
               text={
@@ -66,7 +69,7 @@ const Home = () => {
                     : "hover:w-screen hover:shadow-2xl hover:m-5 hover:shadow-black hover:scale-105 hover:bg-gray-700 cursor-pointer"
                 }`}
             >
-              <img 
+              <img
                 src={page.img}
                 alt={page.name}
                 className="h-full w-24 object-cover"
