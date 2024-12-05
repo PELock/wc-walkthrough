@@ -263,6 +263,7 @@ const WalkthroughPage = () => {
                 </div>
               );
             } else if (item.type === "box") {
+              item.field = index
               return (
                 <div key={index} className="flex justify-center">
                   <div className="flex font-fira flex-col border border-stone-900 bg-stone-950 rounded-xl p-4 w-full max-w-2xl ">

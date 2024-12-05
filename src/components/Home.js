@@ -41,15 +41,14 @@ const Home = () => {
       <div className="w-full max-w-screen-xl ">
         <div className="text-white p-4">
           <h1 class="text-9xl font-bold pb-5 bg-gradient-to-r from-red-900 via-gray-800 to-red-600 inline-block text-transparent bg-clip-text ">
-            <span>Welcome to WannaCry</span>
+            Welcome to WannaCry
           </h1> 
           <p className="text-lg text-left">
-            <TypeWriterEffect
-              text={
-                "Dive deep into the analysis of WannaCry, one of the most notorious ransomware attacks. This walkthrough will guide you through each stage of the analysis, providing insights and tools used by cybersecurity professionals."
-              }
-              speed={35}
+            <TypeWriterEffect 
+                 text = "Dive deep into the analysis of WannaCry, one of the most notorious ransomware attacks. This walkthrough will guide you through each stage of the analysis, providing insights and tools used by cybersecurity professionals."
+                 time = "10"
             />
+            
           </p>
         </div>
 
