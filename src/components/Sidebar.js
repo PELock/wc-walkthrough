@@ -27,9 +27,8 @@ const Sidebar = ({ isOpen }) => {
         </a>
       </div>
       <a
-        href="#"
+        href="about"
         className=" absolute bottom-0 block text-white mb-4 hover:underline"
-        download="file4"
       >
         About
       </a>

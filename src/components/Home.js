@@ -8,7 +8,7 @@ import "../fx.css";
 
 // Define pages with custom images
 const pages = [
-  { name: "Introduction", id: 1, img: "/Logos/WC.jpg" },
+  { name: "Introduction", id: 1, img: "/Logos/laser.webp" },
   { name: "Live Analysis", id: 2, img: "/Logos/white_magnify.png" },
   { name: "Ghidra", id: 3, img: "/Logos/Ghidra_logo.svg.png" },
   { name: "Diving Into the Code", id: 4, img: "/Logos/cubes.webp" },
@@ -52,7 +52,7 @@ const Home = () => {
           </p>
         </div>
 
-        <div className="w-full flex flex-col ">
+        <div className="w-full flex flex-col">
           {pages.map((page, index) => (
             <button
               key={page.id}
@@ -68,7 +68,7 @@ const Home = () => {
               <img 
                 src={page.img}
                 alt={page.name}
-                className="h-full w-24 object-cover"
+                className="h-full w-24  object-cover"
               />
               <span className="text-white text-2xl font-bold ml-4 group-hover:translate-x-full group-hover:scale-125 duration-300 group-hover:bg-gradient-to-r from-red-900 via-gray-900 to-red-600 group-hover:inline-block group-hover:text-transparent group-hover:bg-clip-text">
                 {page.name}

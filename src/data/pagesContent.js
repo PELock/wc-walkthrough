@@ -1288,7 +1288,7 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "The certain conditions are made clear after a quick look into FUN_10002d60. This is where WC checks too see what kind of file it's processing. For instance, one condition checks if it's a .wncry file... meaning it's already been encrypted.",
+          "The certain conditions are made clear after a quick look into FUN_10002d60. This is where WC checks to see what kind of file it's processing. For instance, one condition checks if it's a .wncry file... meaning it's already been encrypted.",
       },
       {
         type: "question",
@@ -1307,6 +1307,64 @@ const pagesContent = {
   page6: {
     title: "The Encryption",
     content: [
+      {
+        type: "subheading",
+        value: "Recap",
+      },
+      {
+        type: "chronological",
+        question:
+          "Arrange the control flow and function calls in chronological order.",
+        field: "wannacryChronology",
+        events: [
+          {
+            id: "3",
+            content:
+              "WannaCry loads in crypto keys for encryption and decryption.",
+          },
+          {
+            id: "4",
+            content:
+              "A procedure for detecting and encrypting new drives begins. ",
+          },
+          {
+            id: "2",
+            content: "R1831 calls TaskStart, the main ransomware function.",
+          },
+          {
+            id: "1",
+            content: "Decrypting t.wnry results in a DLL.",
+          },
+          {
+            id: "5",
+            content: "Vulnerable files are iteratively added to a list.",
+          },
+        ],
+        correctOrder: [
+          {
+            id: "1",
+            content: "Decrypting t.wnry results in a DLL.",
+          },
+          {
+            id: "2",
+            content: "R1831 calls TaskStart, the main ransomware function.",
+          },
+          {
+            id: "3",
+            content:
+              "WannaCry loads in crypto keys for encryption and decryption.",
+          },
+          {
+            id: "4",
+            content:
+              "A procedure for detecting and encrypting new drives begins. ",
+          },
+          {
+            id: "5",
+            content: "Vulnerable files are iteratively added to a list.",
+          },
+        ],
+      },
       {
         type: "text",
         value:
@@ -1345,7 +1403,8 @@ const pagesContent = {
       },
       {
         type: "box",
-        question: "We have finally arrived at the core of WannaCry's encryption. It's now up to you to figure out what's goin on. How does WC encrypt the user's files? Where are the extensions changed? Which API functions and crypto keys are used "
+        question:
+          "We have finally arrived at the core of WannaCry's encryption. It's now up to you to figure out what's goin on. How does WC encrypt the user's files? Where are the extensions changed? Which API functions and crypto keys are used? ",
       },
     ],
   },

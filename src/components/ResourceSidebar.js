@@ -40,18 +40,19 @@ const ResourceSidebar = () => {
             <div className="max-w-screen-sm p-2   ">
               <Link
                 onClick={() => toggleDropdown(index)}
-                className=" text-lg font-bold mt-4 text-red-900 "
+                className=" text-xl font-bold mt-4 text-red-900 "
               >
-               {page[1].title}
+                <span className="absolute">| </span>
+                <p className="pl-2">{page[1].title}</p>
               </Link>
               {openPage === index && (
                 <div>
                   {page[1].content.map((item) => {
                     if (item.type === "subheading")
                       return (
-                        <div className="pt-1">
+                        <div className="pt-1 pl-2">
                           <a
-                            href={"./" + `${index + 1}` + "#" + item.id}
+                            href={`./${index + 1}#` + item.id}
                             disabled={index > 0 && !progress.includes(index)}
                             className={` p-1  text-gray-500 hover:text-red-950 
                           ${
@@ -64,6 +65,7 @@ const ResourceSidebar = () => {
                           </a>
                         </div>
                       );
+                    else return null;
                   })}
                 </div>
               )}

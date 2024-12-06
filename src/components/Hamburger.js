@@ -8,18 +8,18 @@ const Hamburger = ({ toggleSidebar, isOpen }) => {
       
     >
       <div
-        className={`w-8 h-1 bg-white my-1 transition-transform ${
+        className={`w-10 height: h-1 bg-white my-2 transition-transform ${
           isOpen ? "rotate-45 translate-y-2" : ""
         }`}
       ></div>
       <div
-        className={`w-8 h-1 bg-white my-1 transition-opacity ${
+        className={`w-10 h-1 bg-white my-2 transition-opacity ${
           isOpen ? "opacity-0" : "opacity-100"
         }`}
       ></div>
       <div
-        className={`w-8 h-1 bg-white my-1 transition-transform ${
-          isOpen ? "-rotate-45 -translate-y-2" : ""
+        className={`w-10 h-1 bg-white my-2 transition-transform ${
+          isOpen ? "-rotate-45 -translate-y-4" : ""
         }`}
       ></div>
     </div>

@@ -163,7 +163,7 @@ const WalkthroughPage = () => {
       >
         <button
           onClick={() => navigate("/")}
-          className="glitchbutton mb-4 px-4 py-2 text-white font-fira fixed right-0  z-10 "
+          className="ui-btn mb-4 px-4 py-2 text-white font-fira text-lg fixed right-0  z-10 "
         >
           <span>Home</span>
         </button>

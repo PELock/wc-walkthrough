@@ -103,107 +103,20 @@
 }
 
 
-
-/* From Uiverse.io by LeonKohli */ 
-.glitch-container {
-  
-  font-family: "Orbitron", sans-serif;
-position: relative;
-  text-transform: uppercase;
-  color: #00ffff;
-  text-shadow:
-    0.05em 0 0 #991b1b,
-    -0.03em -0.04em 0 #991b1b
-    0.025em 0.04em 0 #00ffff;
-  animation: glitch 725ms infinite;
-}
-
-.glitch-container span {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.glitch-container span:first-child {
-  animation: glitch 500ms infinite;
-  clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
-  transform: translate(-0.04em, -0.03em);
-  opacity: 0.75;
-}
-
-.glitch-container span:last-child {
-  animation: glitch 375ms infinite;
-  clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
-  transform: translate(0.04em, 0.03em);
-  opacity: 0.75;
-}
-
-@keyframes glitch {
-  0% {
-    text-shadow:
-      0.05em 0 0 #991b1b,
-      -0.03em -0.04em 0 #991b1b,
-      0.025em 0.04em 0 #00ffff;
-  }
-  15% {
-    text-shadow:
-      0.05em 0 0 #991b1b,
-      -0.03em -0.04em 0 #991b1b,
-      0.025em 0.04em 0 #00ffff;
-  }
-  16% {
-    text-shadow:
-      -0.05em -0.025em 0 #991b1b,
-      0.025em 0.035em 0 #991b1b,
-      -0.05em -0.05em 0 #00ffff;
-  }
-  49% {
-    text-shadow:
-      -0.05em -0.025em 0 #991b1b,
-      0.025em 0.035em 0 #991b1b,
-      -0.05em -0.05em 0 #00ffff;
-  }
-  50% {
-    text-shadow:
-      0.05em 0.035em 0 #991b1b,
-      0.03em 0 0 #991b1b,
-      0 -0.04em 0 #00ffff;
-  }
-  99% {
-    text-shadow:
-      0.05em 0.035em 0 #991b1b,
-      0.03em 0 0 #991b1b,
-      0 -0.04em 0 #00ffff;
-  }
-  100% {
-    text-shadow:
-      -0.05em 0 0 #991b1b,
-      -0.025em -0.04em 0 #991b1b,
-      -0.04em -0.025em 0 #00ffff;
-  }
-}
-
-
-
-
+/*
+* Code glitch effect
+*/
 
 .ui-btn {
   --btn-default-bg: #0c0a09;
   --btn-padding: 10px 15px;
   --btn-hover-bg: #0c0a09;
   --btn-transition: 0.3s;
-  --btn-letter-spacing: 0.1rem;
+  --btn-letter-spacing: 0.2rem;
   --btn-animation-duration: 1.2s;
   --btn-shadow-color: rgba(0, 0, 0, 0.137);
   --btn-shadow: 0 2px 10px 0 var(--btn-shadow-color);
 
- 
-  
-  /* 👆 this field should not be empty */
-  --font-weight: 600;
-
-
-  /* 👆 this field should not be empty */
 }
 
 /* button settings 👆 */
@@ -215,7 +128,7 @@ position: relative;
   align-items: center;
   justify-content: center;
   color: var(--default-btn-color);
-  font: var(--font-weight) var(--font-size) var(--font-family);
+  font-family: Fira Code, monospace;
   background: #0c0a09;
   border: none;
   cursor: pointer;
@@ -230,13 +143,16 @@ position: relative;
   box-sizing: border-box;
   position: relative;
   background: #0c0a09;
+  font-family: Fira Code, monospace;
 }
 
 .ui-btn span::before {
   box-sizing: border-box;
-  position: fixed;
+  position: absolute;
   content: "";
   background: #0c0a09;
+  font-family: Fira Code, monospace;
+  
 }
 
 .ui-btn:hover,
@@ -286,64 +202,66 @@ position: relative;
   }
 
   40% {
-    content: "?{4@%";
+    content: "?4@%";
   }
 
   45% {
-    content: "=.,^!";
+    content: "=.^!";
   }
 
   50% {
-    content: "?2@%";
+    content: "?@%";
   }
 
   55% {
-    content: "\;1}]";
+    content: "\;1]";
   }
 
   60% {
-    content: "?{%:%";
-    right: 0;
+    content: "?%:%";
+    
   }
 
   65% {
-    content: "|{f[4";
-    right: 0;
+    content: "|f[4";
+    
   }
 
   70% {
-    content: "{4%0%";
-    right: 0;
+    content: "{40%";
+    
   }
 
   75% {
-    content: "'1_0<";
-    right: 0;
+    content: "'_0<";
+    
   }
 
   80% {
     content: "{0%";
-    right: 0;
+    
   }
 
   85% {
     content: "]>'";
-    right: 0;
+    
+  
   }
 
   90% {
     content: "4";
-    right: 0;
+
+    
   }
 
   95% {
     content: "2";
-    right: 0;
+    
   }
 
   100% {
     content: "";
-    right: 0;
+    
   }
 }
 
