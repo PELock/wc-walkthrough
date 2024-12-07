@@ -69,6 +69,7 @@ const WalkthroughPage = () => {
     }));
   };
 
+  
   const handleModifiableTextChange = (field, value) => {
     setModifiableText((prevText) => ({
       ...prevText,
@@ -76,11 +77,13 @@ const WalkthroughPage = () => {
     }));
   };
 
+  //saves "box" type questions
   const saveModifiableTextHandler = (field) => {
     saveModifiableText(currentPageId, field, modifiableText[field]);
     console.log(`Saved text for ${field}:`, modifiableText[field]);
   };
 
+  // check regular answer
   const checkAnswer = (field, correctAnswer) => {
     if (
       answers[field] &&
@@ -111,6 +114,7 @@ const WalkthroughPage = () => {
     }
   };
 
+  // drag-n-drop answer checking
   const handleChronologicalAnswer = (field, isCorrect) => {
     if (isCorrect) {
       setCorrectAnswers((prevCorrectAnswers) => ({
@@ -138,12 +142,14 @@ const WalkthroughPage = () => {
     }
   };
 
+// fill out questions with their correct answers
   const allQuestionsCorrect = pageContent.content
     .filter((item) => item.type === "question")
     .every((item) => correctAnswers[item.field]);
 
   const nextPageId = currentPageId + 1;
   const nextPageContent = pagesContent[`page${nextPageId}`];
+
 
   const gotoPreviousPage = () => {
     if (currentPageId <= 1) navigate("/");

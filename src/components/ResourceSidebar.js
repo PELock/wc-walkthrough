@@ -43,10 +43,10 @@ const ResourceSidebar = () => {
                 className=" text-xl font-bold mt-4 text-red-900 "
               >
                 <span className="absolute">| </span>
-                <p className="pl-2">{page[1].title}</p>
+                <p className="pl-2 ">{page[1].title}</p>
               </Link>
               {openPage === index && (
-                <div>
+                <div className = "">
                   {page[1].content.map((item) => {
                     if (item.type === "subheading")
                       return (

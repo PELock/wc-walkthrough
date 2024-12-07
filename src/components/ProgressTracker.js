@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+// A horizontal bar at the top of the screen to display a user's progress per page 
 const ProgressTracker = ({ scrollableRef }) => {
   const [debugInfo, setDebugInfo] = useState({
     progress: 0,

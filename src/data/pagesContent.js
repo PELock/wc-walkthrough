@@ -161,28 +161,8 @@ const pagesContent = {
   page3: {
     title: "Reverse Engineering with Ghidra",
     content: [
-      {
-        type: "text",
-        value:
-          "At this point in our investigation, we have retrieved a suspicious, obscurely named zip file. Let's see what's inside. ",
-      },
-      {
-        type: "image",
-        value: "/Logos/binZipHome2.png",
-        alt: "Extracted binary",
-      },
-      {
-        type: "question",
-
-        question: "What are the last four characters of the zip file?",
-        correctAnswer: "e8cf",
-        field: "q5",
-      },
-      {
-        type: "text",
-        value:
-          "The extraction has revealed a binary file, also obscurely named. ",
-      },
+    
+  
       { type: "subheading", value: "Analyzing the Binary", id: "1" },
       {
         type: "text",
