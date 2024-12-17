@@ -74,11 +74,6 @@ const pagesContent = {
           "Regardless of whatever virtualization software you're using, it is essential to limit the communication and access between the victim VM and both your host system and network. Remove any network adapters and disable any drag-and-drop features. This is a critical step, and if skipped, could corrupt and infect your host.",
       },
       {
-        type: "text",
-        value:
-          "Especially when accessing files downloaded from the internet and perhaps archived using different tools, the windows zip extractor is insufficient. To this end, this VM has been prepared with the 7-zip tool installed.",
-      },
-      {
         type: "subheading",
         value: "Dynamic Analysis",
         id: "1",

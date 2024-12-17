@@ -1,70 +1,20 @@
-# Getting Started with Create React App
+# About
+In cybersecurity education, there is a notable deficit in thorough, hands-on training for malware analysis. This project aims to address this deficit by providing a model educational walkthrough and supplement in the form of an example module. The walkthrough addresses this gap by engaging students in both dynamic and static analysis of the WannaCry malware, fostering active learning and critical thinking. Designed to immerse students in malware analysis, the module allows them to observe and interpret malware behavior in a controlled environment (dynamic analysis) and dissect its code and structure (static analysis). By using modern, open-source tools, students gain a comprehensive understanding of the malware's operations and potential impacts. This approach, combined with handling sensitive malware in a controlled setting, aims to foster responsibility and independence. Active engagement ensures students grasp theoretical concepts and develop essential problem-solving skills. Contemporary literature suggests that such comprehensive, hands-on education significantly enhances practical skills and prepares students for real-world challenges.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# Module Summary
+The module first introduces students to the primary method of safely analyzing malware via virtualization, known as live/dynamic analysis, as well as network emulation. The module moves on to its primary focus—static analysis with the NSA-developed reverse engineering framework and decompiler Ghidra. Students will be exposed to many techniques used by professional malware analysts, such as unpacking, reversing obfuscation, disassembly analysis, renaming, and data flow analysis. The final step in the analysis is automated dynamic analysis via Cuckoo Sandbox, a web-based malware analysis sandbox which executes malware and leverages its database of known malware functionality and characteristics to provide the analyst with new information and insights.
 
-In the project directory, you can run:
 
-### `npm start`
+# Important Notice
+This educational walkthrough involves working with malware, including the WannaCry ransomware, in a controlled environment. It is critical that all participants understand the potential risks and adhere strictly to the following guidelines to ensure their safety and the safety of their systems:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Always perform malware analysis in an isolated and controlled virtual environment (e.g., virtual machines). Do not execute malware on your personal or any non-isolated systems.
+Ensure your analysis environment is completely disconnected from the internet to prevent accidental spread or communication with malicious servers.
+This walkthrough is for educational purposes only. It is intended to enhance your understanding of cybersecurity and malware analysis. Any misuse of the provided materials is strictly prohibited and may violate ethical and legal standards.
 
-### `npm test`
+By proceeding, you acknowledge that you understand these risks and agree to follow all precautions outlined in this walkthrough. Failure to comply can result in severe consequences, including damage to systems, networks, or legal implications.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+For more information or questions, please email ecr00012@mix.wvu.edu

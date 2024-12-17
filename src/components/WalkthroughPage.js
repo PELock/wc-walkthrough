@@ -7,7 +7,7 @@ import {
   saveModifiableText,
 } from "../utils/localStorageUtils";
 import pagesContent from "../data/pagesContent";
-import ResourceSidebar from "../components/ResourceSidebar"; // Import the ResourceSidebar component
+import ResourceSidebar from "../components/ResourceSidebar"; 
 import ChronologicalOrderQuestion from "../components/ChronologicalOrderQuestion";
 import ProgressTracker from "./ProgressTracker";
 const WalkthroughPage = () => {
