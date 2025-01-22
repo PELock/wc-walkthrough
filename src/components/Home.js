@@ -55,12 +55,12 @@ const Home = () => {
             <button
               key={page.id}
               onClick={() => navigate(`/walkthrough/${page.id}`)}
-              disabled={index > 0 && !progress.includes(pages[index - 1].id)}
+            //  disabled={index > 0 && !progress.includes(pages[index - 1].id)}
               className={`relative mb-0 w-full h-28 flex items-center justify-start transition-all duration-300 group
                 ${
-                  index > 0 && !progress.includes(pages[index - 1].id)
-                    ? "cursor-not-allowed"
-                    : "hover:w-screen hover:shadow-2xl hover:p-6 hover:shadow-black hover:scale-105 hover:bg-gray-700 cursor-pointer"
+                 // index > 0 && !progress.includes(pages[index - 1].id)
+                // ? "cursor-not-allowed" :
+                     "hover:w-screen hover:shadow-2xl hover:p-6 hover:shadow-black hover:scale-105 hover:bg-gray-700 cursor-pointer"
                 }`}
             >
               <img 

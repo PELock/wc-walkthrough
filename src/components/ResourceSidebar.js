@@ -53,12 +53,12 @@ const ResourceSidebar = () => {
                         <div className="pt-1 pl-2">
                           <a
                             href={`./${index + 1}#` + item.id}
-                            disabled={index > 0 && !progress.includes(index)}
+                           // disabled={index > 0 && !progress.includes(index)}
                             className={` p-1  text-gray-500 hover:text-red-950 
-                          ${
-                            index > 0 && !progress.includes(index)
-                              ? " pointer-events-none "
-                              : "cursor-pointer"
+                          ${ ''
+                          //  index > 0 && !progress.includes(index)
+                          //  ? " pointer-events-none " :
+                          //    "cursor-pointer"
                           }`}
                           >
                             {item.value}

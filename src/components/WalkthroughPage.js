@@ -28,7 +28,7 @@ const WalkthroughPage = () => {
     const userProgress = getUserProgress();
 
     // go to homepage if last page was not completed
-    if (currentPageId != 1 && !userProgress.includes(currentPageId - 1)) navigate("/");
+    // if (currentPageId != 1 && !userProgress.includes(currentPageId - 1)) navigate("/");
 
     // Load correct answers if user has previously completed this page
     if (userProgress.includes(currentPageId)) {
@@ -318,7 +318,8 @@ const WalkthroughPage = () => {
           >
             Back
           </button>
-          {allQuestionsCorrect && nextPageContent && (
+          { //allQuestionsCorrect && 
+          nextPageContent && (
             <button
               onClick={() => navigate(`/walkthrough/${nextPageId}`)}
               className="px-4 py-2 flex-grow  bg-gray-700 text-white rounded-sm hover:bg-red-950"
