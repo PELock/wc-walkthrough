@@ -40,7 +40,7 @@ const ResourceSidebar = () => {
             <div className="max-w-screen-sm p-2   ">
               <Link
                 onClick={() => toggleDropdown(index)}
-                className=" text-xl font-bold mt-4 text-red-900 "
+                className=" text-xl font-bold mt-4 text-red-900 hover:underline "
               >
                 <span className="absolute">| </span>
                 <p className="pl-2 ">{page[1].title}</p>

@@ -86,6 +86,8 @@ const About = () => {
             damage to systems, networks, or legal implications.
           </p>
           <br></br>
+          <p>Note: This module uses local storage for storing user progress and question answers. Please do not clear your browser cache or switch browsers.</p>
+          <br></br>
           <p className="">
             For more information or questions, please email ecr00012@mix.wvu.edu
           </p>

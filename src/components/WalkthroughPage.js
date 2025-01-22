@@ -7,7 +7,7 @@ import {
   saveModifiableText,
 } from "../utils/localStorageUtils";
 import pagesContent from "../data/pagesContent";
-import ResourceSidebar from "../components/ResourceSidebar"; 
+import ResourceSidebar from "../components/ResourceSidebar";
 import ChronologicalOrderQuestion from "../components/ChronologicalOrderQuestion";
 import ProgressTracker from "./ProgressTracker";
 const WalkthroughPage = () => {
@@ -26,7 +26,10 @@ const WalkthroughPage = () => {
   useEffect(() => {
     // Retrieve user progress from local storage
     const userProgress = getUserProgress();
-    
+
+    // go to homepage if last page was not completed
+    if (currentPageId != 1 && !userProgress.includes(currentPageId - 1)) navigate("/");
+
     // Load correct answers if user has previously completed this page
     if (userProgress.includes(currentPageId)) {
       const savedCorrectAnswers = pageContent.content
@@ -69,7 +72,6 @@ const WalkthroughPage = () => {
     }));
   };
 
-  
   const handleModifiableTextChange = (field, value) => {
     setModifiableText((prevText) => ({
       ...prevText,
@@ -142,7 +144,7 @@ const WalkthroughPage = () => {
     }
   };
 
-// fill out questions with their correct answers
+  // fill out questions with their correct answers
   const allQuestionsCorrect = pageContent.content
     .filter((item) => item.type === "question")
     .every((item) => correctAnswers[item.field]);
@@ -150,13 +152,10 @@ const WalkthroughPage = () => {
   const nextPageId = currentPageId + 1;
   const nextPageContent = pagesContent[`page${nextPageId}`];
 
-
   const gotoPreviousPage = () => {
     if (currentPageId <= 1) navigate("/");
     else navigate(`/walkthrough/${currentPageId - 1}`);
   };
-
-  
 
   return (
     <div className="min-h-screen flex bg-slate-950">
@@ -174,10 +173,8 @@ const WalkthroughPage = () => {
           <span>Home</span>
         </button>
 
-        <h2  className="text-5xl font-fira  font-bold  pt-4 top-0 pr-48  z-0 flex  ">
-          <span>
-          {pageContent.title}
-          </span>
+        <h2 className="text-5xl font-fira  font-bold  pt-4 top-0 pr-48  z-0 flex  ">
+          <span>{pageContent.title}</span>
         </h2>
         <div className="space-y-6 w-full max-w-4xl mt-24">
           {pageContent.content.map((item, index) => {
@@ -269,7 +266,7 @@ const WalkthroughPage = () => {
                 </div>
               );
             } else if (item.type === "box") {
-              item.field = index
+              item.field = index;
               return (
                 <div key={index} className="flex justify-center">
                   <div className="flex font-fira flex-col border border-stone-900 bg-stone-950 rounded-xl p-4 w-full max-w-2xl ">
@@ -294,6 +291,7 @@ const WalkthroughPage = () => {
                 </div>
               );
             } else if (item.type === "chronological") {
+              // drag and drops
               return (
                 <div>
                   <ChronologicalOrderQuestion
