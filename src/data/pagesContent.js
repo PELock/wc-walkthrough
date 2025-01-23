@@ -1796,7 +1796,7 @@ const pagesContent = {
     ],
   },
   page9: {
-    title: "The Finale",
+    title: "Final Results",
     content: []
   }
 };
