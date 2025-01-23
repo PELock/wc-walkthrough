@@ -1,26 +1,26 @@
-// Get user progress from localStorage
-export const getUserProgress = () => {
-  const userProgress = JSON.parse(localStorage.getItem("userProgress")) || [];
-  return userProgress;
+// Get user progress  from localStorage
+export const getCorrectAnswers = () => {
+  const correctAnswers =
+    JSON.parse(localStorage.getItem("correctAnswers")) || {};
+        console.log("wec "+ correctAnswers);
+  return correctAnswers;
 };
 
-// Update user progress in localStorage
-export const updateUserProgress = (currentPageId, completedQuestions) => {
-  let userProgress = getUserProgress();
+// Update user progress with correct answers in localStorage
+export const updateCorrectAnswers = (
+  questionField,
+  userAnswer,
+  correctAnswer
+) => {
+  let correctAnswers = getCorrectAnswers();
 
-  // Check if currentPageId is already in userProgress
-  if (!userProgress.includes(currentPageId)) {
-    userProgress.push(currentPageId);
+  // Check if the answer is correct
+  if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+    correctAnswers[questionField] = true; // Mark this question as correct
   }
 
-  // Update completed questions for the current page
-  const pageKey = `page${currentPageId}`;
-  const currentPageProgress = {
-    ...userProgress,
-    [pageKey]: completedQuestions,
-  };
-
-  localStorage.setItem("userProgress", JSON.stringify(userProgress));
+  // Save updated correct answers to localStorage
+  localStorage.setItem("correctAnswers", JSON.stringify(correctAnswers));
 };
 
 // Get modifiable text from localStorage

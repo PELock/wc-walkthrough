@@ -34,14 +34,7 @@ const ProgressTracker = ({ scrollableRef }) => {
         progress = Math.min(Math.max(progress, 0), 100); // Clamp between 0 and 100
       }
 
-      console.log("Scroll Debug:", {
-        scrollTop,
-        scrollHeight,
-        clientHeight,
-        scrollableDistance,
-        calculationPossible,
-        progress,
-      });
+      
 
       setDebugInfo({
         progress,

@@ -20,15 +20,8 @@ const Home = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchProgress();
-  }, []);
-
   // determine which pages and questions a user has completed
-  const fetchProgress = () => {
-    const userProgress = getUserProgress();
-    setProgress(userProgress);
-  };
+
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);

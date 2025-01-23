@@ -499,9 +499,9 @@ const pagesContent = {
       {
         type: "question",
         question:
-          "Think back to our live analysis of the virus. What do these strings look like?",
+          "Think back to our live analysis of the virus. What kind of addresses do these strings look like?",
 
-        correctAnswer: "bitcoin addresses",
+        correctAnswer: "bitcoin ",
         field: "q13",
       },
       {
@@ -1795,6 +1795,10 @@ const pagesContent = {
       },
     ],
   },
+  page9: {
+    title: "The Finale",
+    content: []
+  }
 };
 
 export default pagesContent;

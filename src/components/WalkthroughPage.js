@@ -1,15 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  updateUserProgress,
-  getUserProgress,
-  getModifiableText,
-  saveModifiableText,
-} from "../utils/localStorageUtils";
 import pagesContent from "../data/pagesContent";
 import ResourceSidebar from "../components/ResourceSidebar";
 import ChronologicalOrderQuestion from "../components/ChronologicalOrderQuestion";
 import ProgressTracker from "./ProgressTracker";
+
 const WalkthroughPage = () => {
   const { pageId } = useParams();
   const [answers, setAnswers] = useState({});
@@ -24,38 +19,23 @@ const WalkthroughPage = () => {
   const pageContent = pagesContent[`page${currentPageId}`];
 
   useEffect(() => {
-    // Retrieve user progress from local storage
-    const userProgress = getUserProgress();
-
-    // go to homepage if last page was not completed
-    // if (currentPageId != 1 && !userProgress.includes(currentPageId - 1)) navigate("/");
-
-    // Load correct answers if user has previously completed this page
-    if (userProgress.includes(currentPageId)) {
-      const savedCorrectAnswers = pageContent.content
-        .filter((item) => item.type === "question")
-        .reduce((acc, item) => {
-          acc[item.field] = item.correctAnswer;
-          return acc;
-        }, {});
-      setCorrectAnswers(savedCorrectAnswers);
-
-      // Load completed questions from local storage
-      const savedCompletedQuestions = pageContent.content
-        .filter((item) => item.type === "question")
-        .filter(
-          (item) => userProgress.includes(currentPageId) && answers[item.field]
-        )
-        .map((item) => item.field);
-      setCompletedQuestions(savedCompletedQuestions);
-    }
+    // Load correct answers for this page if available from localStorage
+    const savedCorrectAnswers = Object.keys(localStorage)
+    .filter((key) => key.startsWith(`${currentPageId}-`)) // Check if the key matches the pageId
+    .reduce((acc, key) => {
+      // Extract the field name (after the pageId) from the localStorage keys
+      const field = key.split('-')[1];
+      acc[field] = localStorage.getItem(key); // Get the value from localStorage
+      return acc;
+    }, {});
+    setCorrectAnswers(savedCorrectAnswers);
 
     // Load modifiable text from local storage
     const savedModifiableText = pageContent.content
       .filter((item) => item.type === "box")
       .reduce((acc, item) => {
         acc[item.field] =
-          getModifiableText(currentPageId, item.field) || item.value;
+          localStorage.getItem(`${currentPageId}-${item.field}`) || item.value;
         return acc;
       }, {});
     setModifiableText(savedModifiableText);
@@ -79,18 +59,19 @@ const WalkthroughPage = () => {
     }));
   };
 
-  //saves "box" type questions
+  // Saves "box" type questions
   const saveModifiableTextHandler = (field) => {
-    saveModifiableText(currentPageId, field, modifiableText[field]);
+    localStorage.setItem(`${currentPageId}-${field}`, modifiableText[field]);
     console.log(`Saved text for ${field}:`, modifiableText[field]);
   };
 
-  // check regular answer
+  // Check regular answer
   const checkAnswer = (field, correctAnswer) => {
     if (
       answers[field] &&
       answers[field].trim().toLowerCase() === correctAnswer.toLowerCase()
     ) {
+      // Update the correct answers state
       setCorrectAnswers((prevCorrectAnswers) => ({
         ...prevCorrectAnswers,
         [field]: correctAnswer,
@@ -100,13 +81,13 @@ const WalkthroughPage = () => {
         [field]: "",
       }));
 
+      // Save correct answer to localStorage
+      localStorage.setItem(`${currentPageId}-${field}`, correctAnswer);
+
       // Mark the question as completed
       if (!completedQuestions.includes(field)) {
         const updatedCompletedQuestions = [...completedQuestions, field];
         setCompletedQuestions(updatedCompletedQuestions);
-
-        // Update local storage with completed questions
-        updateUserProgress(currentPageId, updatedCompletedQuestions);
       }
     } else {
       setErrors((prevErrors) => ({
@@ -116,7 +97,7 @@ const WalkthroughPage = () => {
     }
   };
 
-  // drag-n-drop answer checking
+  // Drag-n-drop answer checking
   const handleChronologicalAnswer = (field, isCorrect) => {
     if (isCorrect) {
       setCorrectAnswers((prevCorrectAnswers) => ({
@@ -132,9 +113,6 @@ const WalkthroughPage = () => {
       if (!completedQuestions.includes(field)) {
         const updatedCompletedQuestions = [...completedQuestions, field];
         setCompletedQuestions(updatedCompletedQuestions);
-
-        // Update local storage with completed questions
-        updateUserProgress(currentPageId, updatedCompletedQuestions);
       }
     } else {
       setErrors((prevErrors) => ({
@@ -144,10 +122,7 @@ const WalkthroughPage = () => {
     }
   };
 
-  // fill out questions with their correct answers
-  const allQuestionsCorrect = pageContent.content
-    .filter((item) => item.type === "question")
-    .every((item) => correctAnswers[item.field]);
+
 
   const nextPageId = currentPageId + 1;
   const nextPageContent = pagesContent[`page${nextPageId}`];
@@ -155,6 +130,11 @@ const WalkthroughPage = () => {
   const gotoPreviousPage = () => {
     if (currentPageId <= 1) navigate("/");
     else navigate(`/walkthrough/${currentPageId - 1}`);
+  };
+
+  const gotoNextPage = () => {
+    if (currentPageId >= 9) navigate("/walkthrough/9");
+    else navigate(`/walkthrough/${nextPageId}`);
   };
 
   return (
@@ -200,13 +180,9 @@ const WalkthroughPage = () => {
                 >
                   {item.listElements.map((listElement, index) => {
                     return (
-                      <div>
-                        <p key={index} className="font-bold pb-2">
-                          {listElement.list}
-                        </p>
-                        <p key={index} className=" pb-5 text-red-700">
-                          {listElement.text}
-                        </p>
+                      <div key={index}>
+                        <p className="font-bold pb-2">{listElement.list}</p>
+                        <p className=" pb-5 text-red-700">{listElement.text}</p>
                       </div>
                     );
                   })}
@@ -291,11 +267,9 @@ const WalkthroughPage = () => {
                 </div>
               );
             } else if (item.type === "chronological") {
-              // drag and drops
               return (
-                <div>
+                <div key={index}>
                   <ChronologicalOrderQuestion
-                    key={index}
                     className="font-fira"
                     question={item.question}
                     events={item.events}
@@ -318,10 +292,9 @@ const WalkthroughPage = () => {
           >
             Back
           </button>
-          { //allQuestionsCorrect && 
-          nextPageContent && (
+          {nextPageContent && (
             <button
-              onClick={() => navigate(`/walkthrough/${nextPageId}`)}
+              onClick={gotoNextPage}
               className="px-4 py-2 flex-grow  bg-gray-700 text-white rounded-sm hover:bg-red-950"
             >
               Continue to {nextPageContent.title}
