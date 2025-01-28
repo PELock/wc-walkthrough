@@ -12,16 +12,16 @@ const Sidebar = ({ isOpen }) => {
         <h1 className="text-white font-bold text-xl">Machines</h1>
         <br></br>
         <a
-          href="#"
+          
           className="block text-white mb-4 hover:underline"
-          download="file2"
+          href="https://drive.google.com/file/d/1QOwnPVcNpf1wegWzXHBByw1HCGwETFGY/view?usp=drive_link"
         >
           Analysis
         </a>
         <a
-          href="#"
+          
           className="block text-white mb-4 hover:underline"
-          download="file3"
+          href="https://drive.google.com/file/d/1tYcMYyqflwyODZxTei8_CTYEFivtzz6J/view?usp=drive_link"
         >
           WannaCry Infected
         </a>
