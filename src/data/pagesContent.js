@@ -1379,7 +1379,7 @@ const pagesContent = {
       {
         type: "box",
         question:
-          "We have finally arrived at the core of WannaCry's encryption. It's now up to you to figure out what's goin on. How does WC encrypt the user's files? Where are the extensions changed? Which API functions and crypto keys are used? ",
+          "We have finally arrived at the core of WannaCry's encryption. It's now up to you to figure out what's going on. How does WC encrypt the user's files? Where are the extensions changed? Which API functions and crypto keys are used? ",
       },
     ],
   },
