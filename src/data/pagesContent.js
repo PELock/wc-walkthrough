@@ -454,7 +454,7 @@ const pagesContent = {
       {
         type: "text",
         value:
-          "It is now time to look inside resource 1831. To this end, we will use the open-source tool Resource Hacker, developed by Angus Johnson. Simply open the app and drag the binary into the left-side panel. If any anti-virus issues persist, once again visit the protection history and both allow and restore the binary on the machine.",
+          "It is now time to look inside resource 1831. To this end, we will use the open-source tool Resource Hacker, developed by Angus Johnson. Download the WannaCry executable from Ghidra and place it on your desktop. Next, open the app and drag the binary into the left-side panel. If any anti-virus issues persist, once again visit the protection history and both allow and restore the binary on the machine.",
       },
       {
         type: "image",
