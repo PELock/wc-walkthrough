@@ -501,17 +501,17 @@ const pagesContent = {
         question:
           "Think back to our live analysis of the virus. What kind of addresses do these strings look like?",
 
-        correctAnswer: "bitcoin ",
+        correctAnswer: "bitcoin",
         field: "q13",
       },
       {
         type: "text",
-        value: "Hint: Two words.",
+        value: "Hint: One word",
       },
       {
         type: "text",
         value:
-          "This is another crucial lesson of reverse engineering taking shape. By simply looking over the defined strings, we have a significantly clearer picture of what lies before us. We are given a plethora of extensions, cryptograohic libraries and functions, and even a direct reference to the name of the virus. Before we move on from the strings, take note of the strings which stand out the most. 'c.wnry', 't.wnry', 'WANACRY!' and the strange, cryptic 'WNcry@2017'",
+          "This is another crucial lesson of reverse engineering taking shape. By simply looking over the defined strings, we have a significantly clearer picture of what lies before us. We are given a plethora of extensions, cryptographic libraries and functions, and even a direct reference to the name of the virus. Before we move on from the strings, take note of the strings which stand out the most. 'c.wnry', 't.wnry', 'WANACRY!' and the strange, cryptic 'WNcry@2017'",
       },
       {
         type: "text",
