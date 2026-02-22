@@ -331,10 +331,10 @@ const pagesContent = {
       {
         type: "question",
         question:
-          "What is the segment of the string entered into local104? Start at the Folder containing the zip. ",
+          "What flag is the wannacry executable attempting to run with? Enter the full string as found in the function.",
 
         correctAnswer:
-          "Desktop\\32f24601153be0885f11d62e0a8a2f0280a2034fc981d8184180c5d3b1b9e8cf.zip\\32f24601153be0885f11d62e0a8a2f0280a2034fc981d8184180c5d3b1b9e8cf.bin -m security ",
+          "-m security",
         field: "q9",
       },
       {
